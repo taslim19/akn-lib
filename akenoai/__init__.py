@@ -6,7 +6,6 @@ from .xnxx import *
 
 __all__ = [
     "__version__",
-    "RendyDevChat",
     "async_search",
     "PornoHub",
     "AkenoPlus",
