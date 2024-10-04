@@ -1,0 +1,4 @@
+aiohttp
+wget
+requests
+httpx[http2]
