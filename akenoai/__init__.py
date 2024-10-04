@@ -9,4 +9,5 @@ __all__ = [
     "async_search",
     "PornoHub",
     "AkenoPlus",
+    "AsyicXSearcher",
 ]
