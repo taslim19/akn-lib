@@ -14,6 +14,8 @@ class PornoHub:
         res = await async_search(url, headers=self.headers, re_json=True)
         results = res["randydev"]["results"]
         y = res["randydev"]["results"][0]
+        if y is None:
+            return "No search issue report"
         link = y["link"]
         title = y["title"]
         return [link, title, results]
