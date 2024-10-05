@@ -13,8 +13,8 @@ class PornoHub:
         url = f"{self.base_api_dev}/akeno/xnxxsearch-v2?query={query}"
         res = await async_search(url, headers=self.headers, re_json=True)
         results = res["randydev"]["results"]
-        if res["randydev"]["results"] is None:
-            return "No search issue report"
+        if res["randydev"]["results"] is None and results is None:
+            return None
         y = res["randydev"]["results"][0]
         link = y["link"]
         title = y["title"]
