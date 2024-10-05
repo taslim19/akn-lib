@@ -62,6 +62,31 @@ class AkenoPlus:
             async with session.get(f"{self.api_endpoint}/api/akeno-ai-web", params=combined_params) as response:
                 return await response.json()
 
+    async def sites_torrens_all(self):
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f"{self.api_endpoint}/akeno/sites_torrens_all") as response:
+                return await response.json()
+
+    async def search_for_torrents(self, **params):
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f"{self.api_endpoint}/akeno/search_for_torrents", params=params) as response:
+                return await response.json()
+
+    async def get_torrent_from_url(self, **params):
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f"{self.api_endpoint}/akeno/get_torrent_from_url", params=params) as response:
+                return await response.json()
+
+    async def get_recent(self, **params):
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f"{self.api_endpoint}/akeno/get_recent", params=params) as response:
+                return await response.json()
+
+    async def get_category(self, **params):
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f"{self.api_endpoint}/akeno/get_category", params=params) as response:
+                return await response.json()
+                
     async def paal_see(self, files_open=None, **params):
         async with aiohttp.ClientSession() as session:
             form_data = aiohttp.FormData()
