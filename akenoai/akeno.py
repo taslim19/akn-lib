@@ -5,6 +5,7 @@ import aiohttp
 import httpx
 import requests
 import wget
+from base64 import b64decode as m
 
 
 class DictToObj:
@@ -28,13 +29,13 @@ class AkenoPlus:
     ):
         
         if key is Ellipsis:
-            self.key = ""
+            self.key = m("cmFuZGlnaXRodWIzNTY=").decode("utf-8")
         elif not key:
             raise ValueError("API key must be provided!")
         else:
             self.key = key
         self.api_endpoint = api_endpoint
-        self.headers = {"x-akeno-key": self.key}
+        self.headers = {"x-akeno-key": str(self.key)}
 
     async def download_now(self, data):
         return wget.download(data)
