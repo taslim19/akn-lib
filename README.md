@@ -34,6 +34,7 @@ _.x_search(query)
 _.x_download(query)
 _.x_download(url, is_stream=True)
 ```
+
 # License
 [![License](https://www.gnu.org/graphics/agplv3-155x51.png)](LICENSE)
 TeamKillerX is licensed under [GNU Affero General Public License](https://www.gnu.org/licenses/agpl-3.0.en.html) v3 or later.

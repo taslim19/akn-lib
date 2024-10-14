@@ -1,11 +1,11 @@
 import asyncio
 import os
+from base64 import b64decode as m
 
 import aiohttp
 import httpx
 import requests
 import wget
-from base64 import b64decode as m
 
 
 class DictToObj:
@@ -94,7 +94,7 @@ class AkenoPlus:
         async with aiohttp.ClientSession() as session:
             async with session.get(f"{self.api_endpoint}/akeno/get_category", params=params) as response:
                 return await response.json()
-                
+
     async def paal_see(self, files_open=None, **params):
         async with aiohttp.ClientSession() as session:
             form_data = aiohttp.FormData()
