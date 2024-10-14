@@ -1,7 +1,8 @@
+from base64 import b64decode as m
+
 import wget
 
 from akenoai.reqs import async_search
-from base64 import b64decode as m
 
 
 class PornoHub:
