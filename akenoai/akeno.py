@@ -26,9 +26,15 @@ class AkenoPlus:
         key: str = None,
         api_endpoint: str = "https://private-akeno.randydev.my.id"
     ):
-
+        
+        if key is Ellipsis:
+            self.key = ""
+        elif not key:
+            raise ValueError("API key must be provided!")
+        else:
+            self.key = key
         self.api_endpoint = api_endpoint
-        self.headers = {"x-akeno-key": key}
+        self.headers = {"x-akeno-key": self.key}
 
     async def download_now(self, data):
         return wget.download(data)
@@ -97,6 +103,48 @@ class AkenoPlus:
                 content_type='application/octet-stream'
             )
             async with session.post(f"{self.api_endpoint}/akeno/paal-see", data=form_data, params=params) as response:
+                if response.status != 200:
+                    raise Exception(f"Error occurred: {response.status}")
+                return await response.json()
+
+    async def google_video_to_text(self, files_open=None, **params):
+        async with aiohttp.ClientSession() as session:
+            form_data = aiohttp.FormData()
+            form_data.add_field(
+                'file',
+                open(files_open, 'rb'),
+                filename=os.path.basename(files_open),
+                content_type='application/octet-stream'
+            )
+            async with session.post(f"{self.api_endpoint}/api/v2/google/video-to-text", data=form_data, params=params) as response:
+                if response.status != 200:
+                    raise Exception(f"Error occurred: {response.status}")
+                return await response.json()
+
+    async def google_image_to_text(self, files_open=None, **params):
+        async with aiohttp.ClientSession() as session:
+            form_data = aiohttp.FormData()
+            form_data.add_field(
+                'file',
+                open(files_open, 'rb'),
+                filename=os.path.basename(files_open),
+                content_type='application/octet-stream'
+            )
+            async with session.post(f"{self.api_endpoint}/api/v2/google/image-to-text", data=form_data, params=params) as response:
+                if response.status != 200:
+                    raise Exception(f"Error occurred: {response.status}")
+                return await response.json()
+
+    async def google_audio_to_text(self, files_open=None, **params):
+        async with aiohttp.ClientSession() as session:
+            form_data = aiohttp.FormData()
+            form_data.add_field(
+                'file',
+                open(files_open, 'rb'),
+                filename=os.path.basename(files_open),
+                content_type='application/octet-stream'
+            )
+            async with session.post(f"{self.api_endpoint}/api/v2/google/audio-to-text", data=form_data, params=params) as response:
                 if response.status != 200:
                     raise Exception(f"Error occurred: {response.status}")
                 return await response.json()
