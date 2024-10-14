@@ -4,10 +4,21 @@ from akenoai.reqs import async_search
 
 
 class PornoHub:
-    def __init__(self, key=None, base_api_dev: str = "https://private-akeno.randydev.my.id"):
+    def __init__(self, key=..., base_api_dev: str = "https://private-akeno.randydev.my.id"):
+        if key is Ellipsis:
+            self.key = "randigithub356"
+        elif not key:
+            raise ValueError("API key must be provided!")
+        else:
+            self.key = key
         self.base_api_dev = base_api_dev
-        self.headers = {"x-akeno-key": key}
+        self.headers = {"x-akeno-key": self.key}
 
+    def set_key(self, new_key: str):
+        self.key = new_key
+
+    def show_key(self):
+        return f"The API key is: {self.key}"
 
     async def x_search(self, query=None):
         url = f"{self.base_api_dev}/akeno/xnxxsearch-v2?query={query}"
