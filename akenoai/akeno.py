@@ -22,12 +22,7 @@ class DictToObj:
         return f"{self.__dict__}"
 
 class AkenoPlus:
-    def __init__(
-        self,
-        key: str = None,
-        api_endpoint: str = "https://private-akeno.randydev.my.id"
-    ):
-        
+    def __init__(self, key=..., api_endpoint: str = "https://private-akeno.randydev.my.id"):
         if key is Ellipsis:
             self.key = m("cmFuZGlnaXRodWIzNTY=").decode("utf-8")
         elif not key:
@@ -36,6 +31,12 @@ class AkenoPlus:
             self.key = key
         self.api_endpoint = api_endpoint
         self.headers = {"x-akeno-key": str(self.key)}
+
+    def set_key(self, new_key: str):
+        self.key = new_key
+
+    def show_key(self):
+        return f"The API key is: {self.key}"
 
     async def download_now(self, data):
         return wget.download(data)
