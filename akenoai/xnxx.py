@@ -1,18 +1,19 @@
 import wget
 
 from akenoai.reqs import async_search
+from base64 import b64decode as m
 
 
 class PornoHub:
     def __init__(self, key=..., base_api_dev: str = "https://private-akeno.randydev.my.id"):
         if key is Ellipsis:
-            self.key = "randigithub356"
+            self.key = m("cmFuZGlnaXRodWIzNTY=").decode("utf-8")
         elif not key:
             raise ValueError("API key must be provided!")
         else:
             self.key = key
         self.base_api_dev = base_api_dev
-        self.headers = {"x-akeno-key": self.key}
+        self.headers = {"x-akeno-key": str(self.key)}
 
     def set_key(self, new_key: str):
         self.key = new_key
