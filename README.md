@@ -8,7 +8,7 @@
 
 > params string optional: `prompt`, `mime_type`
 
-* Example this
+### Example this
 ```python
 import akenoai as dev
 
