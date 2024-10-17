@@ -109,6 +109,11 @@ class AkenoPlus:
                     raise Exception(f"Error occurred: {response.status}")
                 return await response.json()
 
+    async def paal_text_to_image(self, **params):
+        async with aiohttp.ClientSession() as session:
+            async with session.post(f"{self.api_endpoint}/akeno/paal-text-to-image", params=params, headers=self.headers) as response:
+                return await response.json()
+            
     async def google_video_to_text(self, files_open=None, **params):
         async with aiohttp.ClientSession() as session:
             form_data = aiohttp.FormData()
