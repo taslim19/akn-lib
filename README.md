@@ -23,7 +23,8 @@ print(response)
 
 ### Paal AI Dev
 > `paal_see` params string optional: `lang="en"` and `is_trans="True"`
-###
+
+### Example this
 ```python
 import akenoai as dev
 
