@@ -1,6 +1,23 @@
 # akenoai-lib
 - install : `pip3 install akenoai[porno]`
 
+### Google-Dev
+> performance high speed API
+> `google_video_to_text`
+> `google_audio_to_text`
+> params string optional: `prompt`, `mime_type`
+```python
+import akenoai as dev
+
+file_path = "example.jpg"
+
+api = dev.AkenoPlus(key=...)
+
+response = await api.google_image_to_text(files_open=file_path)
+
+print(response)
+```
+
 # Attribute
 ```python
 # Use await
