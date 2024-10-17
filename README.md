@@ -7,7 +7,7 @@
 > `google_audio_to_text`
 
 > params string optional: `prompt`, `mime_type`
-
+-------------------------
 ### Example this
 ```python
 import akenoai as dev
@@ -19,6 +19,21 @@ api = dev.AkenoPlus(key=...)
 response = await api.google_image_to_text(files_open=file_path)
 
 print(response)
+```
+
+### Paal AI Dev
+> `paal_see` params string optional: `lang="en"` and `trans=True`
+-------------------------
+```python
+import akenoai as dev
+
+file_path = "example.jpg"
+api = dev.AkenoPlus(key=...)
+response = await api.paal_see(files_open=file_path)
+print(response)
+
+response_2 = await api.paal_text_to_image(prompt="cat beautiful")
+print(response_2)
 ```
 
 # Attribute
