@@ -6,11 +6,21 @@ class LoopAutomatic:
         for i, data in enumerate(sessions):
             yield i, data
 
+    @classmethod
+    def _device_system(cls, **args):
+        system_model = {
+            "app_version": args,
+            "device_model": args,
+            "system_version": args
+        }
+        return system_model
+
     @classmethod        
     async def run_until_complete(
         cls,
         sessions,
         ClientClass,
+        **args,
         error_exceptions=None,
         logs=None,
         my_api_id=None,
@@ -18,6 +28,7 @@ class LoopAutomatic:
         plugins_dir=None,
         is_token: bool = False,
     ) -> None:
+        get_model = cls._device_system(args)
         if error_exceptions is None:
             error_exceptions = (Exception,)
         async for i, data in cls.start_running_loop(sessions, ClientClass):
@@ -27,6 +38,9 @@ class LoopAutomatic:
                     api_id=my_api_id,
                     api_hash=my_api_hash,
                     bot_token=bot_token_str,
+                    app_version=get_model["app_version"],
+                    device_model=get_model["device_model"],
+                    system_version=get_model["system_version"],
                     plugins=dict(root=plugins_dir),
                 )
             else:
@@ -37,9 +51,11 @@ class LoopAutomatic:
                     api_id=api_id,
                     api_hash=api_hash,
                     session_string=session_str,
+                    app_version=get_model["app_version"],
+                    device_model=get_model["device_model"],
+                    system_version=get_model["system_version"],
                     plugins=dict(root=plugins_dir)
                 )
-
             try:
                 await client.start()
                 get_me = await client.get_me()
