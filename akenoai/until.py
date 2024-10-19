@@ -15,12 +15,12 @@ class LoopAutomatic:
         plugins_dir=None,
         is_token: bool = False,
     ) -> None:
-        async for i, data in LoopAutomatic.start_running_loop(sessions, ClientClass):
+        async for i, data in cls.start_running_loop(sessions, ClientClass):
             if is_token:
                 bot_token_str = data.get("bot_token")
                 client = ClientClass(
-                    api_id=api_id,
-                    api_hash=api_hash,
+                    api_id=my_api_id,
+                    api_hash=my_api_hash,
                     bot_token=bot_token_str,
                     plugins=dict(root=plugins_dir),
                 )
@@ -29,11 +29,12 @@ class LoopAutomatic:
                 api_hash = data.get("api_hash")
                 session_str = data.get("session")
                 client = ClientClass(
-                    api_id=my_api_id,
-                    api_hash=my_api_hash,
-                    bot_token=bot_token_str,
+                    api_id=api_id,
+                    api_hash=api_hash,
+                    session_string=session_str,
                     plugins=dict(root=plugins_dir)
                 )
+            
             await client.start()
             get_me = await client.get_me()
             if logs:
