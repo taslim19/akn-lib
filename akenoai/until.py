@@ -9,9 +9,9 @@ class LoopAutomatic:
     @classmethod
     def _device_system(cls, **args):
         system_model = {
-            "app_version": args,
-            "device_model": args,
-            "system_version": args
+            "app_version": args.get("app_version", "1.0"),
+            "device_model": args.get("device_model", "GenericDevice"),
+            "system_version": args.get("system_version", "1.0")
         }
         return system_model
 
@@ -28,7 +28,7 @@ class LoopAutomatic:
         plugins_dir=None,
         is_token: bool = False,
     ) -> None:
-        get_model = cls._device_system(args)
+        get_model = cls._device_system(**args)
         if error_exceptions is None:
             error_exceptions = (Exception,)
         async for i, data in cls.start_running_loop(sessions, ClientClass):
@@ -59,7 +59,9 @@ class LoopAutomatic:
             try:
                 await client.start()
                 get_me = await client.get_me()
-            except error_exceptions:
+            except error_exceptions as e:
+                if logs:
+                    logs.error(f"Error on session {i + 1}: {str(e)}")
                 continue
             if logs:
                 logs.info(f"Starting: {i + 1} {get_me.first_name}")
