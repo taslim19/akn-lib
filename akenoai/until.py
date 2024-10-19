@@ -20,13 +20,13 @@ class LoopAutomatic:
         cls,
         sessions,
         ClientClass,
-        **args,
         error_exceptions=None,
         logs=None,
         my_api_id=None,
         my_api_hash=None,
         plugins_dir=None,
         is_token: bool = False,
+        **args
     ) -> None:
         get_model = cls._device_system(**args)
         if error_exceptions is None:
