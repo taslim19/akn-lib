@@ -1,3 +1,5 @@
+# create by @xtdevs
+
 class LoopAutomatic:
     @classmethod
     async def start_running_loop(cls, sessions, ClientClass) -> None:
@@ -9,12 +11,15 @@ class LoopAutomatic:
         cls,
         sessions,
         ClientClass,
+        error_exceptions=None,
         logs=None,
         my_api_id=None,
         my_api_hash=None,
         plugins_dir=None,
         is_token: bool = False,
     ) -> None:
+        if error_exceptions is None:
+            error_exceptions = (Exception,)
         async for i, data in cls.start_running_loop(sessions, ClientClass):
             if is_token:
                 bot_token_str = data.get("bot_token")
@@ -34,9 +39,12 @@ class LoopAutomatic:
                     session_string=session_str,
                     plugins=dict(root=plugins_dir)
                 )
-            
-            await client.start()
-            get_me = await client.get_me()
+
+            try:
+                await client.start()
+                get_me = await client.get_me()
+            except error_exceptions:
+                continue
             if logs:
                 logs.info(f"Starting: {i + 1} {get_me.first_name}")
             else:
