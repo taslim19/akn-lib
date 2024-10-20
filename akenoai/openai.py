@@ -1,14 +1,26 @@
 class OpenAI:
     @classmethod
-    async def run_image(cls, key, openai_meta, **args):
+    async def run_image(
+        cls,
+        key,
+        openai_meta,
+        run_async: bool = False, 
+        **args
+    ):
         try:
             client = openai_meta(
                 api_key=key
             )
-            response = await client.images.generate(
-                model="dall-e-3",
-                **args
-            )
+            if run_async:
+                response = await client.images.generate(
+                    model="dall-e-3",
+                    **args
+                )
+            else:
+                response = client.images.generate(
+                    model="dall-e-3",
+                    **args
+                )
             return response.data[0].url or ""
         except Exception as e:
             return f"Error response: {e}"
