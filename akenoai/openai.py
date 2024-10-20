@@ -6,6 +6,7 @@ class OpenAI:
         openai_meta,
         model=None,
         messages=None,
+        async_is_only_dalle: bool = False
         async_is_stream: bool = False,
         **args
     ):
@@ -30,5 +31,13 @@ class OpenAI:
                     **args
                 )
                 return response.choices[0].message.content or ""
+            if async_is_only_dalle:
+                response = await client.images.generate(
+                    model="dall-e-3",
+                    prompt=messages,
+                    **args
+                )
+                return response.data[0].url or ""
+            return None
         except Exception as e:
             return f"Error response: {e}"
