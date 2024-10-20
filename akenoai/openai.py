@@ -15,12 +15,12 @@ class OpenAI:
             )
             if async_is_stream:
                 answer = ""
-                response = await client.chat.completions.create(
+                response_stream = await client.chat.completions.create(
                     model=model,
                     messages=messages,
                     **args
                 )
-                async for chunk in stream:
+                async for chunk in response_stream:
                     answer += chunk.choices[0].delta.content or ""
                 return answer
             else:
@@ -29,6 +29,6 @@ class OpenAI:
                     messages=messages,
                     **args
                 )
-                return response
+                return response.choices[0].message.content or ""
         except Exception as e:
             return f"Error response: {e}"
