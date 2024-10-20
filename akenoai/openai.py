@@ -1,16 +1,28 @@
+import base64
+
 class OpenAI:
+    api_key = ""
+
+    @classmethod
+    def set_api_key(cls, key=Ellipsis):
+        if key is Ellipsis:
+            cls.api_key = base64.b64decode("").decode("utf-8")
+        elif not key:
+            raise ValueError("API key must be provided!")
+        else:
+            cls.api_key = key
+
     @classmethod
     async def run_image(
         cls,
-        key,
-        openai_meta,
-        run_async: bool = False, 
+        key=Ellipsis,
+        openai_meta=None,
+        run_async: bool = False,
         **args
     ):
+        cls.set_api_key(key)
         try:
-            client = openai_meta(
-                api_key=key
-            )
+            client = openai_meta(api_key=cls.api_key)
             if run_async:
                 response = await client.images.generate(
                     model="dall-e-3",
@@ -21,7 +33,7 @@ class OpenAI:
                     model="dall-e-3",
                     **args
                 )
-            return response.data[0].url or ""
+            return response.data[0].url if response and response.data else ""
         except Exception as e:
             return f"Error response: {e}"
 
@@ -35,10 +47,9 @@ class OpenAI:
         async_is_stream: bool = False,
         **args
     ):
+        cls.set_api_key(key)
         try:
-            client = openai_meta(
-                api_key=key
-            )
+            client = openai_meta(api_key=cls.api_key)
             if async_is_stream:
                 answer = ""
                 response_stream = await client.chat.completions.create(
