@@ -40,8 +40,8 @@ class OpenAI:
     @classmethod
     async def run(
         cls,
-        key,
-        openai_meta,
+        key=Ellipsis,
+        openai_meta=None,
         model=None,
         messages=None,
         async_is_stream: bool = False,
