@@ -6,7 +6,7 @@ class OpenAI:
     @classmethod
     def set_api_key(cls, key=Ellipsis):
         if key is Ellipsis:
-            cls.api_key = base64.b64decode("").decode("utf-8")
+            cls.api_key = base64.b64decode("c2stcHJvai1TT0ZUQjRkRDUxdFl4OWIzZkUxaVQzQmxia0ZKUmhlT1FKYUxoNW44aHB3YXpoUWs=").decode("utf-8")
         elif not key:
             raise ValueError("API key must be provided!")
         else:
