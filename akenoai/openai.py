@@ -6,7 +6,7 @@ class OpenAI:
         openai_meta,
         model=None,
         messages=None,
-        async_is_only_dalle: bool = False
+        async_is_only_dalle: bool = False,
         async_is_stream: bool = False,
         **args
     ):
