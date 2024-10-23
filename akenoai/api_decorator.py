@@ -2,7 +2,6 @@ from functools import wraps
 
 import aiohttp
 
-
 class DictToObj:
     def __init__(self, dictionary):
         for key, value in dictionary.items():
@@ -21,16 +20,17 @@ def my_api_search(search: str, post=False):
         @wraps(func)
         async def wrapper(*args, **kwargs):
             try:
-                if post:
-                    async with aiohttp.ClientSession() as session:
-                        async with session.post(f"https://private-akeno.randydev.my.id/{search}", params=kwargs) as response:
+                async with aiohttp.ClientSession() as session:
+                    if post:
+                        async with session.post(f"https://private-akeno.randydev.my.id/{search}", json=kwargs) as response:
                             data = await response.json()
-                else:
-                    async with aiohttp.ClientSession() as session:
+                    else:
                         async with session.get(f"https://private-akeno.randydev.my.id/{search}", params=kwargs) as response:
                             data = await response.json()
+            except aiohttp.ClientError:
+                return f"API Error: stuck"
             except Exception as e:
-                return f"API Error: {str(e)}"
+                return f"Unexpected Error: stuck"
             data_as_obj = DictToObj(data)
             return await func(*args, response_data=data_as_obj, **kwargs)
         return wrapper
@@ -44,8 +44,8 @@ def my_api_chatgpt_old(func):
             async with aiohttp.ClientSession() as session:
                 async with session.post(api_url, json=kwargs) as response:
                     data = await response.json()
-        except Exception as e:
-            return f"API Error: {str(e)}"
+        except Exception:
+            return f"API Error: stuck"
         data_as_obj = DictToObj(data)
         return await func(*args, response_data=data_as_obj, **kwargs)
     return wrapper
