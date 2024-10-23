@@ -25,8 +25,8 @@ class OpenAI:
             "text_log": text_log
         }
         async with aiohttp.ClientSession() as session:
-            async with session.post(url, params=params):
-                if session.status != 200:
+            async with session.post(url, params=params) as response:
+                if response.status != 200:
                     return None
                 return await response.json()["message"]
 
