@@ -6,6 +6,7 @@ from .openai import *
 from .reqs import *
 from .until import *
 from .xnxx import *
+from .logger import *
 
 __all__ = [
     "__version__",
