@@ -15,14 +15,22 @@ class DictToObj:
     def __repr__(self):
         return f"{self.__dict__}"
 
-def my_api_search(search: str, post=False):
+def my_api_search(search: str, check_type=None, post=False):
     def decorator(func):
         @wraps(func)
         async def wrapper(*args, **kwargs):
+            CHECK_DATA = {
+                "json": "json",
+                "data": "data",
+                "params": "params",
+            }
+            if check_type not in CHECK_DATA:
+                return "Error wrong type"
+                check_type_obj = CHECK_DATA[check_type]
             try:
                 async with aiohttp.ClientSession() as session:
                     if post:
-                        async with session.post(f"https://private-akeno.randydev.my.id/{search}", json=kwargs) as response:
+                        async with session.post(f"https://private-akeno.randydev.my.id/{search}", check_type_obj=kwargs) as response:
                             data = await response.json()
                     else:
                         async with session.get(f"https://private-akeno.randydev.my.id/{search}", params=kwargs) as response:
