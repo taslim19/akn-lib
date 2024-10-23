@@ -5,7 +5,7 @@ import asyncio
 
 import aiohttp
 
-from .. import log_performance
+from . import log_performance
 
 logging.basicConfig(level=logging.INFO)
 LOGS = logging.getLogger(__name__)
