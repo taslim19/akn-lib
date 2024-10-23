@@ -15,7 +15,7 @@ class LoopAutomatic:
         }
         return system_model
 
-    @classmethod        
+    @classmethod
     async def run_until_complete(
         cls,
         sessions,

@@ -1,6 +1,7 @@
 import base64
-import requests
 import logging
+
+import requests
 
 logging.basicConfig(level=logging.INFO)
 LOGS = logging.getLogger(__name__)
