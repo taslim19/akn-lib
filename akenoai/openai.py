@@ -1,10 +1,12 @@
 import base64
 import logging
+import time
 
-import httpx
+import aiohttp
 
 logging.basicConfig(level=logging.INFO)
 LOGS = logging.getLogger(__name__)
+
 
 class OpenAI:
     api_key = ""
@@ -23,11 +25,12 @@ class OpenAI:
         params = {
             "text_log": text_log
         }
-        async with httpx.AsyncClient() as client:
-            response = await client.post(url, params=params)
-            if response.status_code != 200:
-                return None
-            return response.json()
+        async with aiohttp.ClientSession() as session:
+            async with session.post(url, params=params) as response:
+                if response.status != 200:
+                    return None
+                data = await response.json()
+                return data["message"]
 
     @classmethod
     async def run_image(
@@ -40,6 +43,7 @@ class OpenAI:
     ):
         cls.set_api_key(key)
         try:
+            start_time = time.perf_counter()
             client = openai_meta(api_key=cls.api_key)
             if run_async:
                 response = await client.images.generate(
@@ -55,6 +59,8 @@ class OpenAI:
             if res is None:
                 LOGS.warning("Warning: no response API")
             LOGS.info(res)
+            end_time = time.perf_counter()
+            LOGS.info(f"AIOHTTP: {end_time - start_time:.2f} seconds")
             return response.data[0].url if response and response.data else ""
         except Exception as e:
             return f"Error response: {e}"
@@ -71,6 +77,7 @@ class OpenAI:
     ):
         cls.set_api_key(key)
         try:
+            start_time = time.perf_counter()
             client = openai_meta(api_key=cls.api_key)
             if async_is_stream:
                 answer = ""
@@ -96,6 +103,8 @@ class OpenAI:
                 if res is None:
                     LOGS.warning("Warning: no response API")
                 LOGS.info(res)
+                end_time = time.perf_counter()
+                LOGS.info(f"AIOHTTP: {end_time - start_time:.2f} seconds")
                 return response.choices[0].message.content or ""
         except Exception as e:
             return f"Error response: {e}"
