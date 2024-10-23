@@ -16,6 +16,26 @@ class DictToObj:
     def __repr__(self):
         return f"{self.__dict__}"
 
+def my_api_search(search: str, post=False):
+    def decorator(func):
+        @wraps(func)
+        async def wrapper(*args, **kwargs):
+            try:
+                if post:
+                    async with aiohttp.ClientSession() as session:
+                        async with session.post(f"https://private-akeno.randydev.my.id/{search}", params=kwargs) as response:
+                            data = await response.json()
+                else:
+                    async with aiohttp.ClientSession() as session:
+                        async with session.get(f"https://private-akeno.randydev.my.id/{search}", params=kwargs) as response:
+                            data = await response.json()
+            except Exception as e:
+                return f"API Error: {str(e)}"
+            data_as_obj = DictToObj(data)
+            return await func(*args, response_data=data_as_obj, **kwargs)
+        return wrapper
+    return decorator
+
 def my_api_chatgpt_old(func):
     @wraps(func)
     async def wrapper(*args, **kwargs):
