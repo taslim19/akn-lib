@@ -26,7 +26,7 @@ def my_api_search(search: str, check_type=None, post=False):
             }
             if check_type not in CHECK_DATA:
                 return "Error wrong type"
-                check_type_obj = CHECK_DATA[check_type]
+            check_type_obj = CHECK_DATA[check_type]
             try:
                 async with aiohttp.ClientSession() as session:
                     if post:
