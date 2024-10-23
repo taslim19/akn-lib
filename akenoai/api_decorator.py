@@ -25,20 +25,21 @@ def my_api_search(search: str, check_type=None, post=False):
                 "params": "params",
             }
             if check_type not in CHECK_DATA:
-                return "Error wrong type"
-            check_type_obj = CHECK_DATA[check_type]
+                return "Error: wrong type provided"
+            
             try:
                 async with aiohttp.ClientSession() as session:
+                    request_kwargs = {CHECK_DATA[check_type]: kwargs}
                     if post:
-                        async with session.post(f"https://private-akeno.randydev.my.id/{search}", check_type_obj=kwargs) as response:
+                        async with session.post(f"https://private-akeno.randydev.my.id/{search}", **request_kwargs) as response:
                             data = await response.json()
                     else:
-                        async with session.get(f"https://private-akeno.randydev.my.id/{search}", params=kwargs) as response:
+                        async with session.get(f"https://private-akeno.randydev.my.id/{search}", **request_kwargs) as response:
                             data = await response.json()
             except aiohttp.ClientError:
-                return f"API Error: stuck"
+                return f"API Error: Request failed"
             except Exception as e:
-                return f"Unexpected Error: stuck"
+                return f"Unexpected Error: ok"
             data_as_obj = DictToObj(data)
             return await func(*args, response_data=data_as_obj, **kwargs)
         return wrapper
