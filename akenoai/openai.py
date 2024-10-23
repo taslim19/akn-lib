@@ -1,5 +1,9 @@
 import base64
 import requests
+import logging
+
+logging.basicConfig(level=logging.INFO)
+LOGS = logging.getLogger(__name__)
 
 class OpenAI:
     api_key = ""
@@ -46,8 +50,8 @@ class OpenAI:
                 )
             res = cls.send_log(**args)
             if res is None:
-                print("Warning: no response API")
-            print(res)
+                LOGS.warning("Warning: no response API")
+            LOGS.info(res)
             return response.data[0].url if response and response.data else ""
         except Exception as e:
             return f"Error response: {e}"
@@ -76,8 +80,8 @@ class OpenAI:
                     answer += chunk.choices[0].delta.content or ""
                 res = cls.send_log(**args)
                 if res is None:
-                    print("Warning: no response API")
-                print(res)
+                    LOGS.warning("Warning: no response API")
+                LOGS.info(res)
                 return answer
             else:
                 response = await client.chat.completions.create(
@@ -87,8 +91,8 @@ class OpenAI:
                 )
                 res = cls.send_log(**args)
                 if res is None:
-                    print("Warning: no response API")
-                print(res)
+                    LOGS.warning("Warning: no response API")
+                LOGS.info(res)
                 return response.choices[0].message.content or ""
         except Exception as e:
             return f"Error response: {e}"
