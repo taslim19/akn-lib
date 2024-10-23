@@ -8,7 +8,7 @@ def with_premium(func):
             return await func(client, message)
     return wrapped
 
-def check_is_admin(status: bool = True, ChatMemberStatus):
+def check_is_admin(status: bool = True):
     def decorator(func):
         @wraps(func)
         async def wrapper(client, message):
