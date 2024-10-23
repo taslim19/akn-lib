@@ -24,11 +24,11 @@ class OpenAI:
         params = {
             "text_log": text_log
         }
-        async with httpx.AsyncClient() as client:
-            response = await client.post(url, params=params)
-            if response.status_code != 200:
-                return None
-            return response.json()["message"]
+        async with aiohttp.ClientSession() as session:
+            async with session.post(url, params=params):
+                if response.status_code != 200:
+                    return None
+                return await response.json()["message"]
 
     @classmethod
     async def run_image(
