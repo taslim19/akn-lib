@@ -1,10 +1,11 @@
 import base64
 import logging
-
-import httpx
+import time
+import aiohttp
 
 logging.basicConfig(level=logging.INFO)
 LOGS = logging.getLogger(__name__)
+
 
 class OpenAI:
     api_key = ""
@@ -40,6 +41,7 @@ class OpenAI:
     ):
         cls.set_api_key(key)
         try:
+            start_time = time.perf_counter()
             client = openai_meta(api_key=cls.api_key)
             if run_async:
                 response = await client.images.generate(
@@ -55,6 +57,8 @@ class OpenAI:
             if res is None:
                 LOGS.warning("Warning: no response API")
             LOGS.info(res)
+            end_time = time.perf_counter()
+            LOGS.info(f"AIOHTTP: {end_time - start_time:.2f} seconds")
             return response.data[0].url if response and response.data else ""
         except Exception as e:
             return f"Error response: {e}"
@@ -71,6 +75,7 @@ class OpenAI:
     ):
         cls.set_api_key(key)
         try:
+            start_time = time.perf_counter()
             client = openai_meta(api_key=cls.api_key)
             if async_is_stream:
                 answer = ""
@@ -96,6 +101,8 @@ class OpenAI:
                 if res is None:
                     LOGS.warning("Warning: no response API")
                 LOGS.info(res)
+                end_time = time.perf_counter()
+                LOGS.info(f"AIOHTTP: {end_time - start_time:.2f} seconds")
                 return response.choices[0].message.content or ""
         except Exception as e:
             return f"Error response: {e}"
