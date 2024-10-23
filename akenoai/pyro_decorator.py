@@ -1,5 +1,6 @@
 from functools import wraps
 
+
 def with_premium(func):
     async def wrapped(client, message):
         if not client.me.is_premium:
