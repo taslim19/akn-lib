@@ -2,6 +2,7 @@ from functools import wraps
 
 import aiohttp
 
+
 class DictToObj:
     def __init__(self, dictionary):
         for key, value in dictionary.items():
@@ -26,7 +27,7 @@ def my_api_search(search: str, check_type=None, post=False):
             }
             if check_type not in CHECK_DATA:
                 return "Error: wrong type provided"
-            
+
             try:
                 async with aiohttp.ClientSession() as session:
                     request_kwargs = {CHECK_DATA[check_type]: kwargs}
