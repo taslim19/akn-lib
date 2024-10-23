@@ -1,5 +1,7 @@
-import aiohttp
 from functools import wraps
+
+import aiohttp
+
 
 class DictToObj:
     def __init__(self, dictionary):
