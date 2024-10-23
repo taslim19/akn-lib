@@ -26,7 +26,7 @@ class OpenAI:
         }
         async with aiohttp.ClientSession() as session:
             async with session.post(url, params=params):
-                if response.status != 200:
+                if session.status != 200:
                     return None
                 return await response.json()["message"]
 
