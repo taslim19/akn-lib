@@ -28,7 +28,8 @@ class OpenAI:
             async with session.post(url, params=params) as response:
                 if response.status != 200:
                     return None
-                return await response.json()["message"]
+                data = await response.json()
+                return data["message"]
 
     @classmethod
     async def run_image(
