@@ -5,7 +5,7 @@ import asyncio
 
 import aiohttp
 
-from . import log_performance
+import akenoai.logger as akeno
 
 logging.basicConfig(level=logging.INFO)
 LOGS = logging.getLogger(__name__)
@@ -36,7 +36,7 @@ class OpenAI:
                 return data["message"]
 
     @classmethod
-    @log_performance
+    @akeno.log_performance
     async def run_image(
         cls,
         key=Ellipsis,
@@ -67,7 +67,7 @@ class OpenAI:
             return f"Error response: {e}"
 
     @classmethod
-    @log_performance
+    @akeno.log_performance
     async def run(
         cls,
         key=Ellipsis,
