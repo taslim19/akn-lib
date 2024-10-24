@@ -2,6 +2,7 @@
 # pip3 install pyrogram or pyrofork
 # pip3 install RyuzakiLib[all]
 # Force subscribe channel powered by @xtdevs
+# remember: you add bot to channel as admin
 
 from pyrogram import Client, filters
 from pyrogram.types import *
