@@ -8,6 +8,7 @@ from pyrogram.types import *
 
 import akenoai.pyro_decorator as akeno
 
+force_sub = akeno.ForceSubscribe(where_from="RendyProjects", owner_id="xtdevs")
 
 @Client.on_message(
     filters.incoming
@@ -16,7 +17,7 @@ import akenoai.pyro_decorator as akeno
     & ~filters.forwarded,
     group=2,
 )
-@akeno.ForceSubscribe(where_from="RendyProjects", owner_id="xtdevs")
+@force_sub
 async def startbot(client: Client, message: Message):
     buttons = [
         [
@@ -41,6 +42,6 @@ async def startbot(client: Client, message: Message):
     & filters.command(["help"])
     & ~filters.forwarded
 )
-@akeno.ForceSubscribe(where_from="RendyProjects", owner_id="xtdevs")
+@force_sub
 async def helpcmd(client: Client, message: Message):
     await message.reply_text("Good Joined Channel")
