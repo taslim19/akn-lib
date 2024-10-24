@@ -1,4 +1,4 @@
-# pip3 install git+https://github.com/TeamKillerX/akenoai-lib/
+# pip3 install git+https://github.com/TeamKillerX/akenoai-lib
 # pip3 install pyrogram or pyrofork
 # Force subscribe channel powered by @xtdevs
 
