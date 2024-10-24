@@ -40,6 +40,8 @@ def LogChannel(channel_id=None, is_track: bool = False):
                     await client.send_message(channel_id, formatting)
                 except Exception as e:
                     await akeno.warning(str(e))
+            else:
+                return False
             return await func(client, message)
         return wrapper
     return decorator
