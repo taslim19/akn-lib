@@ -1,7 +1,7 @@
+import asyncio
 import base64
 import logging
 import time
-import asyncio
 
 import aiohttp
 

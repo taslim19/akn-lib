@@ -1,6 +1,6 @@
-import time
 import asyncio
 import logging
+import time
 from functools import wraps
 
 LOGS = logging.getLogger(__name__)
@@ -10,7 +10,7 @@ async def warning(text):
 
 async def info(text):
     LOGS.info(text)
-    
+
 def log_performance(func):
     @wraps(func)
     async def wrapper(*args, **kwargs):
