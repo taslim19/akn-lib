@@ -1,19 +1,21 @@
 from functools import wraps
 import akenoai.logger as akeno
 
+from pyrogram import Client
+from pyrogram.types import Message
 
 def with_premium(func):
-    async def wrapped(client, message):
+    async def wrapper(client: Client, message: Message):
         if not client.me.is_premium:
-            await message.edit_text("<b>Premium account is required</b>")
+            return await message.edit_text("<b>Premium account is required</b>")
         else:
             return await func(client, message)
-    return wrapped
+    return wrapper
 
-def LogChannel(channel_id: int, is_track: bool = False):
+def LogChannel(channel_id=None, is_track: bool = False):
     def decorator(func):
         @wraps(func)
-        async def wrapper(client, message):
+        async def wrapper(client: Client, message: Message):
             if is_track:
                 try:
                     formatting = (
@@ -31,7 +33,7 @@ def LogChannel(channel_id: int, is_track: bool = False):
 def check_is_admin(status: bool = True):
     def decorator(func):
         @wraps(func)
-        async def wrapper(client, message):
+        async def wrapper(client: Client, message: Message):
             if status:
                 try:
                     member = await client.get_chat_member(message.chat.id, "me")
