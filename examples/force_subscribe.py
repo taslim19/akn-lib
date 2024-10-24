@@ -1,5 +1,6 @@
 # pip3 install git+https://github.com/TeamKillerX/akenoai-lib
 # pip3 install pyrogram or pyrofork
+# pip3 install RyuzakiLib[all]
 # Force subscribe channel powered by @xtdevs
 
 from pyrogram import Client, filters
