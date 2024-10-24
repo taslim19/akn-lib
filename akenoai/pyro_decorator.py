@@ -83,7 +83,7 @@ async def check_membership(channel_id, owner, bot, msg):
         mention_user = await bot.get_users(user_id)
         user = await bot.get_chat_member(channel_id, user_id)
         if user.status == ChatMemberStatus.BANNED:
-            return await handle_banned_user(bot, msg, owner, mention_user)
+            return await handle_banned_user(owner, mention_user, bot, msg)
         return True
     except UserNotParticipant:
         return False
