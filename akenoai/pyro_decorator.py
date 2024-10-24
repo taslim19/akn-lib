@@ -3,14 +3,23 @@ import akenoai.logger as akeno
 
 from pyrogram import Client
 from pyrogram.types import Message
+from pyrogram.enums import ChatMemberStatus
 
 def with_premium(func):
     async def wrapper(client: Client, message: Message):
         if not client.me.is_premium:
-            return await message.edit_text("<b>Premium account is required</b>")
+            await message.edit_text("<b>Premium account is required</b>")
         else:
             return await func(client, message)
     return wrapper
+
+def disable_command(command=None):
+    def decorator(func):
+        @Client.on_message(~filters.command(command))
+        async def wrapper(client: Client, message: Message):
+            await func(client, message)
+        return wrapper
+    return decorator
 
 def LogChannel(channel_id=None, is_track: bool = False):
     def decorator(func):
