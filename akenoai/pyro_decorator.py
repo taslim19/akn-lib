@@ -19,11 +19,11 @@ def LogChannel(channel_id=None, is_track: bool = False):
             if is_track:
                 try:
                     formatting = (
-                        f"UserID: {message.from_user.id if message.from_user else 0}"
-                        f"Username: {message.from_user.username if message.from_user else None}"
-                        f"First Name: {message.from_user.first_name if message.from_user else ''}"
+                        f"UserID: {message.from_user.id if message.from_user else 0}\n"
+                        f"Username: {message.from_user.username if message.from_user else None}\n"
+                        f"First Name: {message.from_user.first_name if message.from_user else ''}\n"
                     )
-                    return await client.send_message(channel_id, formatting)
+                    await client.send_message(channel_id, formatting)
                 except Exception as e:
                     await akeno.warning(str(e))
                 return await func(client, message)
