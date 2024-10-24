@@ -10,7 +10,7 @@ def with_premium(func):
             return await func(client, message)
     return wrapped
 
-def LogChannel(channel_id: int, is_track: bool: False):
+def LogChannel(channel_id: int, is_track: bool = False):
     def decorator(func):
         @wraps(func)
         async def wrapper(client, message):
