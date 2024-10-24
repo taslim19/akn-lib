@@ -1,4 +1,5 @@
 from functools import wraps
+import akeno.logger as akeno
 
 
 def with_premium(func):
@@ -8,6 +9,24 @@ def with_premium(func):
         else:
             return await func(client, message)
     return wrapped
+
+def LogChannel(is_track: bool: False, channel_id: int):
+    def decorator(func):
+        @wraps(func)
+        async def wrapper(client, message):
+            if is_track:
+                try:
+                    formatting = (
+                        f"UserID: {message.from_user.id if message.from_user else 0}"
+                        f"Username: {message.from_user.username if message.from_user else None}"
+                        f"First Name: {message.from_user.first_name if message.from_user else ""}"
+                    )
+                    return await client.send_message(channel_id, formatting)
+                except Exception as e:
+                    await akeno.warning(str(e))
+                return await func(client, message)
+        return wrapper
+    return decorator
 
 def check_is_admin(status: bool = True):
     def decorator(func):
