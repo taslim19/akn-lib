@@ -33,41 +33,48 @@ from pyrogram.types import Message
 
 import akenoai.logger as akeno
 
+def validate_channel_inputs(where_from, owner_id):
+    if "https://t.me/" in where_from or "https://t.me/" in owner_id:
+        raise ValueError("Don't use links: format eg: where_from='RendyProjects' and owner_id='xtdevs'")
+
+def create_channel_button(channel):
+    return InlineKeyboardMarkup([[
+        InlineKeyboardButton(text="The Channel", url=f"https://t.me/{channel}")
+    ]])
+
 
 def ForceSubscribe(where_from=None, owner_id=None):
     def decorator(func):
         @wraps(func)
         async def wrapper(client: Client, message: Message):
             try:
-                if "https://t.me/" in where_from and "https://t.me/" in owner_id:
-                    return await client.send_message(
-                        owner_id,
-                        text="Please Don't link: format eg: where_from='RendyProjects' and owner_id='xtdevs'"
-                    )
-                if not (await check_membership(where_from, owner_id, client, message)):
-                    force_button = InlineKeyboardMarkup(
-                        [
-                            [
-                                InlineKeyboardButton(
-                                    text="The Channel",
-                                    url=f"https://t.me/{where_from}"
-                                )
-                            ]
-                        ]
-                    )
-                    mention = message.from_user.mention if message.from_user else ""
-                    user_id = message.from_user.id if message.from_user else 0
-                    await message.reply(
-                        f"Hey {mention}\n⚠️ To use this bot you have to <b>subscribe to our channel</b>",
-                        disable_web_page_preview=True,
-                        reply_markup=force_button
-                    )
-                    await message.stop_propagation()
+                validate_channel_inputs(where_from, owner_id)
+                if await check_membership(where_from, owner_id, client, message):
+                    return await func(client, message)
+                mention = message.from_user.mention if message.from_user else ""
+                await message.reply(
+                    f"Hey {mention}\n⚠️ To use this bot you have to <b>subscribe to our channel</b>",
+                    disable_web_page_preview=True,
+                    reply_markup=create_channel_button(where_from)
+                )
+                await message.stop_propagation()
             except ChatAdminRequired as e:
                 await akeno.warning(str(e))
             return await func(client, message)
         return wrapper
     return decorator
+
+async def handle_banned_user(owner, mention_user, bot, msg):
+    admin_button = InlineKeyboardMarkup([[
+        InlineKeyboardButton(text="Developer", url=f"https://t.me/{owner}")
+    ]])
+    mention = mention_user.mention if mention_user else ""
+    await bot.send_message(
+        msg.chat.id,
+        f"❌ you {mention} have been blocked from the group support\n\nclick the button below to contact the group admin",
+        reply_markup=admin_button
+    )
+    return False
 
 async def check_membership(channel_id, owner, bot, msg):
     try:
@@ -75,23 +82,7 @@ async def check_membership(channel_id, owner, bot, msg):
         mention_user = await bot.get_users(user_id)
         user = await bot.get_chat_member(channel_id, user_id)
         if user.status == ChatMemberStatus.BANNED:
-            admin_support = InlineKeyboardMarkup(
-                [
-                    [
-                        InlineKeyboardButton(
-                            text="Developer",
-                            url=f"https://t.me/{owner}"
-                        )
-                    ]
-                ]
-            )
-            mention = mention_user.mention if mention_user else ""
-            await bot.send_message(
-                msg.chat.id,
-                text=f"❌ you {mention} have been blocked from the group support\n\nclick the button below to contact the group admin",
-                reply_markup=admin_support
-            )
-            return False
+            return await handle_banned_user(bot, msg, owner, mention_user)
         return True
     except UserNotParticipant:
         return False
