@@ -1,3 +1,9 @@
+# MODULES MOD
+# FULL CREDITS BY @XTDEVS  
+# PLEASE DO NOT REMOVE CREDITS  
+# COPYRIGHT 2019-2024
+# REMEMBER: COPYING AND PASTING WITHOUT UNDERSTANDING WILL ONLY HURT YOUR GROWTH. RESPECT THE ORIGINAL WORK BY GIVING PROPER CREDITS AND FOLLOWING THE RULES. START LEARNING, NOT JUST COPYING!
+
 from functools import wraps
 
 from pyrogram import Client, filters
@@ -6,12 +12,6 @@ from pyrogram.types import Message
 from pyrogram.errors import *
 
 import akenoai.logger as akeno
-
-# FULL CREDITS BY @XTDEVS
-# PLEASE DON'T REMOVE CREDITS
-# COPYRIGHT 2019-2024
-# JOIN GROUP PRIVATE : https://t.me/+cx1I-u1kCH9mNjU1
-# REMEMBER: I SEE YOU, YOU GET COPY PASTE FROM WHERE (ORIGINAL AKENOAI)
 
 def ForceSubscribe(where_from=None, owner_id=None):
     def decorator(func):
