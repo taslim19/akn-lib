@@ -3,9 +3,74 @@ from functools import wraps
 from pyrogram import Client, filters
 from pyrogram.enums import ChatMemberStatus
 from pyrogram.types import Message
+from pyrogram.errors import *
 
 import akenoai.logger as akeno
 
+# FULL CREDITS BY @XTDEVS
+# PLEASE DON'T REMOVE CREDITS
+# COPYRIGHT 2019-2024
+# JOIN GROUP PRIVATE : https://t.me/+cx1I-u1kCH9mNjU1
+# REMEMBER: I SEE YOU, YOU GET COPY PASTE FROM WHERE (ORIGINAL AKENOAI)
+
+def ForceSubscribe(where_from=None, owner_id=None):
+    def decorator(func):
+        @wraps(func)
+        async def wrapper(client: Client, message: Message):
+            try:
+                if "https://t.me/" in where_from:
+                    return await client.send_message(owner_id, "Please Don't link: format eg: where_from='RendyProjects'")
+                if not (await check_membership(where_from, owner_id, client, message)):
+                    force_button = InlineKeyboardMarkup(
+                        [
+                            [
+                                InlineKeyboardButton(
+                                    text="The Channel",
+                                    url=f"https://t.me/{where_from}"
+                                )
+                            ]
+                        ]
+                    )
+                    mention = message.from_user.mention if message.from_user else ""
+                    user_id = message.from_user.id if message.from_user else 0
+                    await message.reply(
+                        f"Hey {mention}\n⚠️ To use this bot you have to <b>subscribe to our channel</b>",
+                        disable_web_page_preview=True,
+                        reply_markup=force_button
+                    )
+                    await message.stop_propagation()
+            except ChatAdminRequired as e:
+                await akeno.warning(str(e))
+            return await func(client, message)
+        return wrapper
+    return decorator
+
+async def check_membership(channel_id, owner, bot, msg):
+    try:
+        user_id = msg.from_user.id if msg.from_user else 0
+        mention_user = await bot.get_users(user_id)
+        user = await bot.get_chat_member(channel_id, user_id)
+        if user.status == ChatMemberStatus.BANNED:
+            admin_support = InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton(
+                            text="Developer",
+                            url=f"https://t.me/{owner}"
+                        )
+                    ]
+                ]
+            )
+            mention = mention_user.mention if mention_user else ""
+            await bot.send_message(
+                msg.chat.id,
+                text=f"❌ you {mention} have been blocked from the group support\n\nclick the button below to contact the group admin",
+                reply_markup=admin_support
+            )
+            return False
+        return True
+    except UserNotParticipant:
+        return False
 
 def with_premium(func):
     async def wrapper(client: Client, message: Message):
