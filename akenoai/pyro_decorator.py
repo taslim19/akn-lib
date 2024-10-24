@@ -1,5 +1,5 @@
 from functools import wraps
-import akeno.logger as akeno
+import akenoai.logger as akeno
 
 
 def with_premium(func):
