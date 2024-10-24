@@ -1,7 +1,7 @@
 from functools import wraps
 import akenoai.logger as akeno
 
-from pyrogram import Client
+from pyrogram import Client, filters
 from pyrogram.types import Message
 from pyrogram.enums import ChatMemberStatus
 
