@@ -19,7 +19,7 @@ def LogChannel(channel_id: int, is_track: bool = False):
                     formatting = (
                         f"UserID: {message.from_user.id if message.from_user else 0}"
                         f"Username: {message.from_user.username if message.from_user else None}"
-                        f"First Name: {message.from_user.first_name if message.from_user else}"
+                        f"First Name: {message.from_user.first_name if message.from_user else ''}"
                     )
                     return await client.send_message(channel_id, formatting)
                 except Exception as e:
