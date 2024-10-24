@@ -33,6 +33,7 @@ from pyrogram.types import Message
 
 import akenoai.logger as akeno
 
+
 def validate_channel_inputs(where_from, owner_id):
     if "https://t.me/" in where_from or "https://t.me/" in owner_id:
         raise ValueError("Don't use links: format eg: where_from='RendyProjects' and owner_id='xtdevs'")
