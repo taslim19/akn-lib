@@ -23,21 +23,24 @@ def disable_command(command=None):
         return wrapper
     return decorator
 
+def format_user_info(user) -> str:
+    return (
+        f"UserID: {user.id if user else 0}\n"
+        f"Username: {user.username if user else None}\n"
+        f"First Name: {user.first_name if user else ''}\n"
+    )
+
 def LogChannel(channel_id=None, is_track: bool = False):
     def decorator(func):
         @wraps(func)
         async def wrapper(client: Client, message: Message):
             if is_track:
                 try:
-                    formatting = (
-                        f"UserID: {message.from_user.id if message.from_user else 0}\n"
-                        f"Username: {message.from_user.username if message.from_user else None}\n"
-                        f"First Name: {message.from_user.first_name if message.from_user else ''}\n"
-                    )
+                    formatting = format_user_info(message.from_user)
                     await client.send_message(channel_id, formatting)
                 except Exception as e:
                     await akeno.warning(str(e))
-                return await func(client, message)
+            return await func(client, message)
         return wrapper
     return decorator
 
