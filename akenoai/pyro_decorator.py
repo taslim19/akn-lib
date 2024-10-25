@@ -119,8 +119,6 @@ def format_user_info(user, message, chat) -> str:
             f"Chat Title: {chat.title if chat else ''}\n"
             f"Chat Username: {chat.username if chat else None}\n"
         )
-    else:
-        return ""
 
 def LogChannel(channel_id=None, is_track: bool = False):
     def decorator(func):
