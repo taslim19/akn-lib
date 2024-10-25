@@ -104,11 +104,14 @@ def disable_command(command=None):
         return wrapper
     return decorator
 
-def format_user_info(user) -> str:
+def format_user_info(user, chat) -> str:
     return (
         f"UserID: {user.id if user else 0}\n"
         f"Username: {user.username if user else None}\n"
         f"First Name: {user.first_name if user else ''}\n"
+        f"Chat Title: {chat.title if chat else ''}\n"
+        f"Chat Username: {chat.username if chat else None}\n"
+        f"Message Link: {chat.link if chat else ''}\n"
     )
 
 def LogChannel(channel_id=None, is_track: bool = False):
@@ -117,7 +120,7 @@ def LogChannel(channel_id=None, is_track: bool = False):
         async def wrapper(client: Client, message: Message):
             if is_track:
                 try:
-                    formatting = format_user_info(message.from_user)
+                    formatting = format_user_info(message.from_user, message.chat)
                     await client.send_message(channel_id, formatting)
                 except Exception as e:
                     await akeno.warning(str(e))
