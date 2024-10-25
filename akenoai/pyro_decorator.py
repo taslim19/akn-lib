@@ -27,7 +27,7 @@ SOFTWARE.
 from functools import wraps
 
 from pyrogram import Client, filters
-from pyrogram.enums import ChatMemberStatus
+from pyrogram.enums import ChatMemberStatus, ChatType
 from pyrogram.errors import *
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 
@@ -105,14 +105,22 @@ def disable_command(command=None):
     return decorator
 
 def format_user_info(user, message, chat) -> str:
-    return (
-        f"UserID: {user.id if user else 0}\n"
-        f"Username: {user.username if user else None}\n"
-        f"First Name: {user.first_name if user else ''}\n"
-        f"Chat Title: {chat.title if chat else ''}\n"
-        f"Chat Username: {chat.username if chat else None}\n"
-        f"Message Link: {message.link if message else ''}\n"
-    )
+    if message.chat.type == ChatType.BOT:
+        return (
+            f"UserID: {user.id if user else 0}\n"
+            f"Username: {user.username if user else None}\n"
+            f"First Name: {user.first_name if user else ''}\n"
+        )
+    elif message.chat.type in [ChatType.GROUP, ChatType.SUPERGROUP]:
+        return (
+            f"UserID: {user.id if user else 0}\n"
+            f"Username: {user.username if user else None}\n"
+            f"First Name: {user.first_name if user else ''}\n"
+            f"Chat Title: {chat.title if chat else ''}\n"
+            f"Chat Username: {chat.username if chat else None}\n"
+        )
+    else:
+        return ""
 
 def LogChannel(channel_id=None, is_track: bool = False):
     def decorator(func):
@@ -121,7 +129,13 @@ def LogChannel(channel_id=None, is_track: bool = False):
             if is_track:
                 try:
                     formatting = format_user_info(message.from_user, message, message.chat)
-                    await client.send_message(channel_id, formatting)
+                    if message.link:
+                        reply_markup = InlineKeyboardMarkup([[
+                            InlineKeyboardButton(text="👀 Message Link", url=message.link)
+                        ]])
+                    else:
+                        reply_markup = None
+                    await client.send_message(channel_id, formatting, reply_markup=reply_markup)
                 except Exception as e:
                     await akeno.warning(str(e))
             else:
