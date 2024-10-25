@@ -127,6 +127,8 @@ def LogChannel(channel_id=None, is_track: bool = False):
                 try:
                     formatting = format_user_info(message.from_user, message, message.chat)
                     if message.link:
+                        if message.chat.type == ChatType.PRIVATE:
+                            reply_markup = None
                         reply_markup = InlineKeyboardMarkup([[
                             InlineKeyboardButton(text="👀 Message Link", url=message.link)
                         ]])
