@@ -105,7 +105,7 @@ def disable_command(command=None):
     return decorator
 
 def format_user_info(user, message, chat) -> str:
-    if message.chat.type == ChatType.BOT:
+    if message.chat.type == ChatType.PRIVATE:
         return (
             f"UserID: {user.id if user else 0}\n"
             f"Username: {user.username if user else None}\n"
@@ -133,7 +133,10 @@ def LogChannel(channel_id=None, is_track: bool = False):
                         ]])
                     else:
                         reply_markup = None
-                    await client.send_message(channel_id, formatting, reply_markup=reply_markup)
+                    if message and message.text.lower() == "vcs":
+                        await client.send_message(channel_id, formatting, reply_markup=reply_markup)
+                    else:
+                        await client.send_message(channel_id, formatting, reply_markup=reply_markup)
                 except Exception as e:
                     await akeno.warning(str(e))
             else:
