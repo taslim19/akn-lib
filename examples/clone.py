@@ -108,7 +108,7 @@ async def user_clone(client: Client, message: Message):
             else:
                 return await message.reply_text("User doesn't have a profile bio and last name")
             await message.reply_text("Successfully reverted back to your account!")
-            del [user.id]
+            del CLONE_STORAGE[user.id]
         except RPCError as rpc_error:
             await message.reply_text(f"RPCError: {rpc_error}")
         except Exception as e:
