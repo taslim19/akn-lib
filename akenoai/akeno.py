@@ -173,10 +173,14 @@ class AkenoPlus:
             async with session.get(f"{self.api_endpoint}/akeno/fbdown-v2", params=params, headers=self.headers) as response:
                 return await response.json()
 
-    async def igdl(self, **params):
+    async def igdl(self, version=False, **params):
         async with aiohttp.ClientSession() as session:
-            async with session.get(f"{self.api_endpoint}/akeno/fastdl-ig", params=params) as response:
-                return await response.json()
+            if version:
+                async with session.get(f"{self.api_endpoint}/akeno/fastdl-ig-v2", params=params) as response:
+                    return await response.json()
+            else:
+                async with session.get(f"{self.api_endpoint}/akeno/fastdl-ig", params=params) as response:
+                    return await response.json()
 
     async def fdownloader(self, **params):
         async with aiohttp.ClientSession() as session:
