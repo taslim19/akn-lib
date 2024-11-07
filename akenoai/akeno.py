@@ -109,6 +109,23 @@ class AkenoPlus:
                     raise Exception(f"Error occurred: {response.status}")
                 return await response.json()
 
+    async def remini_enhancer(self, files_open=None):
+        async with aiohttp.ClientSession() as session:
+            form_data = aiohttp.FormData()
+            form_data.add_field(
+                'file',
+                open(files_open, 'rb'),
+                filename=os.path.basename(files_open),
+                content_type='application/octet-stream'
+            )
+            async with session.post(f"{self.api_endpoint}/api/v2/remini/enhancer", data=form_data) as response:
+                if response.status != 200:
+                    raise Exception(f"Error occurred: {response.status}")
+                file_path = "enchancer.jpg"
+                with open(file_path, "wb") as file:
+                    file.write(await response.read())
+                return file_path
+
     async def paal_text_to_image(self, **params):
         async with aiohttp.ClientSession() as session:
             async with session.post(f"{self.api_endpoint}/akeno/paal-text-to-image", params=params, headers=self.headers) as response:
