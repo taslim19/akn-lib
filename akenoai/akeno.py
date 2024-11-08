@@ -173,10 +173,10 @@ class AkenoPlus:
                     raise Exception(f"Error occurred: {response.status}")
                 return await response.json()
 
-    async def blackbox(self, query=None):
+    async def blackbox(self, **payload):
         params = {"query": query}
         async with aiohttp.ClientSession() as session:
-            async with session.post(f"{self.api_endpoint}/ryuzaki/blackbox", params=params, headers=self.headers) as response:
+            async with session.post(f"{self.api_endpoint}/ryuzaki/blackbox", json=payload, headers=self.headers) as response:
                 return await response.json()
 
     async def hentai(self):
