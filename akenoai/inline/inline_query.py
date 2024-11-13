@@ -4,10 +4,10 @@ from pyrogram.types import *
 
 class BuilderInline:
     @classmethod
-    def inline_error(cls, inline_text, **args):
+    def send_text_inline(cls, inline_text, **args):
         answers = [
             InlineQueryResultArticle(
-                title="Error text!",
+                title="Inline text!",
                 thumb_url="https://telegra.ph//file/586a3867c3e16ca6bb4fa.jpg",
                 input_message_content=InputTextMessageContent(
                     message_text=inline_text,
