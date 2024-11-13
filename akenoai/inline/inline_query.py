@@ -1,6 +1,7 @@
 # created class by @xtdevs
 
 from pyrogram.types import *
+from pyrogram.enums import ParseMode
 
 class BuilderInline:
     @classmethod
@@ -11,6 +12,7 @@ class BuilderInline:
                 thumb_url="https://telegra.ph//file/586a3867c3e16ca6bb4fa.jpg",
                 input_message_content=InputTextMessageContent(
                     message_text=inline_text,
+                    parse_mode=ParseMode.DEFAULT,
                     disable_web_page_preview=True
                 ),
                 **args
