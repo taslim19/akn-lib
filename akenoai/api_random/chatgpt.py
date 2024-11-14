@@ -1,5 +1,6 @@
 import requests
 
+
 class ApiRandom:
     def __init__(self):
         self.loveyou = "https://akmoviedl.vercel.app"
@@ -12,7 +13,7 @@ class ApiRandom:
         payload: userPrompt
         example:
         from akenoai.api_random import ApiRandom
-        
+
         api = ApiRandom()
         get_response_json = await api._chatgpt(userPrompt="hello world")
         print(get_response_json)
