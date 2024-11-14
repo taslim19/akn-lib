@@ -174,7 +174,6 @@ class AkenoPlus:
                 return await response.json()
 
     async def blackbox(self, **payload):
-        params = {"query": query}
         async with aiohttp.ClientSession() as session:
             async with session.post(f"{self.api_endpoint}/ryuzaki/blackbox", json=payload, headers=self.headers) as response:
                 return await response.json()
