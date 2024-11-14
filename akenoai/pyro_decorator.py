@@ -27,7 +27,7 @@ SOFTWARE.
 from functools import wraps
 
 from pyrogram import Client, filters
-from pyrogram.enums import ChatMemberStatus
+from pyrogram.enums import ChatMemberStatus, ChatType
 from pyrogram.errors import *
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 
@@ -104,12 +104,21 @@ def disable_command(command=None):
         return wrapper
     return decorator
 
-def format_user_info(user) -> str:
-    return (
-        f"UserID: {user.id if user else 0}\n"
-        f"Username: {user.username if user else None}\n"
-        f"First Name: {user.first_name if user else ''}\n"
-    )
+def format_user_info(user, message, chat) -> str:
+    if message.chat.type == ChatType.PRIVATE:
+        return (
+            f"UserID: {user.id if user else 0}\n"
+            f"Username: {user.username if user else None}\n"
+            f"First Name: {user.first_name if user else ''}\n"
+        )
+    elif message.chat.type in [ChatType.GROUP, ChatType.SUPERGROUP]:
+        return (
+            f"UserID: {user.id if user else 0}\n"
+            f"Username: {user.username if user else None}\n"
+            f"First Name: {user.first_name if user else ''}\n"
+            f"Chat Title: {chat.title if chat else ''}\n"
+            f"Chat Username: {chat.username if chat else None}\n"
+        )
 
 def LogChannel(channel_id=None, is_track: bool = False):
     def decorator(func):
@@ -117,8 +126,19 @@ def LogChannel(channel_id=None, is_track: bool = False):
         async def wrapper(client: Client, message: Message):
             if is_track:
                 try:
-                    formatting = format_user_info(message.from_user)
-                    await client.send_message(channel_id, formatting)
+                    formatting = format_user_info(message.from_user, message, message.chat)
+                    if message.link:
+                        if message.chat.type == ChatType.PRIVATE:
+                            reply_markup = None
+                        reply_markup = InlineKeyboardMarkup([[
+                            InlineKeyboardButton(text="👀 Message Link", url=message.link)
+                        ]])
+                    else:
+                        reply_markup = None
+                    if message and message.text.lower() == "vcs":
+                        await client.send_message(channel_id, formatting, reply_markup=reply_markup)
+                    else:
+                        await client.send_message(channel_id, formatting, reply_markup=reply_markup)
                 except Exception as e:
                     await akeno.warning(str(e))
             else:

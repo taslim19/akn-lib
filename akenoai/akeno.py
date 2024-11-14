@@ -109,6 +109,23 @@ class AkenoPlus:
                     raise Exception(f"Error occurred: {response.status}")
                 return await response.json()
 
+    async def remini_enhancer(self, files_open=None):
+        async with aiohttp.ClientSession() as session:
+            form_data = aiohttp.FormData()
+            form_data.add_field(
+                'file',
+                open(files_open, 'rb'),
+                filename=os.path.basename(files_open),
+                content_type='application/octet-stream'
+            )
+            async with session.post(f"{self.api_endpoint}/api/v2/remini/enhancer", data=form_data) as response:
+                if response.status != 200:
+                    raise Exception(f"Error occurred: {response.status}")
+                file_path = "enchancer.jpg"
+                with open(file_path, "wb") as file:
+                    file.write(await response.read())
+                return file_path
+
     async def paal_text_to_image(self, **params):
         async with aiohttp.ClientSession() as session:
             async with session.post(f"{self.api_endpoint}/akeno/paal-text-to-image", params=params, headers=self.headers) as response:
@@ -156,10 +173,10 @@ class AkenoPlus:
                     raise Exception(f"Error occurred: {response.status}")
                 return await response.json()
 
-    async def blackbox(self, query=None):
+    async def blackbox(self, **payload):
         params = {"query": query}
         async with aiohttp.ClientSession() as session:
-            async with session.post(f"{self.api_endpoint}/ryuzaki/blackbox", params=params, headers=self.headers) as response:
+            async with session.post(f"{self.api_endpoint}/ryuzaki/blackbox", json=payload, headers=self.headers) as response:
                 return await response.json()
 
     async def hentai(self):
@@ -173,8 +190,16 @@ class AkenoPlus:
             async with session.get(f"{self.api_endpoint}/akeno/fbdown-v2", params=params, headers=self.headers) as response:
                 return await response.json()
 
-    async def fdownloader(self, link=None):
-        params = {"link": link}
+    async def igdl(self, version=False, **params):
+        async with aiohttp.ClientSession() as session:
+            if version:
+                async with session.get(f"{self.api_endpoint}/akeno/fastdl-ig-v2", params=params) as response:
+                    return await response.json()
+            else:
+                async with session.get(f"{self.api_endpoint}/akeno/fastdl-ig", params=params) as response:
+                    return await response.json()
+
+    async def fdownloader(self, **params):
         async with aiohttp.ClientSession() as session:
             async with session.get(f"{self.api_endpoint}/akeno/fdownloader", params=params, headers=self.headers) as response:
                 return await response.json()
