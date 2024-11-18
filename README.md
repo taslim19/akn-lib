@@ -1,6 +1,9 @@
 # akenoai-lib
 - install : `pip3 install akenoai[porno]`
 
+### Docs
+- [`Docs AkenoAI All`](https://private-akeno.randydev.my.id/docs)
+
 ### Google-Dev
 > performance high speed API
 > `google_video_to_text`
