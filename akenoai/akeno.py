@@ -33,7 +33,9 @@ class AkenoPlus:
         self.api_endpoint = api_endpoint
         self.headers = {"x-akeno-key": str(self.key)}
 
-    def api_akenoai(self, method=None):
+    def api_akenoai(self, method):
+        if not method:
+            raise ValueError("Method parameter cannot be None or empty")
         return f"{self.api_endpoint}/{method}"
 
     def set_key(self, new_key: str):
@@ -229,12 +231,13 @@ class AkenoPlus:
                     return await response.json()
 
     async def fdownloader(self, **params):
-        url = self.api_akenoai("akeno/capcut-v1")
+        url = self.api_akenoai("akeno/fdownloader")
         async with aiohttp.ClientSession() as session:
-            async with session.get(f"{self.api_endpoint}/akeno/fdownloader", params=params, headers=self.headers) as response:
+            async with session.get(url, params=params, headers=self.headers) as response:
                 return await response.json()
 
     async def capcut(self, link=None):
+        self.api_akenoai("akeno/capcut-v1")
         params = {"link": link}
         async with aiohttp.ClientSession() as session:
             async with session.get(url, params=params, headers=self.headers) as response:
