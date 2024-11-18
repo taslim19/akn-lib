@@ -21,6 +21,7 @@ class DictToObj:
     def __repr__(self):
         return f"{self.__dict__}"
 
+
 class AkenoPlus:
     def __init__(self, key=..., api_endpoint: str = "https://private-akeno.randydev.my.id"):
         if key is Ellipsis:
@@ -31,6 +32,9 @@ class AkenoPlus:
             self.key = key
         self.api_endpoint = api_endpoint
         self.headers = {"x-akeno-key": str(self.key)}
+
+    def api_akenoai(self, method=None):
+        return f"{self.api_endpoint}/{method}"
 
     def set_key(self, new_key: str):
         self.key = new_key
@@ -48,54 +52,64 @@ class AkenoPlus:
             return f"Error removing file {file_path}: {e}"
 
     async def terabox(self, link=None):
+        url = self.api_akenoai(f"akeno/terabox-v1?link={link}")
         async with aiohttp.ClientSession() as session:
-            async with session.get(f"{self.api_endpoint}/akeno/terabox-v1?link={link}", headers=self.headers) as response:
+            async with session.get(url, headers=self.headers) as response:
                 return await response.json()
 
     async def terabox_v2(self, link=None):
+        url = self.api_akenoai(f"akeno/terabox-v2?link={link}")
         async with aiohttp.ClientSession() as session:
-            async with session.get(f"{self.api_endpoint}/akeno/terabox-v2?link={link}", headers=self.headers) as response:
+            async with session.get(url, headers=self.headers) as response:
                 return await response.json()
 
     async def chatgpt_old(self, query=None):
+        url = self.api_akenoai("ryuzaki/chatgpt-old")
         payload = {"query": query}
         async with aiohttp.ClientSession() as session:
-            async with session.post(f"{self.api_endpoint}/ryuzaki/chatgpt-old", json=payload) as response:
+            async with session.post(url, json=payload) as response:
                 return await response.json()
 
     async def chatgpt_mode_web(self, query=None, **params):
+        url = self.api_akenoai("api/akeno-ai-web")
         combined_params = {"query": query}
         combined_params.update(params)
         async with aiohttp.ClientSession() as session:
-            async with session.get(f"{self.api_endpoint}/api/akeno-ai-web", params=combined_params) as response:
+            async with session.get(url, params=combined_params) as response:
                 return await response.json()
 
     async def sites_torrens_all(self):
+        url = self.api_akenoai("akeno/sites_torrens_all")
         async with aiohttp.ClientSession() as session:
-            async with session.get(f"{self.api_endpoint}/akeno/sites_torrens_all") as response:
+            async with session.get(url) as response:
                 return await response.json()
 
     async def search_for_torrents(self, **params):
+        url = self.api_akenoai("akeno/search_for_torrents")
         async with aiohttp.ClientSession() as session:
-            async with session.get(f"{self.api_endpoint}/akeno/search_for_torrents", params=params) as response:
+            async with session.get(url, params=params) as response:
                 return await response.json()
 
     async def get_torrent_from_url(self, **params):
+        url = self.api_akenoai("akeno/get_torrent_from_url")
         async with aiohttp.ClientSession() as session:
-            async with session.get(f"{self.api_endpoint}/akeno/get_torrent_from_url", params=params) as response:
+            async with session.get(url, params=params) as response:
                 return await response.json()
 
     async def get_recent(self, **params):
+        url = self.api_akenoai("akeno/get_recent")
         async with aiohttp.ClientSession() as session:
-            async with session.get(f"{self.api_endpoint}/akeno/get_recent", params=params) as response:
+            async with session.get(url, params=params) as response:
                 return await response.json()
 
     async def get_category(self, **params):
+        url = self.api_akenoai("akeno/get_category")
         async with aiohttp.ClientSession() as session:
-            async with session.get(f"{self.api_endpoint}/akeno/get_category", params=params) as response:
+            async with session.get(url, params=params) as response:
                 return await response.json()
 
     async def paal_see(self, files_open=None, **params):
+        url = self.api_akenoai("akeno/paal-see")
         async with aiohttp.ClientSession() as session:
             form_data = aiohttp.FormData()
             form_data.add_field(
@@ -104,12 +118,13 @@ class AkenoPlus:
                 filename=os.path.basename(files_open),
                 content_type='application/octet-stream'
             )
-            async with session.post(f"{self.api_endpoint}/akeno/paal-see", data=form_data, params=params) as response:
+            async with session.post(url, data=form_data, params=params) as response:
                 if response.status != 200:
                     raise Exception(f"Error occurred: {response.status}")
                 return await response.json()
 
     async def remini_enhancer(self, files_open=None):
+        url = self.api_akenoai("api/v2/remini/enhancer")
         async with aiohttp.ClientSession() as session:
             form_data = aiohttp.FormData()
             form_data.add_field(
@@ -118,7 +133,7 @@ class AkenoPlus:
                 filename=os.path.basename(files_open),
                 content_type='application/octet-stream'
             )
-            async with session.post(f"{self.api_endpoint}/api/v2/remini/enhancer", data=form_data) as response:
+            async with session.post(url, data=form_data) as response:
                 if response.status != 200:
                     raise Exception(f"Error occurred: {response.status}")
                 file_path = "enchancer.jpg"
@@ -127,11 +142,13 @@ class AkenoPlus:
                 return file_path
 
     async def paal_text_to_image(self, **params):
+        url = self.api_akenoai("akeno/paal-text-to-image")
         async with aiohttp.ClientSession() as session:
-            async with session.post(f"{self.api_endpoint}/akeno/paal-text-to-image", params=params, headers=self.headers) as response:
+            async with session.post(url, params=params, headers=self.headers) as response:
                 return await response.json()
 
     async def google_video_to_text(self, files_open=None, **params):
+        url = self.api_akenoai("api/v2/google/video-to-text")
         async with aiohttp.ClientSession() as session:
             form_data = aiohttp.FormData()
             form_data.add_field(
@@ -140,12 +157,13 @@ class AkenoPlus:
                 filename=os.path.basename(files_open),
                 content_type='application/octet-stream'
             )
-            async with session.post(f"{self.api_endpoint}/api/v2/google/video-to-text", data=form_data, params=params) as response:
+            async with session.post(url, data=form_data, params=params) as response:
                 if response.status != 200:
                     raise Exception(f"Error occurred: {response.status}")
                 return await response.json()
 
     async def google_image_to_text(self, files_open=None, **params):
+        url = self.api_akenoai("api/v2/google/image-to-text")
         async with aiohttp.ClientSession() as session:
             form_data = aiohttp.FormData()
             form_data.add_field(
@@ -154,12 +172,13 @@ class AkenoPlus:
                 filename=os.path.basename(files_open),
                 content_type='application/octet-stream'
             )
-            async with session.post(f"{self.api_endpoint}/api/v2/google/image-to-text", data=form_data, params=params) as response:
+            async with session.post(url, data=form_data, params=params) as response:
                 if response.status != 200:
                     raise Exception(f"Error occurred: {response.status}")
                 return await response.json()
 
     async def google_audio_to_text(self, files_open=None, **params):
+        url = self.api_akenoai("api/v2/google/audio-to-text")
         async with aiohttp.ClientSession() as session:
             form_data = aiohttp.FormData()
             form_data.add_field(
@@ -168,37 +187,49 @@ class AkenoPlus:
                 filename=os.path.basename(files_open),
                 content_type='application/octet-stream'
             )
-            async with session.post(f"{self.api_endpoint}/api/v2/google/audio-to-text", data=form_data, params=params) as response:
+            async with session.post(url, data=form_data, params=params) as response:
                 if response.status != 200:
                     raise Exception(f"Error occurred: {response.status}")
                 return await response.json()
 
     async def blackbox(self, **payload):
+        url = self.api_akenoai("ryuzaki/blackbox")
         async with aiohttp.ClientSession() as session:
-            async with session.post(f"{self.api_endpoint}/ryuzaki/blackbox", json=payload, headers=self.headers) as response:
+            async with session.post(url, json=payload, headers=self.headers) as response:
                 return await response.json()
 
     async def hentai(self):
+        url = self.api_akenoai("akeno/hentai")
         async with aiohttp.ClientSession() as session:
-            async with session.get(f"{self.api_endpoint}/akeno/hentai", headers=self.headers) as response:
+            async with session.get(url, headers=self.headers) as response:
                 return await response.json()
 
     async def fbdown(self, link=None):
+        url = self.api_akenoai("akeno/fbdown-v2")
         params = {"link": link}
         async with aiohttp.ClientSession() as session:
-            async with session.get(f"{self.api_endpoint}/akeno/fbdown-v2", params=params, headers=self.headers) as response:
+            async with session.get(url, params=params, headers=self.headers) as response:
+                return await response.json()
+
+    async def pinterest(self, **params):
+        url = self.api_akenoai("akeno/pinterest-v2")
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, params=params, headers=self.headers) as response:
                 return await response.json()
 
     async def igdl(self, version=False, **params):
+        url_ig2 = self.api_akenoai("akeno/fastdl-ig-v2")
+        url = self.api_akenoai("akeno/fastdl-ig")
         async with aiohttp.ClientSession() as session:
             if version:
-                async with session.get(f"{self.api_endpoint}/akeno/fastdl-ig-v2", params=params) as response:
+                async with session.get(url_ig2, params=params) as response:
                     return await response.json()
             else:
-                async with session.get(f"{self.api_endpoint}/akeno/fastdl-ig", params=params) as response:
+                async with session.get(url, params=params) as response:
                     return await response.json()
 
     async def fdownloader(self, **params):
+        url = self.api_akenoai("akeno/capcut-v1")
         async with aiohttp.ClientSession() as session:
             async with session.get(f"{self.api_endpoint}/akeno/fdownloader", params=params, headers=self.headers) as response:
                 return await response.json()
@@ -206,7 +237,7 @@ class AkenoPlus:
     async def capcut(self, link=None):
         params = {"link": link}
         async with aiohttp.ClientSession() as session:
-            async with session.get(f"{self.api_endpoint}/akeno/capcut-v1", params=params, headers=self.headers) as response:
+            async with session.get(url, params=params, headers=self.headers) as response:
                 return await response.json()
 
     async def add_ipblock(self, ip=None):
