@@ -3,6 +3,7 @@
 from pyrogram import Client
 from pyrogram.raw import functions
 
+
 class RawFunctions:
     def __init__(self, class_client=Client):
         self.client = class_client
