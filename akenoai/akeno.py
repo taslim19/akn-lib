@@ -1,4 +1,5 @@
 import asyncio
+import subprocess
 import os
 from base64 import b64decode as m
 from base64 import b64decode
@@ -24,6 +25,18 @@ class DictToObj:
 class AkenoXJs:
     def __init__(self):
         self.private_url = b64decode("aHR0cHM6Ly9yYW5keWRldi1yeXUtanMuaGYuc3BhY2U=").decode("utf-8")
+
+    def run_code(cmd, **args):
+        cmd_list = cmd.split(" ")
+        sub = subprocess.run(
+            cmd_list,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            **args
+        )
+        if sub.returncode != 0:
+            raise ValueError("Error invalid")
+        return sub.stdout
 
     def _request_parameters(self, method=None, is_private=False):
         if is_private:
