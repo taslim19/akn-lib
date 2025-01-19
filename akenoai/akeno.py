@@ -7,7 +7,6 @@ import httpx
 import requests
 import wget
 
-
 class DictToObj:
     def __init__(self, dictionary):
         for key, value in dictionary.items():
@@ -22,7 +21,7 @@ class DictToObj:
         return f"{self.__dict__}"
 
 class AkenoXJs:
-    private_url = ""
+    private_url = m("aHR0cHM6Ly9yYW5keWRldi1yeXUtanMuaGYuc3BhY2U=").decode("utf-8")
     def __init(self):
         pass
     def _request_parameters(self, method=None):
