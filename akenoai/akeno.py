@@ -32,7 +32,7 @@ class AkenoXJs:
         else:
             return ""
 
-    def _get_private_url(self, is_allow_use_c=False):
+    def _get_private_url(self, is_allow_use=False):
         if is_allow_use:
             return self.private_url
         else:
