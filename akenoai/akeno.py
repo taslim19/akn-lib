@@ -2,7 +2,6 @@ import asyncio
 import os
 from base64 import b64decode as m
 
-import akenoai
 import aiohttp
 import httpx
 import requests
@@ -24,16 +23,17 @@ class DictToObj:
 
 class AkenoXJs:
     def __init(self):
-        self.private_url = akenaoi.PrivateToJsurl
+        self.private_url = m("aHR0cHM6Ly9yYW5keWRldi1yeXUtanMuaGYuc3BhY2U=").decode("utf-8")
 
     def _request_parameters(self, method=None, is_private=False):
         if is_private:
-            return f"{self._get_private_url(is_allow_use_c=True)}/api/v1/{method}"
+            url = self._get_private_url(is_allow_use_c=True)
+            return f"{url}/api/v1/{method}"
         else:
             return ""
 
     def _get_private_url(self, is_allow_use_c=False):
-        if is_allow_use_c:
+        if is_allow_use:
             return self.private_url
         else:
             return ""
