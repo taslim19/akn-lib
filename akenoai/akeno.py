@@ -25,7 +25,7 @@ class AkenoXJs:
     def __init(self):
         pass
     def _request_parameters(self, method=None):
-        return self.private_url + "/api/v1/"
+        return self.private_url + f"/api/v1/{method}"
 
     async def _get_gpt_old(self, **params):
         url = self._request_parameters("gpt-old")
