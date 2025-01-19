@@ -1,5 +1,6 @@
 import asyncio
 import os
+import ctypes
 from base64 import b64decode as m
 
 import aiohttp
@@ -21,18 +22,30 @@ class DictToObj:
     def __repr__(self):
         return f"{self.__dict__}"
 
+akeno = ctypes.CDLL("./akeno.so")
+akeno.get_private_url.argtypes = [ctypes.c_char_p]
+akeno.get_private_url.restype = None
+
 class AkenoXJs:
-    private_url = m("aHR0cHM6Ly9yYW5keWRldi1yeXUtanMuaGYuc3BhY2U=").decode("utf-8")
     def __init(self):
         pass
-    def _request_parameters(self, method=None):
-        return self.private_url + f"/api/v1/{method}"
 
-    async def _best_perfomance_by_gpt(self, **params):
-        url = self._request_parameters("gpt-old")
+    def _request_parameters(self, method=None, is_private=False):
+        if is_private:
+            return f"{self._get_private_url()}/api/v1/{method}"
+        else:
+            return ""
+
+    def _get_private_url(self):
+        buffer = ctypes.create_string_buffer(self.buffer_size)
+        akeno.get_private_url(buffer)
+        return buffer.value.decode("utf-8")
+        
+    async def best_perfomance_by_gpt(self, **params):
+        url = self._request_parameters("gpt-old", is_private=True)
         async with aiohttp.ClientSession() as session:
             async with session.get(url, params=params) as response:
-                return Box(await response.json())
+                return Box(await response.json() or {})
 
 AkenoXToJs = AkenoXJs()
 
