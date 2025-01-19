@@ -1,6 +1,6 @@
 from . import *
 from .__version__ import __version__
-from .akeno import *
+from .akenox import *
 from .api_decorator import *
 from .api_random import *
 from .inline import *
