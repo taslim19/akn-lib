@@ -6,6 +6,7 @@ import aiohttp
 import httpx
 import requests
 import wget
+from box import Box
 
 class DictToObj:
     def __init__(self, dictionary):
@@ -27,11 +28,11 @@ class AkenoXJs:
     def _request_parameters(self, method=None):
         return self.private_url + f"/api/v1/{method}"
 
-    async def _get_gpt_old(self, **params):
+    async def _best_perfomance_by_gpt(self, **params):
         url = self._request_parameters("gpt-old")
         async with aiohttp.ClientSession() as session:
             async with session.get(url, params=params) as response:
-                return await response.json()
+                return Box(await response.json())
 
 AkenoXToJs = AkenoXJs()
 
