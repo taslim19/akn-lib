@@ -32,14 +32,17 @@ class AkenoXJs:
 
     def _request_parameters(self, method=None, is_private=False):
         if is_private:
-            return f"{self._get_private_url()}/api/v1/{method}"
+            return f"{self._get_private_url(is_allow_use_c=True)}/api/v1/{method}"
         else:
             return ""
 
-    def _get_private_url(self):
+    def _get_private_url(self, is_allow_use_c=False):
         buffer = ctypes.create_string_buffer(self.buffer_size)
         akeno.get_private_url(buffer)
-        return buffer.value.decode("utf-8")
+        if is_allow_use_c:
+            return buffer.value.decode("utf-8")
+        else:
+            return ""
         
     async def best_perfomance_by_gpt(self, **params):
         url = self._request_parameters("gpt-old", is_private=True)
