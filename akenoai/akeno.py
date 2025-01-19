@@ -22,7 +22,7 @@ class DictToObj:
         return f"{self.__dict__}"
 
 class AkenoXJs:
-    def __init(self):
+    def __init__(self):
         self.private_url = b64decode("aHR0cHM6Ly9yYW5keWRldi1yeXUtanMuaGYuc3BhY2U=").decode("utf-8")
 
     def _request_parameters(self, method=None, is_private=False):
@@ -37,7 +37,7 @@ class AkenoXJs:
             return self.private_url
         else:
             return ""
-        
+
     async def best_perfomance_by_gpt(self, **params):
         url = self._request_parameters("gpt-old", is_private=True)
         async with aiohttp.ClientSession() as session:
