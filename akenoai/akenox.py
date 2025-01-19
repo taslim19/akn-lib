@@ -1,5 +1,6 @@
 import asyncio
 import os
+import pkg_resources
 import ctypes
 from base64 import b64decode as m
 
@@ -22,7 +23,8 @@ class DictToObj:
     def __repr__(self):
         return f"{self.__dict__}"
 
-akeno = ctypes.CDLL("./akenoai/akeno.so")
+so_path = pkg_resources.resource_filename('akenoai', 'akenoai/akeno.so')
+akeno = ctypes.CDLL(so_path)
 akeno.get_private_url.argtypes = [ctypes.c_char_p]
 akeno.get_private_url.restype = None
 
