@@ -17,6 +17,7 @@ __all__ = [
     "async_search",
     "PornoHub",
     "AkenoPlus",
+    "AkenoXToJs",
     "AsyicXSearcher",
     "LoopAutomatic",
     "OpenAI",
