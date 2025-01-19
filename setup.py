@@ -20,6 +20,9 @@ setuptools.setup(
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
     author="TeamKillerX",
+    package_data={
+        "akenoai": ["akenoai/akeno.so"],
+    },
     project_urls={
         "Source": "https://github.com/TeamKillerX/akenoai-lib/",
         "Issues": "https://github.com/TeamKillerX/akenoai-lib/issues",
