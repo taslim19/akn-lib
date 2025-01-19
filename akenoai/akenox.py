@@ -22,7 +22,7 @@ class DictToObj:
     def __repr__(self):
         return f"{self.__dict__}"
 
-akeno = ctypes.CDLL("./akenox/akeno.so")
+akeno = ctypes.CDLL("./akenoai/akeno.so")
 akeno.get_private_url.argtypes = [ctypes.c_char_p]
 akeno.get_private_url.restype = None
 
