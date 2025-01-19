@@ -1,9 +1,8 @@
 import asyncio
 import os
-import pkg_resources
-import ctypes
 from base64 import b64decode as m
 
+import akenoai
 import aiohttp
 import httpx
 import requests
@@ -23,14 +22,9 @@ class DictToObj:
     def __repr__(self):
         return f"{self.__dict__}"
 
-so_path = pkg_resources.resource_filename('akenoai', 'akenoai/akeno.so')
-akeno = ctypes.CDLL(so_path)
-akeno.get_private_url.argtypes = [ctypes.c_char_p]
-akeno.get_private_url.restype = None
-
 class AkenoXJs:
     def __init(self):
-        pass
+        self.private_url = akenaoi.PrivateToJsurl
 
     def _request_parameters(self, method=None, is_private=False):
         if is_private:
@@ -39,10 +33,8 @@ class AkenoXJs:
             return ""
 
     def _get_private_url(self, is_allow_use_c=False):
-        buffer = ctypes.create_string_buffer(self.buffer_size)
-        akeno.get_private_url(buffer)
         if is_allow_use_c:
-            return buffer.value.decode("utf-8")
+            return self.private_url
         else:
             return ""
         
