@@ -21,6 +21,20 @@ class DictToObj:
     def __repr__(self):
         return f"{self.__dict__}"
 
+class AkenoXJs:
+    private_url = ""
+    def __init(self):
+        pass
+    def _request_parameters(self, method=None):
+        return self.private_url + "/api/v1/"
+
+    async def _get_gpt_old(self, **params):
+        url = self._request_parameters("gpt-old")
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, params=params) as response:
+                return await response.json()
+
+AkenoXToJs = AkenoXJs()
 
 class AkenoPlus:
     def __init__(self, key=..., api_endpoint: str = "https://private-akeno.randydev.my.id"):
