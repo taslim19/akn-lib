@@ -39,6 +39,8 @@ class AkenoXJs:
         return sub.stdout
 
     def _request_parameters(self, method=None, is_private=False):
+        if not method:
+            raise ValueError("Required method")
         if is_private:
             url = self._get_private_url(is_allow_use=True)
             return f"{url}/api/v1/{method}"
