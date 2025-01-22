@@ -1,7 +1,7 @@
 import asyncio
 import subprocess
 import os
-import akenoai as at
+from akenoai import PrivateToJsurl
 from base64 import b64decode as m
 import aiohttp
 import httpx
@@ -24,7 +24,7 @@ class DictToObj:
 
 class AkenoXJs:
     def __init__(self):
-        self.private_url = at.PrivateToJsurl
+        self.private_url = PrivateToJsurl
 
     def run_code(cmd, **args):
         cmd_list = cmd.split(" ")
