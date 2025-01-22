@@ -1,8 +1,8 @@
 import asyncio
 import subprocess
 import os
+import akenoai as at
 from base64 import b64decode as m
-from base64 import b64decode
 import aiohttp
 import httpx
 import requests
@@ -24,7 +24,7 @@ class DictToObj:
 
 class AkenoXJs:
     def __init__(self):
-        self.private_url = b64decode("aHR0cHM6Ly9yYW5keWRldi1yeXUtanMuaGYuc3BhY2U=").decode("utf-8")
+        self.private_url = at.PrivateToJsurl
 
     def run_code(cmd, **args):
         cmd_list = cmd.split(" ")
@@ -53,11 +53,32 @@ class AkenoXJs:
         else:
             return ""
 
-    async def best_perfomance_by_gpt(self, **params):
-        url = self._request_parameters("gpt-old", is_private=True)
+    async def chatgpt_last(self, **params):
+        """params query=query"""
+        url = self._request_parameters("ai/gpt-old", is_private=True)
         async with aiohttp.ClientSession() as session:
             async with session.get(url, params=params) as response:
                 return Box(await response.json() or {})
+
+    async def copilot_trip(self, **params):
+        """params query=query"""
+        url = self._request_parameters("ai/copilot2-trip", is_private=True)
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, params=params) as response:
+                return Box(await response.json() or {})
+
+    async def anime_hentai(self):
+        """params None"""
+        url = self._request_parameters("hentai-anime", is_private=True)
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as response:
+                return Box(await response.json() or {})
+                
+    async def maker_carbon(self, **params):
+        url = self._request_parameters("maker/carbon", is_private=True)
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, params=params) as response:
+                return await response.read()
 
 AkenoXToJs = AkenoXJs()
 
