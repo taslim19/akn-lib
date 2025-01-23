@@ -1,7 +1,6 @@
 import asyncio
 import subprocess
 import os
-from akenoai import PrivateToJsurl
 from base64 import b64decode as m
 import aiohttp
 import httpx
@@ -24,7 +23,7 @@ class DictToObj:
 
 class AkenoXJs:
     def __init__(self):
-        self.private_url = PrivateToJsurl
+        self.private_url = m("aHR0cHM6Ly9yYW5keWRldi1yeXUtanMuaGYuc3BhY2U=").decode("utf-8")
 
     def run_code(cmd, **args):
         cmd_list = cmd.split(" ")
@@ -75,6 +74,7 @@ class AkenoXJs:
                 return Box(await response.json() or {})
                 
     async def maker_carbon(self, **params):
+        """params code=code"""
         url = self._request_parameters("maker/carbon", is_private=True)
         async with aiohttp.ClientSession() as session:
             async with session.get(url, params=params) as response:
