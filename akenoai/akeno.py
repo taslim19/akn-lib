@@ -60,11 +60,11 @@ class AkenoXJs:
     async def chatgpt_last(self, api_key=None, **params):
         """params query=query"""
         return Box(await self._make_request("ai/gpt-old", api_key, **params) or {})
-        
+
     async def copilot_trip(self, api_key=None, **params):
         """params q=query or query=query"""
         return Box(await self._make_request("ai/copilot2-trip", api_key, **params) or {})
-    
+
     async def anime_hentai(self, api_key=None):
         """params None"""
         return Box(await self._make_request("hentai-anime", api_key, **params) or {})
