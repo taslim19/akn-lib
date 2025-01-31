@@ -32,11 +32,12 @@ setuptools.setup(
         "requests",
     ],
     extras_require={
-        "porno": [
+        "fast": [
             "aiohttp",
             "wget",
             "requests",
             "httpx[http2]",
+            "python-box",
         ],
         "standard": [
             "g4f",
