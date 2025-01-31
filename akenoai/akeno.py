@@ -27,17 +27,20 @@ class AkenoXJs:
     def __init__(self):
         self.private_url = m("aHR0cHM6Ly9yYW5keWRldi1yeXUtanMuaGYuc3BhY2U=").decode("utf-8")
 
-    def run_code(cmd, **args):
-        cmd_list = cmd.split(" ")
-        sub = subprocess.run(
-            cmd_list,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            **args
-        )
-        if sub.returncode != 0:
-            raise ValueError("Error invalid")
-        return sub.stdout
+    async def _make_request(self, endpoint, post=False, api_key=None, **params):
+        if not api_key:
+            api_key = os.environ.get("AKENOX_KEY")
+        if not api_key:
+            raise ValueError("Required variables AKENOX_KEY or api_key")
+        headers = {"x-api-key": api_key}
+        url = f"{self.private_url}/api/v1/{endpoint}"
+        async with aiohttp.ClientSession() as session:
+            if post:
+                async with session.post(url, headers=headers, params=params) as response:
+                    return await response.json() if endpoint != "maker/carbon" else await response.read()
+            else:
+                async with session.get(url, headers=headers, params=params) as response:
+                    return await response.json() if endpoint != "maker/carbon" else await response.read()
 
     def _request_parameters(self, method=None, is_private=False):
         if not method:
@@ -48,55 +51,27 @@ class AkenoXJs:
         else:
             return ""
 
-    def api_key(self, api_key):
-        headers = {"x-api-key": api_key}
-        return headers
-
     def _get_private_url(self, is_allow_use=False):
         if is_allow_use:
             return self.private_url
         else:
             return ""
 
-    async def chatgpt_last(self, api_key=os.environ.get("AKENOX_KEY"), **params):
+    async def chatgpt_last(self, api_key=None, **params):
         """params query=query"""
-        if not api_key:
-            raise ValueError("Required variables AKENOX_KEY or api_key, can get api key from @aknuserbot")
-        headers = self.api_key(api_key)
-        url = self._request_parameters("ai/gpt-old", is_private=True)
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url, headers=headers, params=params) as response:
-                return Box(await response.json() or {})
-
+        return Box(await self._make_request("ai/gpt-old", api_key, **params) or {})
+        
     async def copilot_trip(self, api_key=None, **params):
         """params q=query or query=query"""
-        if not api_key:
-            raise ValueError("Required variables AKENOX_KEY or api_key, can get api key from @aknuserbot")
-        headers = self.api_key(api_key)
-        url = self._request_parameters("ai/copilot2-trip", is_private=True)
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url, headers=headers, params=params) as response:
-                return Box(await response.json() or {})
-
-    async def anime_hentai(self, api_key=os.environ.get("AKENOX_KEY")):
+        return Box(await self._make_request("ai/copilot2-trip", api_key, **params) or {})
+    
+    async def anime_hentai(self, api_key=None):
         """params None"""
-        if not api_key:
-            raise ValueError("Required variables AKENOX_KEY or api_key, can get api key from @aknuserbot")
-        headers = self.api_key(api_key)
-        url = self._request_parameters("hentai-anime", is_private=True)
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url, headers=headers) as response:
-                return Box(await response.json() or {})
+        return Box(await self._make_request("hentai-anime", api_key, **params) or {})
 
-    async def maker_carbon(self, api_key=os.environ.get("AKENOX_KEY"), **params):
+    async def maker_carbon(self, api_key=None, **params):
         """params code=code"""
-        if not api_key:
-            raise ValueError("Required variables AKENOX_KEY or api_key, can get api key from @aknuserbot")
-        headers = self.api_key(api_key)
-        url = self._request_parameters("maker/carbon", is_private=True)
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url, headers=headers, params=params) as response:
-                return await response.read()
+        return await self._make_request("maker/carbon", api_key, **params) or {})
 
 AkenoXToJs = AkenoXJs()
 
