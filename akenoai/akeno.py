@@ -78,7 +78,7 @@ class AkenoXJs:
             async with session.get(url, headers=headers, params=params) as response:
                 return Box(await response.json() or {})
 
-    async def anime_hentai(self, api_key=None):
+    async def anime_hentai(self, api_key=os.environ.get("AKENOX_KEY")):
         """params None"""
         if not api_key:
             raise ValueError("Required variables AKENOX_KEY or api_key, can get api key from @aknuserbot")
@@ -88,7 +88,7 @@ class AkenoXJs:
             async with session.get(url, headers=headers) as response:
                 return Box(await response.json() or {})
 
-    async def maker_carbon(self, api_key=None, **params):
+    async def maker_carbon(self, api_key=os.environ.get("AKENOX_KEY"), **params):
         """params code=code"""
         if not api_key:
             raise ValueError("Required variables AKENOX_KEY or api_key, can get api key from @aknuserbot")
