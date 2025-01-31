@@ -71,7 +71,7 @@ class AkenoXJs:
 
     async def maker_carbon(self, api_key=None, **params):
         """params code=code"""
-        return await self._make_request("maker/carbon", api_key, **params) or {})
+        return await self._make_request("maker/carbon", api_key, **params)
 
 AkenoXToJs = AkenoXJs()
 
