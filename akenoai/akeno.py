@@ -1,12 +1,14 @@
 import asyncio
-import subprocess
 import os
+import subprocess
 from base64 import b64decode as m
+
 import aiohttp
 import httpx
 import requests
 import wget
 from box import Box
+
 
 class DictToObj:
     def __init__(self, dictionary):
@@ -72,7 +74,7 @@ class AkenoXJs:
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as response:
                 return Box(await response.json() or {})
-                
+
     async def maker_carbon(self, **params):
         """params code=code"""
         url = self._request_parameters("maker/carbon", is_private=True)
