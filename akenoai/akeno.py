@@ -58,10 +58,10 @@ class AkenoXJs:
         else:
             return ""
 
-    async def chatgpt_last(self, api_key=None, **params):
+    async def chatgpt_last(self, api_key=os.environ.get("AKENOX_KEY"), **params):
         """params query=query"""
         if not api_key:
-            raise ValueError("Required api_key, can get api key from @aknuserbot")
+            raise ValueError("Required variables AKENOX_KEY or api_key, can get api key from @aknuserbot")
         headers = self.api_key(api_key)
         url = self._request_parameters("ai/gpt-old", is_private=True)
         async with aiohttp.ClientSession() as session:
@@ -71,7 +71,7 @@ class AkenoXJs:
     async def copilot_trip(self, api_key=None, **params):
         """params q=query or query=query"""
         if not api_key:
-            raise ValueError("Required api_key, can get api key from @aknuserbot")
+            raise ValueError("Required variables AKENOX_KEY or api_key, can get api key from @aknuserbot")
         headers = self.api_key(api_key)
         url = self._request_parameters("ai/copilot2-trip", is_private=True)
         async with aiohttp.ClientSession() as session:
@@ -81,7 +81,7 @@ class AkenoXJs:
     async def anime_hentai(self, api_key=None):
         """params None"""
         if not api_key:
-            raise ValueError("Required api_key, can get api key from @aknuserbot")
+            raise ValueError("Required variables AKENOX_KEY or api_key, can get api key from @aknuserbot")
         headers = self.api_key(api_key)
         url = self._request_parameters("hentai-anime", is_private=True)
         async with aiohttp.ClientSession() as session:
@@ -91,7 +91,7 @@ class AkenoXJs:
     async def maker_carbon(self, api_key=None, **params):
         """params code=code"""
         if not api_key:
-            raise ValueError("Required api_key, can get api key from @aknuserbot")
+            raise ValueError("Required variables AKENOX_KEY or api_key, can get api key from @aknuserbot")
         headers = self.api_key(api_key)
         url = self._request_parameters("maker/carbon", is_private=True)
         async with aiohttp.ClientSession() as session:
