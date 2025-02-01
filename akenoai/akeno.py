@@ -28,13 +28,13 @@ class AkenoXJs:
         self.private_url = os.environ.get("AKENOX_NAME")
         self.access_darkweb = m("aGYuc3BhY2U=").decode("utf-8")
 
-    async def _make_request(self, endpoint, post=False, api_key=None, **params):
+    async def _make_request(self, endpoint, api_key=None, post=False, **params):
         if not api_key:
             api_key = os.environ.get("AKENOX_KEY")
         if not api_key:
             raise ValueError("Required variables AKENOX_KEY or api_key")
         if not self.private_url:
-            raise ValueError("Required variables AKENOX_API")
+            raise ValueError("Required variables AKENOX_NAME")
 
         headers = {"x-api-key": api_key}
         url = f"https://{self.private_url}.{self.access_darkweb}/api/v1/{endpoint}"
@@ -77,11 +77,11 @@ class AkenoXJs:
         """params code=code"""
         return await self._make_request("maker/carbon", api_key, **params)
 
-    async def add_ban(self, api_key=None, **params):
+    async def add_ban(self, api_key, **params):
         """params user_id=user_id"""
-        return Box(await self._make_request("user/ban-user", post=True, api_key, **params) or {})
+        return Box(await self._make_request("user/ban-user", api_key, post=True, **params) or {})
 
-    async def check_ban(self, api_key=None, **params):
+    async def check_ban(self, api_key, **params):
         """params user_id=user_id"""
         return Box(await self._make_request("user/check-ban", api_key, **params) or {})
 
