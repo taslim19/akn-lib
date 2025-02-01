@@ -73,8 +73,27 @@ class AkenoXJs:
         """params code=code"""
         return await self._make_request("maker/carbon", api_key, **params)
 
+    async def add_ban(self, api_key=None, **params):
+        """params user_id=user_id"""
+        return Box(await self._make_request("user/ban-user", post=True, api_key, **params) or {})
+
+    async def check_ban(self, api_key=None, **params):
+        """params user_id=user_id"""
+        return Box(await self._make_request("user/check-ban", api_key, **params) or {})
+
+    async def tiktok_dl(self, api_key=None, **params):
+        """params url=url"""
+        return Box(await self._make_request("dl/tiktok", api_key, **params) or {})
+
 AkenoXToJs = AkenoXJs()
 
+"""
+PLEASE DON'T USE THIS AkenoPlus DANGEROUS
+
+- Domain link got account logout in tg
+- difference only indonesia problem
+- new domain changes coming soon
+"""
 class AkenoPlus:
     def __init__(self, key=..., api_endpoint: str = "https://private-akeno.randydev.my.id"):
         if key is Ellipsis:
