@@ -25,15 +25,19 @@ class DictToObj:
 
 class AkenoXJs:
     def __init__(self):
-        self.private_url = m("aHR0cHM6Ly9yYW5keWRldi1yeXUtanMuaGYuc3BhY2U=").decode("utf-8")
+        self.private_url = os.environ.get("AKENOX_NAME")
+        self.access_darkweb = m("aGYuc3BhY2U=").decode("utf-8")
 
     async def _make_request(self, endpoint, post=False, api_key=None, **params):
         if not api_key:
             api_key = os.environ.get("AKENOX_KEY")
         if not api_key:
             raise ValueError("Required variables AKENOX_KEY or api_key")
+        if not self.private_url:
+            raise ValueError("Required variables AKENOX_API")
+
         headers = {"x-api-key": api_key}
-        url = f"{self.private_url}/api/v1/{endpoint}"
+        url = f"https://{self.private_url}.{self.access_darkweb}/api/v1/{endpoint}"
         async with aiohttp.ClientSession() as session:
             if post:
                 async with session.post(url, headers=headers, params=params) as response:
