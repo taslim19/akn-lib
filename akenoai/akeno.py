@@ -80,11 +80,11 @@ class AkenoXJs:
     async def check_ban(self, api_key=None, **params):
         """params user_id=user_id"""
         return Box(await self._make_request("user/check-ban", api_key, **params) or {})
-    
+
     async def tiktok_dl(self, api_key=None, **params):
         """params url=url"""
         return Box(await self._make_request("dl/tiktok", api_key, **params) or {})
-                   
+
 AkenoXToJs = AkenoXJs()
 
 """
