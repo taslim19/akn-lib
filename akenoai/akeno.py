@@ -102,18 +102,19 @@ class AkenoXJs:
         """params url=url"""
         return Box(await self._make_request("dl/snapsave", api_key, **params) or {})
 
-    async def creation_date(self, api_key=None, is_results=False, **params):
-        """params user_id=user_id"""
-        if is_results:
-            response = Box(await self._make_request("user/creation-date", api_key, **params) or {})
-            if not response:
-                raise ValueError("Not found")
-            date_str = response.estimated_creation.date
-            date_obj = datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%S.%fZ")
-            formatted_date = date_obj.strftime("%Y-%m-%d %H:%M:%S")
-            return formatted_date
-        else:
-            return Box(await self._make_request("user/creation-date", api_key, **params) or {})
+    async def get_creation_date(self, api_key=None, **params):
+        """Get raw creation date data
+        params user_id=user_id"""
+        return Box(await self._make_request("user/creation-date", api_key, **params) or {})
+        
+    def format_creation_date(self, creation_date_response):
+        """Format creation date from response
+        Returns formatted date string or raises ValueError if not found"""
+        if not creation_date_response:
+            raise ValueError("Not found")
+        date_str = creation_date_response.estimated_creation.date
+        date_obj = datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%S.%fZ")
+        return date_obj.strftime("%Y-%m-%d %H:%M:%S")
 
 AkenoXToJs = AkenoXJs()
 
