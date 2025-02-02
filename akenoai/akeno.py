@@ -101,7 +101,7 @@ class AkenoXJs:
     async def snapsave_dl(self, api_key, **params):
         """params url=url"""
         return Box(await self._make_request("dl/snapsave", api_key, **params) or {})
-        
+
     async def creation_date(self, api_key=None, is_results=False, **params):
         """params user_id=user_id"""
         if is_results:
