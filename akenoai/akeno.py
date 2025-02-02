@@ -23,17 +23,22 @@ class DictToObj:
     def __repr__(self):
         return f"{self.__dict__}"
 
+
 class AkenoXJs:
     def __init__(self):
-        self.private_url = m("aHR0cHM6Ly9yYW5keWRldi1yeXUtanMuaGYuc3BhY2U=").decode("utf-8")
+        self.private_url = os.environ.get("AKENOX_NAME")
+        self.access_darkweb = m("aGYuc3BhY2U=").decode("utf-8")
 
-    async def _make_request(self, endpoint, post=False, api_key=None, **params):
+    async def _make_request(self, endpoint, api_key=None, post=False, **params):
         if not api_key:
             api_key = os.environ.get("AKENOX_KEY")
         if not api_key:
             raise ValueError("Required variables AKENOX_KEY or api_key")
+        if not self.private_url:
+            raise ValueError("Required variables AKENOX_NAME")
+
         headers = {"x-api-key": api_key}
-        url = f"{self.private_url}/api/v1/{endpoint}"
+        url = f"https://{self.private_url}.{self.access_darkweb}/api/v1/{endpoint}"
         async with aiohttp.ClientSession() as session:
             if post:
                 async with session.post(url, headers=headers, params=params) as response:
@@ -57,44 +62,70 @@ class AkenoXJs:
         else:
             return ""
 
-    async def chatgpt_last(self, api_key=None, **params):
+    async def chatgpt_last(self, api_key, **params):
         """params query=query"""
         return Box(await self._make_request("ai/gpt-old", api_key, **params) or {})
 
-    async def copilot_trip(self, api_key=None, **params):
+    async def copilot_trip(self, api_key, **params):
         """params q=query or query=query"""
         return Box(await self._make_request("ai/copilot2-trip", api_key, **params) or {})
 
-    async def anime_hentai(self, api_key=None):
+    async def anime_hentai(self, api_key):
         """params None"""
         return Box(await self._make_request("hentai-anime", api_key, **params) or {})
 
-    async def maker_carbon(self, api_key=None, **params):
+    async def maker_carbon(self, api_key, **params):
         """params code=code"""
         return await self._make_request("maker/carbon", api_key, **params)
 
-    async def add_ban(self, api_key=None, **params):
+    async def add_ban(self, api_key, **params):
         """params user_id=user_id"""
-        return Box(await self._make_request("user/ban-user", post=True, api_key, **params) or {})
+        return Box(await self._make_request("user/ban-user", api_key, post=True, **params) or {})
 
-    async def check_ban(self, api_key=None, **params):
+    async def check_ban(self, api_key, **params):
         """params user_id=user_id"""
         return Box(await self._make_request("user/check-ban", api_key, **params) or {})
 
-    async def tiktok_dl(self, api_key=None, **params):
+    async def tiktok_dl(self, api_key, **params):
         """params url=url"""
         return Box(await self._make_request("dl/tiktok", api_key, **params) or {})
 
+    async def fb_dl(self, api_key, **params):
+        """params url=url"""
+        return Box(await self._make_request("dl/fb", api_key, **params) or {})
+
+    async def xnxx_dl(self, api_key, **params):
+        """params q=q"""
+        return Box(await self._make_request("dl/xnxx", api_key, **params) or {})
+
+    async def snapsave_dl(self, api_key, **params):
+        """params url=url"""
+        return Box(await self._make_request("dl/snapsave", api_key, **params) or {})
+
+    async def get_creation_date(self, api_key=None, **params):
+        """Get raw creation date data
+        params user_id=user_id"""
+        return Box(await self._make_request("user/creation-date", api_key, **params) or {})
+
+    def format_creation_date(self, creation_date_response):
+        """Format creation date from response
+        Returns formatted date string or raises ValueError if not found"""
+        if not creation_date_response:
+            raise ValueError("Not found")
+        date_str = creation_date_response.estimated_creation.date
+        date_obj = datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%S.%fZ")
+        return date_obj.strftime("%Y-%m-%d %H:%M:%S")
+
 AkenoXToJs = AkenoXJs()
 
-"""
+class AkenoPlus:
+    """
 PLEASE DON'T USE THIS AkenoPlus DANGEROUS
 
 - Domain link got account logout in tg
 - difference only indonesia problem
 - new domain changes coming soon
 """
-class AkenoPlus:
     def __init__(self, key=..., api_endpoint: str = "https://private-akeno.randydev.my.id"):
         if key is Ellipsis:
             self.key = m("cmFuZGlnaXRodWIzNTY=").decode("utf-8")
