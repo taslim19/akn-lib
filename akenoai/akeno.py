@@ -2,6 +2,7 @@ import asyncio
 import os
 import subprocess
 from base64 import b64decode as m
+from datetime import datetime
 
 import aiohttp
 import httpx
@@ -86,9 +87,12 @@ class AkenoXJs:
         """params user_id=user_id"""
         return Box(await self._make_request("user/check-ban", api_key, **params) or {})
 
-    async def tiktok_dl(self, api_key, **params):
+    async def tiktok_dl(self, api_key, v2=False, **params):
         """params url=url"""
-        return Box(await self._make_request("dl/tiktok", api_key, **params) or {})
+        if v2:
+            return Box(await self._make_request("dl/tiktok-v2", api_key, **params) or {})
+        else:
+            return Box(await self._make_request("dl/tiktok", api_key, **params) or {})
 
     async def fb_dl(self, api_key, **params):
         """params url=url"""
@@ -101,6 +105,13 @@ class AkenoXJs:
     async def snapsave_dl(self, api_key, **params):
         """params url=url"""
         return Box(await self._make_request("dl/snapsave", api_key, **params) or {})
+
+    async def sfilemobi(self, api_key, is_search=False, **params):
+        """params url=url or (is_search=True, q=q)"""
+        if is_search:
+            return Box(await self._make_request("dl/sfilemobi-search", api_key, **params) or {})
+        else:
+            return Box(await self._make_request("dl/sfilemobi", api_key, **params) or {})
 
     async def get_creation_date(self, api_key=None, **params):
         """Get raw creation date data
