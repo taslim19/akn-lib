@@ -106,7 +106,7 @@ class AkenoXJs:
         """Get raw creation date data
         params user_id=user_id"""
         return Box(await self._make_request("user/creation-date", api_key, **params) or {})
-        
+
     def format_creation_date(self, creation_date_response):
         """Format creation date from response
         Returns formatted date string or raises ValueError if not found"""
