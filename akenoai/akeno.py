@@ -23,6 +23,7 @@ class DictToObj:
     def __repr__(self):
         return f"{self.__dict__}"
 
+
 class AkenoXJs:
     def __init__(self):
         self.private_url = os.environ.get("AKENOX_NAME")
@@ -89,16 +90,41 @@ class AkenoXJs:
         """params url=url"""
         return Box(await self._make_request("dl/tiktok", api_key, **params) or {})
 
+    async def fb_dl(self, api_key=None, **params):
+        """params url=url"""
+        return Box(await self._make_request("dl/fb", api_key, **params) or {})
+
+    async def xnxx_dl(self, api_key=None, **params):
+        """params q=q"""
+        return Box(await self._make_request("dl/xnxx", api_key, **params) or {})
+
+    async def snapsave_dl(self, api_key=None, **params):
+        """params url=url"""
+        return Box(await self._make_request("dl/snapsave", api_key, **params) or {})
+        
+    async def creation_date(self, api_key=None, is_results=False, **params):
+        """params user_id=user_id"""
+        if is_results:
+            response = Box(await self._make_request("user/creation-date", api_key, **params) or {})
+            if not response:
+                raise ValueError("Not found")
+            date_str = response.estimated_creation.date
+            date_obj = datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%S.%fZ")
+            formatted_date = date_obj.strftime("%Y-%m-%d %H:%M:%S")
+            return formatted_date
+        else:
+            return Box(await self._make_request("user/creation-date", api_key, **params) or {})
+
 AkenoXToJs = AkenoXJs()
 
-"""
+class AkenoPlus:
+    """
 PLEASE DON'T USE THIS AkenoPlus DANGEROUS
 
 - Domain link got account logout in tg
 - difference only indonesia problem
 - new domain changes coming soon
 """
-class AkenoPlus:
     def __init__(self, key=..., api_endpoint: str = "https://private-akeno.randydev.my.id"):
         if key is Ellipsis:
             self.key = m("cmFuZGlnaXRodWIzNTY=").decode("utf-8")
