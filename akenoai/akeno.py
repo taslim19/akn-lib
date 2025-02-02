@@ -62,19 +62,19 @@ class AkenoXJs:
         else:
             return ""
 
-    async def chatgpt_last(self, api_key=None, **params):
+    async def chatgpt_last(self, api_key, **params):
         """params query=query"""
         return Box(await self._make_request("ai/gpt-old", api_key, **params) or {})
 
-    async def copilot_trip(self, api_key=None, **params):
+    async def copilot_trip(self, api_key, **params):
         """params q=query or query=query"""
         return Box(await self._make_request("ai/copilot2-trip", api_key, **params) or {})
 
-    async def anime_hentai(self, api_key=None):
+    async def anime_hentai(self, api_key):
         """params None"""
         return Box(await self._make_request("hentai-anime", api_key, **params) or {})
 
-    async def maker_carbon(self, api_key=None, **params):
+    async def maker_carbon(self, api_key, **params):
         """params code=code"""
         return await self._make_request("maker/carbon", api_key, **params)
 
@@ -86,19 +86,19 @@ class AkenoXJs:
         """params user_id=user_id"""
         return Box(await self._make_request("user/check-ban", api_key, **params) or {})
 
-    async def tiktok_dl(self, api_key=None, **params):
+    async def tiktok_dl(self, api_key, **params):
         """params url=url"""
         return Box(await self._make_request("dl/tiktok", api_key, **params) or {})
 
-    async def fb_dl(self, api_key=None, **params):
+    async def fb_dl(self, api_key, **params):
         """params url=url"""
         return Box(await self._make_request("dl/fb", api_key, **params) or {})
 
-    async def xnxx_dl(self, api_key=None, **params):
+    async def xnxx_dl(self, api_key, **params):
         """params q=q"""
         return Box(await self._make_request("dl/xnxx", api_key, **params) or {})
 
-    async def snapsave_dl(self, api_key=None, **params):
+    async def snapsave_dl(self, api_key, **params):
         """params url=url"""
         return Box(await self._make_request("dl/snapsave", api_key, **params) or {})
         
