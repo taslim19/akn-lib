@@ -5,7 +5,7 @@
 <b>endpoints like:</b>
   - `ai/gpt-old`: query
   - `ai/copilot2-trip`: q
-  - `anime/hentai-anime`: None
+  - `anime/hentai`: None
   - `dl/fb`: url
   - `dl/xnxx`: url
   - Supports <b>custom parameters</b> for flexibility.  
