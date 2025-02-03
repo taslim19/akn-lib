@@ -52,7 +52,7 @@ class AkenoXJs:
         ALLOW_SAME_ENDPOINTS = {
             "ai/gpt-old",
             "ai/copilot2-trip",
-            "hentai-anime",
+            "anime/hentai",
             "dl/fb",
             "dl/xnxx"
         }
@@ -84,9 +84,9 @@ class AkenoXJs:
         """params q=query or query=query"""
         return Box(await self._make_request("ai/copilot2-trip", api_key, **params) or {})
 
-    async def anime_hentai(self, api_key):
+    async def anime_hentai(self, api_key, **params):
         """params None"""
-        return Box(await self._make_request("hentai-anime", api_key, **params) or {})
+        return Box(await self._make_request("anime/hentai", api_key, **params) or {})
 
     async def maker_carbon(self, api_key, **params):
         """params code=code"""
@@ -118,6 +118,14 @@ class AkenoXJs:
     async def snapsave_dl(self, api_key, **params):
         """params url=url"""
         return Box(await self._make_request("dl/snapsave", api_key, **params) or {})
+
+    async def ig_dl(self, api_key, **params):
+        """params url=url"""
+        return Box(await self._make_request("dl/instagram", api_key, **params) or {})
+
+    async def twitter_dl(self, api_key, **params):
+        """params url=url"""
+        return Box(await self._make_request("dl/twitter", api_key, **params) or {})
 
     async def sfilemobi(self, api_key, is_search=False, **params):
         """params url=url or (is_search=True, q=q)"""
