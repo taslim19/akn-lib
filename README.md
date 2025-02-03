@@ -26,6 +26,17 @@ print(response)
 ```py
 randydev(endpoint, api_key=None, post=False, allow_same=False, custom_dev=False, **params)
 ```
+> [!NOTE]
+> How to Get an API Key for AkenoX API?
+> 
+> You can set up your API key using environment variables:
+```env
+AKENOX_NAME=randydev-ryu-js  
+AKENOX_KEY=akeno_xxxxxx
+```
+- To get an API key, [`@aknuserbot`](https://t.me/aknuserbot)
+
+- 🚀 Thank you to our 2.7 million users per request!
 
 # Contributing
 If you find a bug or have a feature request, please open an issue on our GitHub repository.
