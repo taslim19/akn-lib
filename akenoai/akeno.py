@@ -48,6 +48,22 @@ class AkenoXJs:
                 async with session.get(url, headers=headers, params=params) as response:
                     return await response.json() if endpoint != "maker/carbon" else await response.read()
 
+    async def randydev(endpoint, api_key=None, post=False, allow_same=False, custom_dev=False, **params):
+        if allow_same and endpoint == "ai/gpt-old":
+            return Box(await self._make_request(endpoint, api_key, **params) or {})
+        elif allow_same and endpoint == "ai/copilot2-trip":
+            return Box(await self._make_request(endpoint, api_key, **params) or {})
+        elif allow_same and endpoint == "hentai-anime":
+            return Box(await self._make_request(endpoint, api_key, **params) or {})
+        elif allow_same and endpoint == "dl/fb":
+            return Box(await self._make_request(endpoint, api_key, **params) or {})
+        elif allow_same and endpoint == "dl/xnxx":
+            return Box(await self._make_request(endpoint, api_key, **params) or {})
+        if custom_dev:
+            return Box(await self._make_request(endpoint, api_key, post=post, **params) or {})
+        else:
+            raise ValueError("Invalid parameters")
+
     def _request_parameters(self, method=None, is_private=False):
         if not method:
             raise ValueError("Required method")
