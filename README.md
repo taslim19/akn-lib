@@ -1,86 +1,42 @@
 # akenoai-lib
-- install : `pip3 install akenoai[porno]`
+🔹 <b>Recommended Installation:</b>
+✅ Install via [`PYPI`](https://pypi.org/project/akenoai) for the latest updates. eg: `pip3 install akenoai[fast]`
 
-### Docs
-- [`Docs AkenoAI All`](https://private-akeno.randydev.my.id/docs)
+<b>endpoints like:</b>
+  - `ai/gpt-old`: query
+  - `ai/copilot2-trip`: q
+  - `anime/hentai-anime`: None
+  - `dl/fb`: url
+  - `dl/xnxx`: url
+  - Supports <b>custom parameters</b> for flexibility.  
 
-### Google-Dev
-> performance high speed API
-> `google_video_to_text`
-> `google_audio_to_text`
+> [!TIP]
+> Trip PRO Usage Example:
+```py
+from akenoai import AkenoXToJs
 
-> params string optional: `prompt`, `mime_type`
-
-### Example this
-```python
-import akenoai as dev
-
-file_path = "example.jpg"
-
-api = dev.AkenoPlus(key=...)
-
-response = await api.google_image_to_text(files_open=file_path)
-
+response = await AkenoXToJs.randydev("ai/gpt-old", allow_same=True, query="hello world")
 print(response)
 ```
-
-### Paal AI Dev
-> method `paal_see`
-
-> params string optional: `lang="en"` and `is_trans="True"`
-
-### Example this
-```python
-import akenoai as dev
-
-file_path = "example.jpg"
-api = dev.AkenoPlus(key=...)
-response = await api.paal_see(files_open=file_path)
-print(response)
-
-response_2 = await api.paal_text_to_image(prompt="cat beautiful")
-print(response_2)
+<b>Output:</b>
+```py
+{'results': 'Deepseek is a Chinese company that specializes in underwater robotics and autonomous underwater vehicles. They provide solutions for underwater exploration and research, as well as services for inspecting and maintaining underwater infrastructure. Their technology is used in various industries including marine science, aquaculture, and offshore energy.\n\nPowered By xtdevs'}
+```
+🔹 <b>Method Definition:</b>
+```py
+randydev(endpoint, api_key=None, post=False, allow_same=False, custom_dev=False, **params)
 ```
 
-# Attribute
-```python
-# Use await
-import akenoai as ak
-_ = ak.AkenoPlus(key=...)
-_.download_now(data)
-_.clean(file_path)
-_.terabox(link)
-_.terabox_v2(link)
-_.chatgpt_old(query)
-_.chatgpt_mode_web(query)
-_.sites_torrens_all()
-_.search_for_torrents(params)
-_.get_torrent_from_url(params)
-_.get_recent(params)
-_.get_category(params)
-_.paal_see(files_open, params)
-_.google_video_to_text(files_open, params)
-_.google_image_to_text(files_open, params)
-_.google_audio_to_text(files_open, params)
-_.blackbox(query)
-_.fbdown(link)
-_.fdownloader(link)
-_.capcut(link)
+# Contributing
+If you find a bug or have a feature request, please open an issue on our GitHub repository.
 
-# Pornohub
-# Use await
-import akenoai as ak
-_ = ak.Pornohub(key=...)
-_.x_search(query)
-_.x_download(query)
-_.x_download(url, is_stream=True)
-```
+We welcome contributions from the community. If you'd like to contribute, please fork the repository and submit a pull request.
 
 # License
 [![License](https://www.gnu.org/graphics/agplv3-155x51.png)](LICENSE)
 TeamKillerX is licensed under [GNU Affero General Public License](https://www.gnu.org/licenses/agpl-3.0.en.html) v3 or later.
 
-<h4 align="center">Copyright (C) 2019 - 2024 The AkenoAI <a href="https://github.com/TeamKillerX">TeamKillerX</a>
+<h4 align="center">Copyright (C) 2019 - 2025 The AkenoAI <a href="https://github.com/TeamKillerX">TeamKillerX</a>
 <a href="https://t.me/xtdevs">@xtdevs</a>
 </h4>
 
@@ -102,7 +58,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-Project [RyuzakiLib](https://github.com/TeamKillerX/) is free software: you can redistribute it and/or modify
+Project [AkenoAI-lib](https://github.com/TeamKillerX/) is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
