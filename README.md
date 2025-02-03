@@ -1,5 +1,6 @@
 # akenoai-lib
 🔹 <b>Recommended Installation:</b>
+
 ✅ Install via [`PYPI`](https://pypi.org/project/akenoai) for the latest updates. eg: `pip3 install akenoai[fast]`
 
 <b>endpoints like:</b>
