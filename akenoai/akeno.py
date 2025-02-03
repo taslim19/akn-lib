@@ -84,7 +84,7 @@ class AkenoXJs:
         """params q=query or query=query"""
         return Box(await self._make_request("ai/copilot2-trip", api_key, **params) or {})
 
-    async def anime_hentai(self, api_key):
+    async def anime_hentai(self, api_key, **params):
         """params None"""
         return Box(await self._make_request("anime/hentai", api_key, **params) or {})
 
