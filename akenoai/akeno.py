@@ -59,7 +59,7 @@ class AkenoXJs:
         url = f"https://{self.private_url}.{self.access_darkweb}/api/v1/{endpoint}"
         if post:
             response = requests.post(url, headers=headers, params=params)
-            return response.json() if endpoint != "maker/carbon" else response.content 
+            return response.json() if endpoint != "maker/carbon" else response.content
         else:
             response = requests.get(url, headers=headers, params=params)
             return response.json() if endpoint != "maker/carbon" else response.content
