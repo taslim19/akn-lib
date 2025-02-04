@@ -25,7 +25,7 @@ print(response)
 ```
 🔹 <b>Method Definition:</b>
 ```py
-randydev(endpoint, api_key=None, post=False, allow_same=False, custom_dev=False, **params)
+randydev(endpoint, api_key=None, post=False, allow_same=False, custom_dev=False, is_aiohttp=True, **params)
 ```
 > [!NOTE]
 > How to Get an API Key for AkenoX API?
