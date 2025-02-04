@@ -106,10 +106,7 @@ class AkenoXJs:
     @handle_dns_errors
     async def add_ban(self, api_key, **params):
         """params user_id=user_id"""
-        try:
-            return Box(await self._make_request("user/ban-user", api_key, post=True, **params) or {})
-        except aiohttp.client_exceptions.ClientConnectorDNSError:
-            raise Exception("Client connector dns error")
+        return Box(await self._make_request("user/ban-user", api_key, post=True, **params) or {})
 
     @handle_dns_errors
     async def check_ban(self, api_key, **params):
