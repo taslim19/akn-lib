@@ -29,16 +29,20 @@ class AkenoXJs:
         self.private_url = os.environ.get("AKENOX_NAME")
         self.access_darkweb = m("aGYuc3BhY2U=").decode("utf-8")
 
-    async def _make_request(self, endpoint, api_key=None, post=False, **params):
+    def _prepare_request(self, endpoint, api_key=None):
+        """Prepare common request parameters and validate API key."""
         if not api_key:
             api_key = os.environ.get("AKENOX_KEY")
         if not api_key:
             raise ValueError("Required variables AKENOX_KEY or api_key")
         if not self.private_url:
             raise ValueError("Required variables AKENOX_NAME")
-
+        url = f"https://{self.private_url}.{self.access_darkweb}/{endpoint}"
         headers = {"x-api-key": api_key}
-        url = f"https://{self.private_url}.{self.access_darkweb}/api/v1/{endpoint}"
+        return url, headers
+
+    async def _make_request_in_aiohttp(self, endpoint, api_key=None, post=False, **params):
+        url, headers = self._prepare_request(endpoint, api_key)
         async with aiohttp.ClientSession() as session:
             if post:
                 async with session.post(url, headers=headers, params=params) as response:
@@ -47,7 +51,25 @@ class AkenoXJs:
                 async with session.get(url, headers=headers, params=params) as response:
                     return await response.json() if endpoint != "maker/carbon" else await response.read()
 
-    async def randydev(self, endpoint, api_key=None, post=False, allow_same=False, custom_dev=False, **params):
+    async def _make_request_in(self, endpoint, api_key=None, post=False, **params):
+        url, headers = self._prepare_request(endpoint, api_key)
+        if post:
+            response = requests.post(url, headers=headers, params=params)
+            return response.json() if endpoint != "maker/carbon" else response.content
+        else:
+            response = requests.get(url, headers=headers, params=params)
+            return response.json() if endpoint != "maker/carbon" else response.content
+
+    async def randydev(
+        self,
+        endpoint,
+        api_key=None,
+        post=False,
+        allow_same=False,
+        custom_dev=False,
+        is_aiohttp=True,
+        **params
+    ):
         ALLOW_SAME_ENDPOINTS = {
             "ai/gpt-old",
             "ai/copilot2-trip",
@@ -56,9 +78,15 @@ class AkenoXJs:
             "dl/xnxx"
         }
         if allow_same and endpoint in ALLOW_SAME_ENDPOINTS:
-            return Box(await self._make_request(endpoint, api_key, **params) or {})
+            if is_aiohttp:
+                return Box(await self._make_request_in_aiohttp(endpoint, api_key, post=post, **params) or {})
+            else:
+                return Box(await self._make_request_in(endpoint, api_key, post=post, **params) or {})
         if custom_dev:
-            return Box(await self._make_request(endpoint, api_key, post=post, **params) or {})
+            if is_aiohttp:
+                return Box(await self._make_request_in_aiohttp(endpoint, api_key, post=post, **params) or {})
+            else:
+                return Box(await self._make_request_in(endpoint, api_key, post=post, **params) or {})
 
     def _request_parameters(self, method=None, is_private=False):
         if not method:
@@ -86,82 +114,79 @@ class AkenoXJs:
     @handle_dns_errors
     async def chatgpt_last(self, api_key, **params):
         """params query=query"""
-        return Box(await self._make_request("ai/gpt-old", api_key, **params) or {})
+        return Box(await self._make_request_in_aiohttp("ai/gpt-old", api_key, **params) or {})
 
     @handle_dns_errors
     async def copilot_trip(self, api_key, **params):
         """params q=query or query=query"""
-        return Box(await self._make_request("ai/copilot2-trip", api_key, **params) or {})
+        return Box(await self._make_request_in_aiohttp("ai/copilot2-trip", api_key, **params) or {})
 
     @handle_dns_errors
     async def anime_hentai(self, api_key, **params):
         """params None"""
-        return Box(await self._make_request("anime/hentai", api_key, **params) or {})
+        return Box(await self._make_request_in_aiohttp("anime/hentai", api_key, **params) or {})
 
     @handle_dns_errors
     async def maker_carbon(self, api_key, **params):
         """params code=code"""
-        return await self._make_request("maker/carbon", api_key, **params)
+        return await self._make_request_in_aiohttp("maker/carbon", api_key, **params)
 
     @handle_dns_errors
     async def add_ban(self, api_key, **params):
         """params user_id=user_id"""
-        try:
-            return Box(await self._make_request("user/ban-user", api_key, post=True, **params) or {})
-        except aiohttp.client_exceptions.ClientConnectorDNSError:
-            raise Exception("Client connector dns error")
+        return Box(await self._make_request_in_aiohttp("user/ban-user", api_key, post=True, **params) or {})
 
     @handle_dns_errors
     async def check_ban(self, api_key, **params):
         """params user_id=user_id"""
-        return Box(await self._make_request("user/check-ban", api_key, **params) or {})
+        return Box(await self._make_request_in_aiohttp("user/check-ban", api_key, **params) or {})
 
     @handle_dns_errors
     async def tiktok_dl(self, api_key, v2=False, **params):
         """params url=url"""
         if v2:
-            return Box(await self._make_request("dl/tiktok-v2", api_key, **params) or {})
+            return Box(await self._make_request_in_aiohttp("dl/tiktok-v2", api_key, **params) or {})
         else:
-            return Box(await self._make_request("dl/tiktok", api_key, **params) or {})
+            return Box(await self._make_request_in_aiohttp("dl/tiktok", api_key, **params) or {})
 
     @handle_dns_errors
     async def fb_dl(self, api_key, **params):
         """params url=url"""
-        return Box(await self._make_request("dl/fb", api_key, **params) or {})
+        return Box(await self._make_request_in_aiohttp("dl/fb", api_key, **params) or {})
 
     @handle_dns_errors
     async def xnxx_dl(self, api_key, **params):
         """params q=q"""
-        return Box(await self._make_request("dl/xnxx", api_key, **params) or {})
+        return Box(await self._make_request_in_aiohttp("dl/xnxx", api_key, **params) or {})
 
     @handle_dns_errors
     async def snapsave_dl(self, api_key, **params):
         """params url=url"""
-        return Box(await self._make_request("dl/snapsave", api_key, **params) or {})
+        return Box(await self._make_request_in_aiohttp("dl/snapsave", api_key, **params) or {})
 
     @handle_dns_errors
     async def ig_dl(self, api_key, **params):
         """params url=url"""
-        return Box(await self._make_request("dl/instagram", api_key, **params) or {})
+        return Box(await self._make_request_in_aiohttp("dl/instagram", api_key, **params) or {})
 
     @handle_dns_errors
     async def twitter_dl(self, api_key, **params):
         """params url=url"""
-        return Box(await self._make_request("dl/twitter", api_key, **params) or {})
+        return Box(await self._make_request_in_aiohttp("dl/twitter", api_key, **params) or {})
 
     @handle_dns_errors
     async def sfilemobi(self, api_key, is_search=False, **params):
         """params url=url or (is_search=True, q=q)"""
         if is_search:
-            return Box(await self._make_request("dl/sfilemobi-search", api_key, **params) or {})
+            return Box(await self._make_request_in_aiohttp("dl/sfilemobi-search", api_key, **params) or {})
         else:
-            return Box(await self._make_request("dl/sfilemobi", api_key, **params) or {})
+            return Box(await self._make_request_in_aiohttp("dl/sfilemobi", api_key, **params) or {})
 
     @handle_dns_errors
     async def get_creation_date(self, api_key=None, **params):
         """Get raw creation date data
         params user_id=user_id"""
-        return Box(await self._make_request("user/creation-date", api_key, **params) or {})
+        return Box(await self._make_request_in_aiohttp("user/creation-date", api_key, **params) or {})
 
     def format_creation_date(self, creation_date_response):
         """Format creation date from response
