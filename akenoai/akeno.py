@@ -83,23 +83,23 @@ class AkenoXJs:
                 try:
                     return Box(await self._make_request_in_aiohttp(endpoint, api_key, post=post, **params) or {})
                 except aiohttp.client_exceptions.ContentTypeError:
-                    raise Exception("DNS check problem, try again with different IP or invalid json make string")
+                    raise Exception("GET OR POST INVALID: check problem, invalid json")
             else:
                 try:
                     return Box(await self._make_request_in(endpoint, api_key, post=post, **params) or {})
                 except json.decoder.JSONDecodeError:
-                    raise Exception("DNS check problem, try again with different IP or invalid json make string")
+                    raise Exception("GET OR POST INVALID: check problem, invalid json")
         if custom_dev:
             if is_aiohttp:
                 try:
                     return Box(await self._make_request_in_aiohttp(endpoint, api_key, post=post, **params) or {})
                 except aiohttp.client_exceptions.ContentTypeError:
-                    raise Exception("DNS check problem, try again with different IP or invalid json make string")
+                    raise Exception("GET OR POST INVALID: check problem, invalid json")
             else:
                 try:
                     return Box(await self._make_request_in(endpoint, api_key, post=post, **params) or {})
                 except json.decoder.JSONDecodeError:
-                    raise Exception("DNS check problem, try again with different IP or invalid json make string")
+                    raise Exception("GET OR POST INVALID: check problem, invalid json")
 
     def _request_parameters(self, method=None, is_private=False):
         if not method:
