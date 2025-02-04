@@ -82,24 +82,40 @@ class AkenoXJs:
             if is_aiohttp:
                 try:
                     return Box(await self._make_request_in_aiohttp(endpoint, api_key, post=post, **params) or {})
-                except aiohttp.client_exceptions.ContentTypeError:
+                except aiohttp.ContentTypeError:
                     raise Exception("GET OR POST INVALID: check problem, invalid json")
+                except (aiohttp.ClientConnectorError, aiohttp.client_exceptions.ClientConnectorSSLError):
+                    raise Exception("Cannot connect to host")
+                except Exception:
+                    return None
             else:
                 try:
                     return Box(await self._make_request_in(endpoint, api_key, post=post, **params) or {})
                 except json.decoder.JSONDecodeError:
                     raise Exception("GET OR POST INVALID: check problem, invalid json")
+                except requests.exceptions.ConnectionError:
+                    raise Exception("Cannot connect to host")
+                except Exception:
+                    return None
         if custom_dev:
             if is_aiohttp:
                 try:
                     return Box(await self._make_request_in_aiohttp(endpoint, api_key, post=post, **params) or {})
                 except aiohttp.client_exceptions.ContentTypeError:
                     raise Exception("GET OR POST INVALID: check problem, invalid json")
+                except (aiohttp.ClientConnectorError, aiohttp.client_exceptions.ClientConnectorSSLError):
+                    raise Exception("Cannot connect to host")
+                except Exception:
+                    return None
             else:
                 try:
                     return Box(await self._make_request_in(endpoint, api_key, post=post, **params) or {})
                 except json.decoder.JSONDecodeError:
                     raise Exception("GET OR POST INVALID: check problem, invalid json")
+                except requests.exceptions.ConnectionError:
+                    raise Exception("Cannot connect to host")
+                except Exception:
+                    return None
 
     def _request_parameters(self, method=None, is_private=False):
         if not method:
