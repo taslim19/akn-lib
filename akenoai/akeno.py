@@ -37,7 +37,7 @@ class AkenoXJs:
             raise ValueError("Required variables AKENOX_KEY or api_key")
         if not self.private_url:
             raise ValueError("Required variables AKENOX_NAME")
-        url = f"https://{self.private_url}.{self.access_darkweb}/{endpoint}"
+        url = f"https://{self.private_url}.{self.access_darkweb}/api/v1/{endpoint}"
         headers = {"x-api-key": api_key}
         return url, headers
 
