@@ -45,21 +45,38 @@ class AkenoXJs:
     async def _make_request_in_aiohttp(self, endpoint, api_key=None, post=False, **params):
         url, headers = self._prepare_request(endpoint, api_key)
         async with aiohttp.ClientSession() as session:
-            if post:
-                async with session.post(url, headers=headers, params=params) as response:
-                    return await response.json() if endpoint != "maker/carbon" else await response.read()
-            else:
-                async with session.get(url, headers=headers, params=params) as response:
-                    return await response.json() if endpoint != "maker/carbon" else await response.read()
+            try:
+                if post:
+                    async with session.post(url, headers=headers, params=params) as response:
+                        return await response.json() if endpoint != "maker/carbon" else await response.read()
+                else:
+                    async with session.get(url, headers=headers, params=params) as response:
+                        return await response.json() if endpoint != "maker/carbon" else await response.read()
+            except (aiohttp.ContentTypeError, json.decoder.JSONDecodeError):
+                raise Exception("GET OR POST INVALID: check problem, invalid json")
+            except (
+                aiohttp.ClientConnectorError,
+                aiohttp.client_exceptions.ClientConnectorSSLError
+            ):
+                raise Exception("Cannot connect to host")
+            except Exception:
+                return None
 
     async def _make_request_in(self, endpoint, api_key=None, post=False, **params):
         url, headers = self._prepare_request(endpoint, api_key)
-        if post:
-            response = requests.post(url, headers=headers, params=params)
-            return response.json() if endpoint != "maker/carbon" else response.content
-        else:
-            response = requests.get(url, headers=headers, params=params)
-            return response.json() if endpoint != "maker/carbon" else response.content
+        try:
+            if post:
+                response = requests.post(url, headers=headers, params=params)
+                return response.json() if endpoint != "maker/carbon" else response.content
+            else:
+                response = requests.get(url, headers=headers, params=params)
+                return response.json() if endpoint != "maker/carbon" else response.content
+        except json.decoder.JSONDecodeError:
+            raise Exception("GET OR POST INVALID: check problem, invalid json")
+        except requests.exceptions.ConnectionError:
+            raise Exception("Cannot connect to host")
+        except Exception:
+            return None
 
     async def _handle_request_errors(self, request_coro, is_aiohttp=True):
         try:
