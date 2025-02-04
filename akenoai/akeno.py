@@ -69,7 +69,7 @@ class AkenoXJs:
             raise Exception("GET OR POST INVALID: check problem, invalid json")
         except (
             aiohttp.ClientConnectorError,
-            aiohttp.client_exceptions.ClientConnectorSSLError, 
+            aiohttp.client_exceptions.ClientConnectorSSLError,
             requests.exceptions.ConnectionError
         ):
             raise Exception("Cannot connect to host")
