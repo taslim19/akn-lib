@@ -1,4 +1,5 @@
 import asyncio
+import json
 import os
 import subprocess
 from base64 import b64decode as m
@@ -37,7 +38,7 @@ class AkenoXJs:
             raise ValueError("Required variables AKENOX_KEY or api_key")
         if not self.private_url:
             raise ValueError("Required variables AKENOX_NAME")
-        url = f"https://{self.private_url}.{self.access_darkweb}/{endpoint}"
+        url = f"https://{self.private_url}.{self.access_darkweb}/api/v1/{endpoint}"
         headers = {"x-api-key": api_key}
         return url, headers
 
@@ -60,6 +61,21 @@ class AkenoXJs:
             response = requests.get(url, headers=headers, params=params)
             return response.json() if endpoint != "maker/carbon" else response.content
 
+    async def _handle_request_errors(self, request_coro, is_aiohttp=True):
+        try:
+            result = await request_coro
+            return Box(result or {})
+        except (aiohttp.ContentTypeError, json.decoder.JSONDecodeError):
+            raise Exception("GET OR POST INVALID: check problem, invalid json")
+        except (
+            aiohttp.ClientConnectorError,
+            aiohttp.client_exceptions.ClientConnectorSSLError,
+            requests.exceptions.ConnectionError
+        ):
+            raise Exception("Cannot connect to host")
+        except Exception:
+            return None
+
     async def randydev(
         self,
         endpoint,
@@ -79,14 +95,26 @@ class AkenoXJs:
         }
         if allow_same and endpoint in ALLOW_SAME_ENDPOINTS:
             if is_aiohttp:
-                return Box(await self._make_request_in_aiohttp(endpoint, api_key, post=post, **params) or {})
+                return await self._handle_request_errors(
+                    self._make_request_in_aiohttp(endpoint, api_key, post=post, **params),
+                    is_aiohttp=True
+                )
             else:
-                return Box(await self._make_request_in(endpoint, api_key, post=post, **params) or {})
+                return await self._handle_request_errors(
+                    self._make_request_in(endpoint, api_key, post=post, **params),
+                    is_aiohttp=False
+                )
         if custom_dev:
             if is_aiohttp:
-                return Box(await self._make_request_in_aiohttp(endpoint, api_key, post=post, **params) or {})
+                return await self._handle_request_errors(
+                    self._make_request_in_aiohttp(endpoint, api_key, post=post, **params),
+                    is_aiohttp=True
+                )
             else:
-                return Box(await self._make_request_in(endpoint, api_key, post=post, **params) or {})
+                return await self._handle_request_errors(
+                    self._make_request_in(endpoint, api_key, post=post, **params),
+                    is_aiohttp=False
+                )
 
     def _request_parameters(self, method=None, is_private=False):
         if not method:
