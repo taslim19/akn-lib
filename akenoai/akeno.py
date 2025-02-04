@@ -1,5 +1,6 @@
 import asyncio
 import os
+import json
 import subprocess
 from base64 import b64decode as m
 from datetime import datetime
@@ -79,14 +80,26 @@ class AkenoXJs:
         }
         if allow_same and endpoint in ALLOW_SAME_ENDPOINTS:
             if is_aiohttp:
-                return Box(await self._make_request_in_aiohttp(endpoint, api_key, post=post, **params) or {})
+                try:
+                    return Box(await self._make_request_in_aiohttp(endpoint, api_key, post=post, **params) or {})
+                except aiohttp.client_exceptions.ContentTypeError:
+                    raise Exception("DNS check problem, try again with different IP or invalid json make string")
             else:
-                return Box(await self._make_request_in(endpoint, api_key, post=post, **params) or {})
+                try:
+                    return Box(await self._make_request_in(endpoint, api_key, post=post, **params) or {})
+                except json.decoder.JSONDecodeError:
+                    raise Exception("DNS check problem, try again with different IP or invalid json make string")
         if custom_dev:
             if is_aiohttp:
-                return Box(await self._make_request_in_aiohttp(endpoint, api_key, post=post, **params) or {})
+                try:
+                    return Box(await self._make_request_in_aiohttp(endpoint, api_key, post=post, **params) or {})
+                except aiohttp.client_exceptions.ContentTypeError:
+                    raise Exception("DNS check problem, try again with different IP or invalid json make string")
             else:
-                return Box(await self._make_request_in(endpoint, api_key, post=post, **params) or {})
+                try:
+                    return Box(await self._make_request_in(endpoint, api_key, post=post, **params) or {})
+                except json.decoder.JSONDecodeError:
+                    raise Exception("DNS check problem, try again with different IP or invalid json make string")
 
     def _request_parameters(self, method=None, is_private=False):
         if not method:
