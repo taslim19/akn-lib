@@ -52,7 +52,7 @@ class AkenoXJs:
                 else:
                     async with session.get(url, headers=headers, params=params) as response:
                         return await response.json() if endpoint != "maker/carbon" else await response.read()
-            except (aiohttp.ContentTypeError, json.decoder.JSONDecodeError):
+            except (aiohttp.client_exceptions.ContentTypeError, json.decoder.JSONDecodeError):
                 raise Exception("GET OR POST INVALID: check problem, invalid json")
             except (
                 aiohttp.ClientConnectorError,
@@ -82,7 +82,7 @@ class AkenoXJs:
         try:
             result = await request_coro
             return Box(result or {})
-        except (aiohttp.ContentTypeError, json.decoder.JSONDecodeError):
+        except (aiohttp.client_exceptions.ContentTypeError, json.decoder.JSONDecodeError):
             raise Exception("GET OR POST INVALID: check problem, invalid json")
         except (
             aiohttp.ClientConnectorError,
