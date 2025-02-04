@@ -29,16 +29,20 @@ class AkenoXJs:
         self.private_url = os.environ.get("AKENOX_NAME")
         self.access_darkweb = m("aGYuc3BhY2U=").decode("utf-8")
 
-    async def _make_request_in_aiohttp(self, endpoint, api_key=None, post=False, **params):
+    def _prepare_request(self, endpoint, api_key=None):
+        """Prepare common request parameters and validate API key."""
         if not api_key:
             api_key = os.environ.get("AKENOX_KEY")
         if not api_key:
             raise ValueError("Required variables AKENOX_KEY or api_key")
         if not self.private_url:
             raise ValueError("Required variables AKENOX_NAME")
-
+        url = f"https://{self.private_url}.{self.access_darkweb}/{endpoint}"
         headers = {"x-api-key": api_key}
-        url = f"https://{self.private_url}.{self.access_darkweb}/api/v1/{endpoint}"
+        return url, headers
+
+    async def _make_request_in_aiohttp(self, endpoint, api_key=None, post=False, **params):
+        url, headers = self._prepare_request(endpoint, api_key)
         async with aiohttp.ClientSession() as session:
             if post:
                 async with session.post(url, headers=headers, params=params) as response:
@@ -48,15 +52,7 @@ class AkenoXJs:
                     return await response.json() if endpoint != "maker/carbon" else await response.read()
 
     async def _make_request_in(self, endpoint, api_key=None, post=False, **params):
-        if not api_key:
-            api_key = os.environ.get("AKENOX_KEY")
-        if not api_key:
-            raise ValueError("Required variables AKENOX_KEY or api_key")
-        if not self.private_url:
-            raise ValueError("Required variables AKENOX_NAME")
-
-        headers = {"x-api-key": api_key}
-        url = f"https://{self.private_url}.{self.access_darkweb}/api/v1/{endpoint}"
+        url, headers = self._prepare_request(endpoint, api_key)
         if post:
             response = requests.post(url, headers=headers, params=params)
             return response.json() if endpoint != "maker/carbon" else response.content
