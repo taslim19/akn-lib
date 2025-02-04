@@ -78,66 +78,109 @@ class AkenoXJs:
 
     async def chatgpt_last(self, api_key, **params):
         """params query=query"""
-        return Box(await self._make_request("ai/gpt-old", api_key, **params) or {})
+        try:
+            return Box(await self._make_request("ai/gpt-old", api_key, **params) or {})
+        except aiohttp.client_exceptions.ClientConnectorDNSError:
+            raise Exception("Client connector dns error")
 
     async def copilot_trip(self, api_key, **params):
         """params q=query or query=query"""
-        return Box(await self._make_request("ai/copilot2-trip", api_key, **params) or {})
+        try:
+            return Box(await self._make_request("ai/copilot2-trip", api_key, **params) or {})
+        except aiohttp.client_exceptions.ClientConnectorDNSError:
+            raise Exception("Client connector dns error")
+
 
     async def anime_hentai(self, api_key, **params):
         """params None"""
-        return Box(await self._make_request("anime/hentai", api_key, **params) or {})
+        try:
+            return Box(await self._make_request("anime/hentai", api_key, **params) or {})
+        except aiohttp.client_exceptions.ClientConnectorDNSError:
+            raise Exception("Client connector dns error")
 
     async def maker_carbon(self, api_key, **params):
         """params code=code"""
-        return await self._make_request("maker/carbon", api_key, **params)
+        try:
+            return await self._make_request("maker/carbon", api_key, **params)
+        except aiohttp.client_exceptions.ClientConnectorDNSError:
+            raise Exception("Client connector dns error")
 
     async def add_ban(self, api_key, **params):
         """params user_id=user_id"""
-        return Box(await self._make_request("user/ban-user", api_key, post=True, **params) or {})
+        try:
+            return Box(await self._make_request("user/ban-user", api_key, post=True, **params) or {})
+        except aiohttp.client_exceptions.ClientConnectorDNSError:
+            raise Exception("Client connector dns error")
 
     async def check_ban(self, api_key, **params):
         """params user_id=user_id"""
-        return Box(await self._make_request("user/check-ban", api_key, **params) or {})
+        try:
+            return Box(await self._make_request("user/check-ban", api_key, **params) or {})
+        except aiohttp.client_exceptions.ClientConnectorDNSError:
+            raise Exception("Client connector dns error")
 
     async def tiktok_dl(self, api_key, v2=False, **params):
         """params url=url"""
-        if v2:
-            return Box(await self._make_request("dl/tiktok-v2", api_key, **params) or {})
-        else:
-            return Box(await self._make_request("dl/tiktok", api_key, **params) or {})
+        try:
+            if v2:
+                return Box(await self._make_request("dl/tiktok-v2", api_key, **params) or {})
+            else:
+                return Box(await self._make_request("dl/tiktok", api_key, **params) or {})
+        except aiohttp.client_exceptions.ClientConnectorDNSError:
+            raise Exception("Client connector dns error")
 
     async def fb_dl(self, api_key, **params):
         """params url=url"""
-        return Box(await self._make_request("dl/fb", api_key, **params) or {})
+        try:
+            return Box(await self._make_request("dl/fb", api_key, **params) or {})
+        except aiohttp.client_exceptions.ClientConnectorDNSError:
+            raise Exception("Client connector dns error")
 
     async def xnxx_dl(self, api_key, **params):
         """params q=q"""
-        return Box(await self._make_request("dl/xnxx", api_key, **params) or {})
+        try:
+            return Box(await self._make_request("dl/xnxx", api_key, **params) or {})
+        except aiohttp.client_exceptions.ClientConnectorDNSError:
+            raise Exception("Client connector dns error")
 
     async def snapsave_dl(self, api_key, **params):
         """params url=url"""
-        return Box(await self._make_request("dl/snapsave", api_key, **params) or {})
+        try:
+            return Box(await self._make_request("dl/snapsave", api_key, **params) or {})
+        except aiohttp.client_exceptions.ClientConnectorDNSError:
+            raise Exception("Client connector dns error")
 
     async def ig_dl(self, api_key, **params):
         """params url=url"""
-        return Box(await self._make_request("dl/instagram", api_key, **params) or {})
+        try:
+            return Box(await self._make_request("dl/instagram", api_key, **params) or {})
+        except aiohttp.client_exceptions.ClientConnectorDNSError:
+            raise Exception("Client connector dns error")
 
     async def twitter_dl(self, api_key, **params):
         """params url=url"""
-        return Box(await self._make_request("dl/twitter", api_key, **params) or {})
+        try:
+            return Box(await self._make_request("dl/twitter", api_key, **params) or {})
+        except aiohttp.client_exceptions.ClientConnectorDNSError:
+            raise Exception("Client connector dns error")
 
     async def sfilemobi(self, api_key, is_search=False, **params):
         """params url=url or (is_search=True, q=q)"""
-        if is_search:
-            return Box(await self._make_request("dl/sfilemobi-search", api_key, **params) or {})
-        else:
-            return Box(await self._make_request("dl/sfilemobi", api_key, **params) or {})
+        try:
+            if is_search:
+                return Box(await self._make_request("dl/sfilemobi-search", api_key, **params) or {})
+            else:
+                return Box(await self._make_request("dl/sfilemobi", api_key, **params) or {})
+        except aiohttp.client_exceptions.ClientConnectorDNSError:
+            raise Exception("Client connector dns error")
 
     async def get_creation_date(self, api_key=None, **params):
         """Get raw creation date data
         params user_id=user_id"""
-        return Box(await self._make_request("user/creation-date", api_key, **params) or {})
+        try:
+            return Box(await self._make_request("user/creation-date", api_key, **params) or {})
+        except aiohttp.client_exceptions.ClientConnectorDNSError:
+            raise Exception("Client connector dns error")
 
     def format_creation_date(self, creation_date_response):
         """Format creation date from response
