@@ -28,6 +28,7 @@
   - `dl/xnxx`: url
   - Supports <b>custom parameters</b> for flexibility.
 
+### Code examples
 > [!TIP]
 > Trip PRO Usage Example:
 ```py
@@ -44,6 +45,18 @@ print(response)
 ```py
 randydev(endpoint, api_key=None, post=False, allow_same=False, custom_dev=False, is_aiohttp=True, **params)
 ```
+🔹 <b>Custom Dev:</b>
+```py
+from akenoai import AkenoXToJs
+
+response = await AkenoXToJs.randydev(
+    "user/creation-date",
+    custom_dev=True,
+    user_id=client.me.id
+)
+return response
+```
+### API Key
 > [!NOTE]
 > How to Get an API Key for AkenoX API?
 >
