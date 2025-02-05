@@ -47,10 +47,12 @@ randydev(endpoint, api_key=None, post=False, allow_same=False, custom_dev=False,
 ```
 🔹 <b>Custom Dev:</b>
 ```py
+import os
 from akenoai import AkenoXToJs
 
 response = await AkenoXToJs.randydev(
     "user/creation-date",
+    api_key=os.environ.get("AKENOX_KEY"), # default optional
     custom_dev=True,
     user_id=client.me.id
 )
