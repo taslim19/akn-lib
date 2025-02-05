@@ -12,7 +12,10 @@
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/akenoai?label=DOWNLOADS&style=round)](https://pypi.org/project/akenoai)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/TeamKillerX/akenoai-lib/main.svg)](https://results.pre-commit.ci/latest/github/TeamKillerX/akenoai-lib/main)
 
+### Screenshots
+![Image](https://github.com/user-attachments/assets/0ef30240-465c-4912-8d9e-54520cb7c226)
 
+### installation
 🔹 <b>Recommended Installation:</b>
 
 ✅ Install via [`PYPI`](https://pypi.org/project/akenoai) for the latest updates. eg: `pip3 install akenoai[fast]`
