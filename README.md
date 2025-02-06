@@ -20,21 +20,13 @@
 
 ✅ Install via [`PYPI`](https://pypi.org/project/akenoai) for the latest updates. eg: `pip3 install akenoai[fast]`
 
-<b>endpoints like:</b>
-  - `ai/gpt-old`: query
-  - `ai/copilot2-trip`: q
-  - `anime/hentai`: None
-  - `dl/fb`: url
-  - `dl/xnxx`: url
-  - Supports <b>custom parameters</b> for flexibility.
-
 ### Code examples
 > [!TIP]
 > Trip PRO Usage Example:
 ```py
 from akenoai import AkenoXToJs
 
-response = await AkenoXToJs.randydev("ai/gpt-old", allow_same=True, query="hello world")
+response = await AkenoXToJs.randydev("ai/gpt-old", custom_dev_fast=True, query="hello world")
 print(response)
 ```
 <b>Output:</b>
@@ -43,7 +35,7 @@ print(response)
 ```
 🔹 <b>Method Definition:</b>
 ```py
-randydev(endpoint, api_key=None, post=False, allow_same=False, custom_dev=False, is_aiohttp=True, **params)
+randydev(endpoint, api_key=None, post=False, custom_dev_fast=False, **params)
 ```
 🔹 <b>Custom Dev:</b>
 ```py
@@ -53,7 +45,7 @@ from akenoai import AkenoXToJs
 response = await AkenoXToJs.randydev(
     "user/creation-date",
     api_key=os.environ.get("AKENOX_KEY"), # default optional
-    custom_dev=True,
+    custom_dev_fast=True,
     user_id=client.me.id
 )
 return response
@@ -70,6 +62,17 @@ AKENOX_KEY=akeno_xxxxxx
 - To get an API key, [`@aknuserbot`](https://t.me/aknuserbot)
 
 - 🚀 Thank you to our 2.7 million users per request!
+
+### Problem Double FIX:
+- Cannot connect to host
+- Ip address got blocked issue
+- Different DNS settings
+- make only requests and url works, doesn't library
+- manual endpoints: `https://randydev-ryu-js.hf.space/api/v1`
+```py
+url = "https://randydev-ryu-js.hf.space/api/v1/json/all"
+response = requests.get(url, headers={}, params={}).json()
+```
 
 # Contributing
 If you find a bug or have a feature request, please open an issue on our GitHub repository.
