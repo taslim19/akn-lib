@@ -39,12 +39,7 @@ class AkenoXJs:
         if not self.private_url:
             raise ValueError("Required variables AKENOX_NAME")
         url = f"https://{self.private_url}.{self.access_darkweb}/api/v1/{endpoint}"
-        headers = {
-            "Authorization": f"Bearer {api_key}",
-            "x-api-key": api_key,
-            "User-Agent": "My Python Script",
-            "Content-Type": "application/json",
-        }
+        headers = {"x-api-key": api_key}
         return url, headers
 
     async def _make_request_in_aiohttp(self, endpoint, api_key=None, post=False, **params):
@@ -64,8 +59,8 @@ class AkenoXJs:
                 aiohttp.client_exceptions.ClientConnectorSSLError
             ):
                 raise Exception("Cannot connect to host")
-            except Exception:
-                return None
+            except Exception as e:
+                return str(e)
 
     async def _make_request_in(self, endpoint, api_key=None, post=False, **params):
         url, headers = self._prepare_request(endpoint, api_key)
@@ -80,8 +75,8 @@ class AkenoXJs:
             raise Exception("GET OR POST INVALID: check problem, invalid json")
         except requests.exceptions.ConnectionError:
             raise Exception("Cannot connect to host")
-        except Exception:
-            return None
+        except Exception as e:
+            return str(e)
 
     async def _handle_request_errors(self, request_coro, is_aiohttp=True):
         try:
@@ -95,8 +90,8 @@ class AkenoXJs:
             requests.exceptions.ConnectionError
         ):
             raise Exception("Cannot connect to host")
-        except Exception:
-            return None
+        except Exception as e:
+            return str(e)
 
     async def randydev(
         self,
