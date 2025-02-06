@@ -65,7 +65,7 @@ AKENOX_KEY=akeno_xxxxxx
 
 ### Problem Double Fix:
 - Cannot connect to host
-- Ip address got blocked issue
+- IP address got blocked issue
 - Different DNS settings
 - make only requests and url works, doesn't library
 - manual endpoints: `https://randydev-ryu-js.hf.space/api/v1`
