@@ -18,7 +18,7 @@
 ### installation
 🔹 <b>Recommended Installation:</b>
 
-✅ Install via [`PYPI`](https://pypi.org/project/akenoai) for the latest updates. eg: `pip3 install akenoai[fast]`
+✅ Install via [`PYPI`](https://pypi.org/project/akenoai) for the latest updates. e.g.: `pip3 install akenoai[fast]`
 
 ### Code examples
 > [!TIP]
