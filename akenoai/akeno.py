@@ -40,8 +40,10 @@ class AkenoXJs:
             raise ValueError("Required variables AKENOX_NAME")
         url = f"https://{self.private_url}.{self.access_darkweb}/api/v1/{endpoint}"
         headers = {
-            "Origin": f"https://{self.private_url}.{self.access_darkweb}",
+            "Authorization": f"Bearer {api_key}",
             "x-api-key": api_key,
+            "User-Agent": "My Python Script",
+            "Content-Type": "application/json",
         }
         return url, headers
 
