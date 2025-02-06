@@ -1,22 +1,32 @@
 # akenoai-lib
+[![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.png?v=103)](https://github.com/TeamKillerX/akenoai-lib)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-Yes-green)](https://github.com/TeamKillerX/akenoai-lib/graphs/commit-activity)
+[![GitHub Forks](https://img.shields.io/github/forks/TeamKillerX/akenoai-lib?&logo=github)](https://github.com/TeamKillerX/akenoai-lib)
+[![GitHub Stars](https://img.shields.io/github/stars/TeamKillerX/akenoai-lib?&logo=github)](https://github.com/TeamKillerX/akenoai-lib/stargazers)
+[![Last commit](https://img.shields.io/github/last-commit/TeamKillerX/akenoai-lib?&logo=github)](https://github.com/TeamKillerX/akenoai-lib)
+[![Size](https://img.shields.io/github/repo-size/TeamKillerX/akenoai-lib?color=green)](https://github.com/TeamKillerX/akenoai-lib)
+[![Contributors](https://img.shields.io/github/contributors/TeamKillerX/akenoai-lib?color=green)](https://github.com/TeamKillerX/akenoai-lib/graphs/contributors)
+[![License](https://img.shields.io/badge/License-GPL-pink)](https://github.com/TeamKillerX/akenoai-lib/blob/main/LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
+[![akenoai - Version](https://img.shields.io/pypi/v/akenoai?style=round)](https://pypi.org/project/akenoai)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/akenoai?label=DOWNLOADS&style=round)](https://pypi.org/project/akenoai)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/TeamKillerX/akenoai-lib/main.svg)](https://results.pre-commit.ci/latest/github/TeamKillerX/akenoai-lib/main)
+
+### Screenshots
+![Image](https://github.com/user-attachments/assets/0ef30240-465c-4912-8d9e-54520cb7c226)
+
+### installation
 🔹 <b>Recommended Installation:</b>
 
-✅ Install via [`PYPI`](https://pypi.org/project/akenoai) for the latest updates. eg: `pip3 install akenoai[fast]`
+✅ Install via [`PYPI`](https://pypi.org/project/akenoai) for the latest updates. e.g.: `pip3 install akenoai[fast]`
 
-<b>endpoints like:</b>
-  - `ai/gpt-old`: query
-  - `ai/copilot2-trip`: q
-  - `anime/hentai`: None
-  - `dl/fb`: url
-  - `dl/xnxx`: url
-  - Supports <b>custom parameters</b> for flexibility.
-
+### Code examples
 > [!TIP]
 > Trip PRO Usage Example:
 ```py
 from akenoai import AkenoXToJs
 
-response = await AkenoXToJs.randydev("ai/gpt-old", allow_same=True, query="hello world")
+response = await AkenoXToJs.randydev("ai/gpt-old", custom_dev_fast=True, query="hello world")
 print(response)
 ```
 <b>Output:</b>
@@ -25,8 +35,22 @@ print(response)
 ```
 🔹 <b>Method Definition:</b>
 ```py
-randydev(endpoint, api_key=None, post=False, allow_same=False, custom_dev=False, **params)
+randydev(endpoint, api_key=None, post=False, custom_dev_fast=False, **params)
 ```
+🔹 <b>Custom Dev:</b>
+```py
+import os
+from akenoai import AkenoXToJs
+
+response = await AkenoXToJs.randydev(
+    "user/creation-date",
+    api_key=os.environ.get("AKENOX_KEY"), # default optional
+    custom_dev_fast=True,
+    user_id=client.me.id
+)
+return response
+```
+### API Key
 > [!NOTE]
 > How to Get an API Key for AkenoX API?
 >
@@ -38,6 +62,17 @@ AKENOX_KEY=akeno_xxxxxx
 - To get an API key, [`@aknuserbot`](https://t.me/aknuserbot)
 
 - 🚀 Thank you to our 2.7 million users per request!
+
+### Problem Double Fix:
+- Cannot connect to host
+- IP address got blocked issue
+- Different DNS settings
+- make only requests and url works, doesn't library
+- manual endpoints: `https://randydev-ryu-js.hf.space/api/v1`
+```py
+url = "https://randydev-ryu-js.hf.space/api/v1/json/all"
+response = requests.get(url, headers={}, params={}).json()
+```
 
 # Contributing
 If you find a bug or have a feature request, please open an issue on our GitHub repository.

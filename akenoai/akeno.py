@@ -39,33 +39,50 @@ class AkenoXJs:
         if not self.private_url:
             raise ValueError("Required variables AKENOX_NAME")
         url = f"https://{self.private_url}.{self.access_darkweb}/api/v1/{endpoint}"
-        headers = {"x-api-key": api_key}
+        headers = {"x-api-key": api_key, "User-Agent": "Chrome"}
         return url, headers
 
-    async def _make_request_in_aiohttp(self, endpoint, api_key=None, post=False, **params):
+    async def _make_request_in_aiohttp(self, endpoint, api_key=None, post=False, verify=False, **params):
         url, headers = self._prepare_request(endpoint, api_key)
         async with aiohttp.ClientSession() as session:
-            if post:
-                async with session.post(url, headers=headers, params=params) as response:
-                    return await response.json() if endpoint != "maker/carbon" else await response.read()
-            else:
-                async with session.get(url, headers=headers, params=params) as response:
-                    return await response.json() if endpoint != "maker/carbon" else await response.read()
+            try:
+                if post:
+                    async with session.post(url, headers=headers, params=params, ssl=verify) as response:
+                        return await response.json() if endpoint != "maker/carbon" else await response.read()
+                else:
+                    async with session.get(url, headers=headers, params=params, ssl=verify) as response:
+                        return await response.json() if endpoint != "maker/carbon" else await response.read()
+            except (aiohttp.client_exceptions.ContentTypeError, json.decoder.JSONDecodeError):
+                raise Exception("GET OR POST INVALID: check problem, invalid json")
+            except (
+                aiohttp.ClientConnectorError,
+                aiohttp.client_exceptions.ClientConnectorSSLError
+            ):
+                raise Exception("Cannot connect to host")
+            except Exception as e:
+                return str(e)
 
-    async def _make_request_in(self, endpoint, api_key=None, post=False, **params):
+    async def _make_request_in(self, endpoint, api_key=None, post=False, verify=False, **params):
         url, headers = self._prepare_request(endpoint, api_key)
-        if post:
-            response = requests.post(url, headers=headers, params=params)
-            return response.json() if endpoint != "maker/carbon" else response.content
-        else:
-            response = requests.get(url, headers=headers, params=params)
-            return response.json() if endpoint != "maker/carbon" else response.content
+        try:
+            if post:
+                response = requests.post(url, headers=headers, params=params, verify=verify)
+                return response.json() if endpoint != "maker/carbon" else response.content
+            else:
+                response = requests.get(url, headers=headers, params=params, verify=verify)
+                return response.json() if endpoint != "maker/carbon" else response.content
+        except json.decoder.JSONDecodeError:
+            raise Exception("GET OR POST INVALID: check problem, invalid json")
+        except requests.exceptions.ConnectionError:
+            raise Exception("Cannot connect to host")
+        except Exception as e:
+            return str(e)
 
-    async def _handle_request_errors(self, request_coro, is_aiohttp=True):
+    async def _handle_request_errors(self, request_coro):
         try:
             result = await request_coro
             return Box(result or {})
-        except (aiohttp.ContentTypeError, json.decoder.JSONDecodeError):
+        except (aiohttp.client_exceptions.ContentTypeError, json.decoder.JSONDecodeError):
             raise Exception("GET OR POST INVALID: check problem, invalid json")
         except (
             aiohttp.ClientConnectorError,
@@ -73,48 +90,38 @@ class AkenoXJs:
             requests.exceptions.ConnectionError
         ):
             raise Exception("Cannot connect to host")
-        except Exception:
-            return None
+        except Exception as e:
+            return str(e)
 
     async def randydev(
         self,
         endpoint,
         api_key=None,
         post=False,
-        allow_same=False,
-        custom_dev=False,
-        is_aiohttp=True,
+        custom_dev_fast=False,
+        verify=True,
         **params
     ):
-        ALLOW_SAME_ENDPOINTS = {
-            "ai/gpt-old",
-            "ai/copilot2-trip",
-            "anime/hentai",
-            "dl/fb",
-            "dl/xnxx"
-        }
-        if allow_same and endpoint in ALLOW_SAME_ENDPOINTS:
-            if is_aiohttp:
-                return await self._handle_request_errors(
-                    self._make_request_in_aiohttp(endpoint, api_key, post=post, **params),
-                    is_aiohttp=True
+        if custom_dev_fast:
+            return await self._handle_request_errors(
+                self._make_request_in_aiohttp(
+                    endpoint,
+                    api_key,
+                    post=post,
+                    verify=verify,
+                    **params
                 )
-            else:
-                return await self._handle_request_errors(
-                    self._make_request_in(endpoint, api_key, post=post, **params),
-                    is_aiohttp=False
+            )
+        else:
+            return await self._handle_request_errors(
+                self._make_request_in(
+                    endpoint,
+                    api_key,
+                    post=post,
+                    verify=verify,
+                    **params
                 )
-        if custom_dev:
-            if is_aiohttp:
-                return await self._handle_request_errors(
-                    self._make_request_in_aiohttp(endpoint, api_key, post=post, **params),
-                    is_aiohttp=True
-                )
-            else:
-                return await self._handle_request_errors(
-                    self._make_request_in(endpoint, api_key, post=post, **params),
-                    is_aiohttp=False
-                )
+            )
 
     def _request_parameters(self, method=None, is_private=False):
         if not method:
