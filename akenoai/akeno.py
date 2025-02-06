@@ -78,7 +78,7 @@ class AkenoXJs:
         except Exception as e:
             return str(e)
 
-    async def _handle_request_errors(self, request_coro, is_aiohttp=True):
+    async def _handle_request_errors(self, request_coro):
         try:
             result = await request_coro
             return Box(result or {})
@@ -98,59 +98,30 @@ class AkenoXJs:
         endpoint,
         api_key=None,
         post=False,
-        allow_same=False,
         custom_dev=False,
-        is_aiohttp=True,
         verify=True,
         **params
     ):
-        ALLOW_SAME_ENDPOINTS = {
-            "ai/gpt-old",
-            "ai/copilot2-trip",
-            "anime/hentai",
-            "dl/fb",
-            "dl/xnxx"
-        }
-        if allow_same and endpoint in ALLOW_SAME_ENDPOINTS:
-            if is_aiohttp:
-                return await self._handle_request_errors(
-                    self._make_request_in_aiohttp(
-                        endpoint,
-                        api_key,
-                        post=post,
-                        verify=verify,
-                        **params
-                    ),
-                    is_aiohttp=True
-                )
-            else:
-                return await self._handle_request_errors(
-                    self._make_request_in(
-                        endpoint,
-                        api_key,
-                        post=post,
-                        verify=verify,
-                        **params
-                    ),
-                    is_aiohttp=False
-                )
         if custom_dev:
-            if is_aiohttp:
-                return await self._handle_request_errors(
-                    self._make_request_in_aiohttp(endpoint, api_key, post=post, verify=verify, **params),
-                    is_aiohttp=True
+            return await self._handle_request_errors(
+                self._make_request_in_aiohttp(
+                    endpoint,
+                    api_key,
+                    post=post,
+                    verify=verify,
+                    **params
                 )
-            else:
-                return await self._handle_request_errors(
-                    self._make_request_in(
-                        endpoint,
-                        api_key,
-                        post=post,
-                        verify=verify,
-                        **params
-                    ),
-                    is_aiohttp=False
+            )
+        else:
+            return await self._handle_request_errors(
+                self._make_request_in(
+                    endpoint,
+                    api_key,
+                    post=post,
+                    verify=verify,
+                    **params
                 )
+            )
 
     def _request_parameters(self, method=None, is_private=False):
         if not method:
