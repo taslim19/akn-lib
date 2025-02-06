@@ -98,11 +98,11 @@ class AkenoXJs:
         endpoint,
         api_key=None,
         post=False,
-        custom_dev=False,
+        custom_dev_fast=False,
         verify=True,
         **params
     ):
-        if custom_dev:
+        if custom_dev_fast:
             return await self._handle_request_errors(
                 self._make_request_in_aiohttp(
                     endpoint,
