@@ -63,7 +63,7 @@ AKENOX_KEY=akeno_xxxxxx
 
 - 🚀 Thank you to our 2.7 million users per request!
 
-### Problem Double FIX:
+### Problem Double Fix:
 - Cannot connect to host
 - Ip address got blocked issue
 - Different DNS settings
