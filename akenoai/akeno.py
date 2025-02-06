@@ -42,15 +42,15 @@ class AkenoXJs:
         headers = {"x-api-key": api_key}
         return url, headers
 
-    async def _make_request_in_aiohttp(self, endpoint, api_key=None, post=False, **params):
+    async def _make_request_in_aiohttp(self, endpoint, api_key=None, post=False, verify=False, **params):
         url, headers = self._prepare_request(endpoint, api_key)
         async with aiohttp.ClientSession() as session:
             try:
                 if post:
-                    async with session.post(url, headers=headers, params=params) as response:
+                    async with session.post(url, headers=headers, params=params, ssl=verify) as response:
                         return await response.json() if endpoint != "maker/carbon" else await response.read()
                 else:
-                    async with session.get(url, headers=headers, params=params) as response:
+                    async with session.get(url, headers=headers, params=params, ssl=verify) as response:
                         return await response.json() if endpoint != "maker/carbon" else await response.read()
             except (aiohttp.client_exceptions.ContentTypeError, json.decoder.JSONDecodeError):
                 raise Exception("GET OR POST INVALID: check problem, invalid json")
@@ -62,14 +62,14 @@ class AkenoXJs:
             except Exception as e:
                 return str(e)
 
-    async def _make_request_in(self, endpoint, api_key=None, post=False, **params):
+    async def _make_request_in(self, endpoint, api_key=None, post=False, verify=False, **params):
         url, headers = self._prepare_request(endpoint, api_key)
         try:
             if post:
-                response = requests.post(url, headers=headers, params=params)
+                response = requests.post(url, headers=headers, params=params, verify=verify)
                 return response.json() if endpoint != "maker/carbon" else response.content
             else:
-                response = requests.get(url, headers=headers, params=params)
+                response = requests.get(url, headers=headers, params=params, verify=verify)
                 return response.json() if endpoint != "maker/carbon" else response.content
         except json.decoder.JSONDecodeError:
             raise Exception("GET OR POST INVALID: check problem, invalid json")
@@ -101,6 +101,7 @@ class AkenoXJs:
         allow_same=False,
         custom_dev=False,
         is_aiohttp=True,
+        verify=True,
         **params
     ):
         ALLOW_SAME_ENDPOINTS = {
@@ -113,23 +114,41 @@ class AkenoXJs:
         if allow_same and endpoint in ALLOW_SAME_ENDPOINTS:
             if is_aiohttp:
                 return await self._handle_request_errors(
-                    self._make_request_in_aiohttp(endpoint, api_key, post=post, **params),
+                    self._make_request_in_aiohttp(
+                        endpoint,
+                        api_key,
+                        post=post,
+                        verify=verify,
+                        **params
+                    ),
                     is_aiohttp=True
                 )
             else:
                 return await self._handle_request_errors(
-                    self._make_request_in(endpoint, api_key, post=post, **params),
+                    self._make_request_in(
+                        endpoint,
+                        api_key,
+                        post=post,
+                        verify=verify,
+                        **params
+                    ),
                     is_aiohttp=False
                 )
         if custom_dev:
             if is_aiohttp:
                 return await self._handle_request_errors(
-                    self._make_request_in_aiohttp(endpoint, api_key, post=post, **params),
+                    self._make_request_in_aiohttp(endpoint, api_key, post=post, verify=verify, **params),
                     is_aiohttp=True
                 )
             else:
                 return await self._handle_request_errors(
-                    self._make_request_in(endpoint, api_key, post=post, **params),
+                    self._make_request_in(
+                        endpoint,
+                        api_key,
+                        post=post,
+                        verify=verify,
+                        **params
+                    ),
                     is_aiohttp=False
                 )
 
