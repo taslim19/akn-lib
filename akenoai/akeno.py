@@ -35,7 +35,7 @@ class AkenoXJs:
             api_key = os.environ.get("AKENOX_KEY")
         if not api_key:
             raise ValueError("Required variables AKENOX_KEY or api_key")
-        url = f"https://{self.public_url}/api/v1/{endpoint}"
+        url = f"{self.public_url}/api/v1/{endpoint}"
         headers = {"x-api-key": api_key}
         return url, headers
 
