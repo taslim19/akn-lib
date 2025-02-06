@@ -56,7 +56,6 @@ return response
 >
 > You can set up your API key using environment variables:
 ```env
-AKENOX_NAME=randydev-ryu-js
 AKENOX_KEY=akeno_xxxxxx
 ```
 - To get an API key, [`@aknuserbot`](https://t.me/aknuserbot)
