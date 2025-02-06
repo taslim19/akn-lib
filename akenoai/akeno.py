@@ -39,7 +39,10 @@ class AkenoXJs:
         if not self.private_url:
             raise ValueError("Required variables AKENOX_NAME")
         url = f"https://{self.private_url}.{self.access_darkweb}/api/v1/{endpoint}"
-        headers = {"x-api-key": api_key}
+        headers = {
+            "Origin": f"https://{self.private_url}.{self.access_darkweb}",
+            "x-api-key": api_key,
+        }
         return url, headers
 
     async def _make_request_in_aiohttp(self, endpoint, api_key=None, post=False, **params):
