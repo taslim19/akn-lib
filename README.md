@@ -63,15 +63,15 @@ AKENOX_KEY=akeno_xxxxxx
 - 🚀 Thank you to our 2.7 million users per request!
 
 ### Problem Double Fix:
-🛠️ **Double Fix for Connection Issues**  
-- ❌ **Cannot connect to host**  
-- 🚫 **IP address blocked issue**  
-- 🌐 **Different DNS settings**  
+🛠️ **Double Fix for Connection Issues**
+- ❌ **Cannot connect to host**
+- 🚫 **IP address blocked issue**
+- 🌐 **Different DNS settings**
 
-🔍 **Debugging Step:**  
-If using **AkenoAI library** doesn't work, but direct requests do, try manual testing:  
+🔍 **Debugging Step:**
+If using **AkenoAI library** doesn't work, but direct requests do, try manual testing:
 
-✅ **Test Direct Connection (`test.py`)**  
+✅ **Test Direct Connection (`test.py`)**
 ```python
 import requests
 
@@ -79,10 +79,10 @@ url = "https://randydev-ryu-js.hf.space/api/v1/json/all"
 response = requests.get(url, headers={}, params={})
 print(response.json())  # Check if response is valid
 ```
-💡 **If this works, the issue is with AkenoAI, not the host!**  
+💡 **If this works, the issue is with AkenoAI, not the host!**
 
-🔗 **Try Manual Endpoints Instead**  
-API Endpoint:  
+🔗 **Try Manual Endpoints Instead**
+API Endpoint:
 ```plaintext
 https://randydev-ryu-js.hf.space/api/v1
 ```
