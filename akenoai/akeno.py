@@ -27,8 +27,7 @@ class DictToObj:
 
 class AkenoXJs:
     def __init__(self):
-        self.private_url = os.environ.get("AKENOX_NAME")
-        self.access_darkweb = m("aGYuc3BhY2U=").decode("utf-8")
+        self.public_url = "https://randydev-ryu-js.hf.space"
 
     def _prepare_request(self, endpoint, api_key=None):
         """Prepare common request parameters and validate API key."""
@@ -36,10 +35,8 @@ class AkenoXJs:
             api_key = os.environ.get("AKENOX_KEY")
         if not api_key:
             raise ValueError("Required variables AKENOX_KEY or api_key")
-        if not self.private_url:
-            raise ValueError("Required variables AKENOX_NAME")
-        url = f"https://{self.private_url}.{self.access_darkweb}/api/v1/{endpoint}"
-        headers = {"x-api-key": api_key, "User-Agent": "Chrome"}
+        url = f"https://{self.public_url}/api/v1/{endpoint}"
+        headers = {"x-api-key": api_key}
         return url, headers
 
     async def _make_request_in_aiohttp(self, endpoint, api_key=None, post=False, verify=False, **params):
@@ -122,21 +119,6 @@ class AkenoXJs:
                     **params
                 )
             )
-
-    def _request_parameters(self, method=None, is_private=False):
-        if not method:
-            raise ValueError("Required method")
-        if is_private:
-            url = self._get_private_url(is_allow_use=True)
-            return f"{url}/api/v1/{method}"
-        else:
-            return ""
-
-    def _get_private_url(self, is_allow_use=False):
-        if is_allow_use:
-            return self.private_url
-        else:
-            return ""
 
     def handle_dns_errors(func):
         async def wrapper(*args, **kwargs):
