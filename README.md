@@ -64,16 +64,30 @@ AKENOX_KEY=akeno_xxxxxx
 - 🚀 Thank you to our 2.7 million users per request!
 
 ### Problem Double Fix:
-- Cannot connect to host
-- IP address got blocked issue
-- Different DNS settings
-- make only requests and url works, doesn't library
-- manual endpoints: `https://randydev-ryu-js.hf.space/api/v1`
-```py
-url = "https://randydev-ryu-js.hf.space/api/v1/json/all"
-response = requests.get(url, headers={}, params={}).json()
-```
+🛠️ **Double Fix for Connection Issues**  
+- ❌ **Cannot connect to host**  
+- 🚫 **IP address blocked issue**  
+- 🌐 **Different DNS settings**  
 
+🔍 **Debugging Step:**  
+If using **AkenoAI library** doesn't work, but direct requests do, try manual testing:  
+
+✅ **Test Direct Connection (`test.py`)**  
+```python
+import requests
+
+url = "https://randydev-ryu-js.hf.space/api/v1/json/all"
+response = requests.get(url, headers={}, params={})
+print(response.json())  # Check if response is valid
+```
+💡 **If this works, the issue is with AkenoAI, not the host!**  
+
+🔗 **Try Manual Endpoints Instead**  
+API Endpoint:  
+```plaintext
+https://randydev-ryu-js.hf.space/api/v1
+```
+Check if the **host is reachable** before using custom libraries.
 # Contributing
 If you find a bug or have a feature request, please open an issue on our GitHub repository.
 
