@@ -75,21 +75,23 @@ class AkenoXJs:
         except Exception as e:
             return str(e)
 
-    async def _handle_request_errors(self, request_coro):
-        try:
-            result = await request_coro
-            return Box(result or {})
-        except (aiohttp.client_exceptions.ContentTypeError, json.decoder.JSONDecodeError):
-            raise Exception("GET OR POST INVALID: check problem, invalid json")
-        except (
-            aiohttp.ClientConnectorError,
-            aiohttp.client_exceptions.ClientConnectorSSLError,
-            requests.exceptions.ConnectionError
-        ):
-            raise Exception("Cannot connect to host")
-        except Exception as e:
-            return str(e)
+    def _handle_request_errors(func):
+        async def wrapper(*args, **kwargs):
+            try:
+                return await func(*args, **kwargs)
+            except (aiohttp.client_exceptions.ContentTypeError, json.decoder.JSONDecodeError):
+                raise Exception("GET OR POST INVALID: check problem, invalid json")
+            except (
+                aiohttp.ClientConnectorError,
+                aiohttp.client_exceptions.ClientConnectorSSLError,
+                requests.exceptions.ConnectionError
+            ):
+                raise Exception("Cannot connect to host")
+            except Exception as e:
+                return str(e)
+        return wrapper
 
+    @_handle_request_errors
     async def randydev(
         self,
         endpoint,
@@ -100,25 +102,9 @@ class AkenoXJs:
         **params
     ):
         if custom_dev_fast:
-            return await self._handle_request_errors(
-                self._make_request_in_aiohttp(
-                    endpoint,
-                    api_key,
-                    post=post,
-                    verify=verify,
-                    **params
-                )
-            )
+            return Box(await self._make_request_in_aiohttp(endpoint, api_key, post=post, verify=verify, **params) or {})
         else:
-            return await self._handle_request_errors(
-                self._make_request_in(
-                    endpoint,
-                    api_key,
-                    post=post,
-                    verify=verify,
-                    **params
-                )
-            )
+            return Box(await self._make_request_in(endpoint, api_key, post=post, verify=verify, **params) or {})
 
     def handle_dns_errors(func):
         async def wrapper(*args, **kwargs):
