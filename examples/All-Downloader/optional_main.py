@@ -1,5 +1,6 @@
 from akenoai import AkenoXToJs
 
+
 async def generic_downloader(url: str, service: str):
     endpoint = f"dl/{service}"
     response = await AkenoXToJs.randydev(
