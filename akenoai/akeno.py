@@ -36,9 +36,13 @@ class AkenoXJs:
         self.public_url = "https://randydev-ryu-js.hf.space"
         self.fastapi = FastAPI
         self.custom_openai = get_openapi
+        self.obj = Box
 
     def get_app(self, docs_url="/docs", redoc_url=None, **args):
         return self.fastapi(docs_url=docs_url, redoc_url=redoc_url, **args)
+
+    def dict_to_obj(self, func):
+        return self.obj(func or {})
 
     def get_custom_openai(self, **args):
         return self.custom_openai(**args)
