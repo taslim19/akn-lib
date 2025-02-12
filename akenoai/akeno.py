@@ -10,12 +10,11 @@ import httpx
 import requests
 import wget
 from box import Box
-
-import akenoai.logger as fast
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 
+import akenoai.logger as fast
 
 
 class DictToObj:
