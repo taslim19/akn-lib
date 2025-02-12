@@ -17,6 +17,17 @@
 
 ✅ Install via [`PYPI`](https://pypi.org/project/akenoai) for the latest updates. e.g.: `pip3 install akenoai[fast]`
 
+### FastAPI Demo
+- Use `main.py`
+- Try running `python3 main.py`
+```py
+from akenoai.runner import run_fast
+
+# run_fast initializes a FastAPI server with example routes and configurations.
+
+run_fast()
+```
+
 ### Code examples
 > [!TIP]
 > Trip PRO Usage Example:
