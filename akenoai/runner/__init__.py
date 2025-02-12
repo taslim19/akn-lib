@@ -18,18 +18,13 @@ async def read_root():
 
 @app.get("/api/openai/gpt-old")
 async def get_openai(query: str):
-    response = await _ran_dev.randydev(
+    return await _ran_dev.randydev(
         "ai/openai/gpt-old",
         custom_dev_fast=True,
         query=query
     )
-    return response
 
 def run_fast(host: str = '0.0.0.0', port: int = 8000) -> None:
-    config = {
-        'host' : host,
-        'port' : port,
-    }
-    LOGS.info(f"Running on port {config['port']}")
-    uvicorn.run(app, **config)
-    LOGS.info(f"Closing port {config['port']}")
+    LOGS.info(f"Running on port {port}")
+    uvicorn.run(app, host=host, port=port)
+    LOGS.info(f"Closing port {port}")
