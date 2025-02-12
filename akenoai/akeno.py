@@ -12,8 +12,8 @@ import wget
 from box import Box
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from starlette.middleware.sessions import SessionMiddleware
 from fastapi.openapi.utils import get_openapi
+from starlette.middleware.sessions import SessionMiddleware
 
 import akenoai.logger as fast
 
