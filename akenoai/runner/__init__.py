@@ -18,7 +18,7 @@ async def read_root():
 
 @app.get("/test")
 async def example_json():
-    async with await _ran_dev.fasthttp().ClientSession() as session:
+    async with _ran_dev.fasthttp().ClientSession() as session:
         async with session.get("https://jsonplaceholder.typicode.com/todos/1") as response:
             title = _ran_dev.dict_to_obj(await response.json()).title
     return {"message": title}
