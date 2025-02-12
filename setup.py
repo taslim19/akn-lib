@@ -41,6 +41,8 @@ setuptools.setup(
             "starlette",
             "uvicorn[standard]",
             "fastapi[all]",
+            "kurigram",
+            "TgCrypto",
         ],
         "standard": [
             "g4f",
