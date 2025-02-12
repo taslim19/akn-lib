@@ -12,9 +12,6 @@
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/akenoai?label=DOWNLOADS&style=round)](https://pypi.org/project/akenoai)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/TeamKillerX/akenoai-lib/main.svg)](https://results.pre-commit.ci/latest/github/TeamKillerX/akenoai-lib/main)
 
-### Screenshots
-![Image](https://github.com/user-attachments/assets/0ef30240-465c-4912-8d9e-54520cb7c226)
-
 ### installation
 🔹 <b>Recommended Installation:</b>
 
@@ -23,10 +20,37 @@
 ### Code examples
 > [!TIP]
 > Trip PRO Usage Example:
+
+- Use Access API key V2 Premium
+```py
+import json
+from akenoai import AkenoXToJs
+
+chat_history = [
+    {"role": "User", "message": "hello world"},
+    {"role": "Chatbot", "message": "Hello! How can I assist you today?"}
+]
+
+response = await AkenoXToJs.randydev(
+    "ai/cohere/command-plus",
+    api_key="<your_api_key>",
+    custom_dev_fast=True,
+    query="what is AkenoX AI?",
+    chatHistory=json.dumps(chat_history),
+    system_prompt="You are a helpful AI assistant designed to provide clear and concise responses."
+)
+
+print(response)
+```
+- Use API Key V1 Free
 ```py
 from akenoai import AkenoXToJs
 
-response = await AkenoXToJs.randydev("ai/gpt-old", custom_dev_fast=True, query="hello world")
+response = await AkenoXToJs.randydev(
+    "ai/openai/gpt-old",
+     custom_dev_fast=True,
+     query="hello world"
+)
 print(response)
 ```
 <b>Output:</b>
@@ -37,14 +61,13 @@ print(response)
 ```py
 randydev(endpoint, api_key=None, post=False, custom_dev_fast=False, **params)
 ```
-🔹 <b>Custom Dev:</b>
+🔹 <b>User Creation Date:</b>
 ```py
 import os
 from akenoai import AkenoXToJs
 
 response = await AkenoXToJs.randydev(
     "user/creation-date",
-    api_key=os.environ.get("AKENOX_KEY"), # default optional
     custom_dev_fast=True,
     user_id=client.me.id
 )
@@ -53,6 +76,8 @@ return response
 ### API Key
 > [!NOTE]
 > How to Get an API Key for AkenoX API?
+>
+> Different V1 Free and V2 Access Premium
 >
 > You can set up your API key using environment variables:
 ```env
@@ -68,25 +93,6 @@ AKENOX_KEY=akeno_xxxxxx
 - 🚫 **IP address blocked issue**
 - 🌐 **Different DNS settings**
 
-🔍 **Debugging Step:**
-If using **AkenoAI library** doesn't work, but direct requests do, try manual testing:
-
-✅ **Test Direct Connection (`test.py`)**
-```python
-import requests
-
-url = "https://randydev-ryu-js.hf.space/api/v1/json/all"
-response = requests.get(url, headers={}, params={})
-print(response.json())  # Check if response is valid
-```
-💡 **If this works, the issue is with AkenoAI, not the host!**
-
-🔗 **Try Manual Endpoints Instead**
-API Endpoint:
-```plaintext
-https://randydev-ryu-js.hf.space/api/v1
-```
-Check if the **host is reachable** before using custom libraries.
 # Contributing
 If you find a bug or have a feature request, please open an issue on our GitHub repository.
 
