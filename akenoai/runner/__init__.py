@@ -35,7 +35,7 @@ def custom_openapi():
         title="AkenoX AI API",
         version="1.0.0",
         summary="Use It Only For Personal Project",
-        description="Free API By akenoai-lib,
+        description="Free API By akenoai-lib",
         routes=app.routes,
     )
     openapi_schema["info"]["x-logo"] = {
