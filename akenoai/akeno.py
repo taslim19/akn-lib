@@ -34,11 +34,11 @@ class DictToObj:
 class AkenoXJs:
     def __init__(self):
         self.public_url = "https://randydev-ryu-js.hf.space"
-        self.fastapi = FastAPI(docs_url="/docs", redoc_url=None)
+        self.fastapi = FastAPI
         self.custom_openai = get_openapi
 
-    def get_app(self):
-        return self.fastapi
+    def get_app(self, docs_url="/docs", redoc_url=None, **args):
+        return self.fastapi(docs_url=docs_url, redoc_url=redoc_url, **args)
 
     def get_custom_openai(self, **args):
         return self.custom_openai(**args)
