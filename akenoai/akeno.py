@@ -10,6 +10,9 @@ import httpx
 import requests
 import wget
 from box import Box
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.sessions import SessionMiddleware
 
 import akenoai.logger as fast
 
@@ -30,6 +33,25 @@ class DictToObj:
 class AkenoXJs:
     def __init__(self):
         self.public_url = "https://randydev-ryu-js.hf.space"
+        self.fastapi = FastAPI(docs_url="/docs", redoc_url=None)
+
+    def get_app(self):
+        return self.fastapi
+
+    def add_session_middleware(self, secret_key=None):
+        self.fastapi.add_middleware(
+            SessionMiddleware,
+            secret_key=secret_key
+        )
+
+    def add_cors_middleware(self):
+        self.fastapi.add_middleware(
+            CORSMiddleware,
+            allow_origins=["*"],
+            allow_credentials=True,
+            allow_methods=["*"],
+            allow_headers=["*"],
+        )
 
     def _prepare_request(self, endpoint, api_key=None):
         """Prepare common request parameters and validate API key."""
