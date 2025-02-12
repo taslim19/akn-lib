@@ -18,7 +18,7 @@
 ✅ Install via [`PYPI`](https://pypi.org/project/akenoai) for the latest updates. e.g.: `pip3 install akenoai[fast]`
 
 ✅ Install via github
-- add requirements.txt
+- Create a requirements.txt file in the project root containing the following dependency to ensure you can install the GitHub version:
 - `https://github.com/TeamKillerX/akenoai-lib.git#egg=akenoai[fast]`
 
 
