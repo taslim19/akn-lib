@@ -37,6 +37,10 @@ class AkenoXJs:
         self.fastapi = FastAPI
         self.custom_openai = get_openapi
         self.obj = Box
+        self.request_in = requests
+
+    def fasthttp(self):
+        return self.request_in
 
     def get_app(self, docs_url="/docs", redoc_url=None, **args):
         return self.fastapi(docs_url=docs_url, redoc_url=redoc_url, **args)
