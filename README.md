@@ -21,7 +21,7 @@
 > [!TIP]
 > Trip PRO Usage Example:
 
-- Use Access API key V2 premium
+- Use Access API key V2 Premium
 ```py
 import json
 from akenoai import AkenoXToJs
@@ -33,7 +33,7 @@ chat_history = [
 
 response = await AkenoXToJs.randydev(
     "ai/cohere/command-plus",
-    api_key="this access api key premium",
+    api_key="<your_api_key>",
     custom_dev_fast=True,
     query="what is AkenoX AI?",
     chatHistory=json.dumps(chat_history),
