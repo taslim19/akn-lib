@@ -1,15 +1,17 @@
-import os
 import logging
+import os
+
 import uvicorn
-from akenoai import AkenoXToJs as _ran_dev
 from fastapi import Depends, HTTPException
+
+from akenoai import AkenoXToJs as _ran_dev
 
 app = _ran_dev.get_app()
 
 logger = logging.getLogger(__name__)
 LOGS = logging.getLogger("[akenox]")
 logger.setLevel(logging.DEBUG)
-    
+
 @app.get("/")
 async def read_root():
     return {"message": "Hello, World!"}
