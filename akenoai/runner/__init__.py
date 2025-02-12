@@ -16,6 +16,12 @@ logger.setLevel(logging.DEBUG)
 async def read_root():
     return {"message": "Hello, World!"}
 
+@app.get("/test")
+async def example_json():
+    response = _ran_dev.fasthttp().get("https://jsonplaceholder.typicode.com/todos/1").json()
+    title = _ran_dev.dict_to_obj(response).title
+    return {"message": title}
+
 @app.get("/api/openai/gpt-old")
 async def get_openai(query: str):
     return await _ran_dev.randydev(
