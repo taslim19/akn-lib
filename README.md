@@ -76,7 +76,7 @@ return response
 ### API Key
 > [!NOTE]
 > How to Get an API Key for AkenoX API?
-> 
+>
 > Different V1 Free and V2 Access Premium
 >
 > You can set up your API key using environment variables:
