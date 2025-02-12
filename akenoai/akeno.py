@@ -12,6 +12,7 @@ import wget
 from box import Box
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.openapi.utils import get_openapi
 from starlette.middleware.sessions import SessionMiddleware
 
 import akenoai.logger as fast
@@ -34,9 +35,13 @@ class AkenoXJs:
     def __init__(self):
         self.public_url = "https://randydev-ryu-js.hf.space"
         self.fastapi = FastAPI(docs_url="/docs", redoc_url=None)
+        self.custom_openai = get_openapi
 
     def get_app(self):
         return self.fastapi
+
+    def get_custom_openai(self, **args):
+        return self.custom_openai(**args)
 
     def add_session_middleware(self, secret_key=None):
         self.fastapi.add_middleware(
