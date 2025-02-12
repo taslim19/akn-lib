@@ -35,7 +35,7 @@ class AkenoXJs:
         self.public_url = "https://randydev-ryu-js.hf.space"
         self.fastapi = FastAPI(docs_url="/docs", redoc_url=None)
 
-    def fastapi(self):
+    def get_app(self):
         return self.fastapi
 
     def add_session_middleware(self, secret_key=None):
