@@ -107,14 +107,14 @@ logger.setLevel(logging.DEBUG)
 fast_app = js.get_app()
 
 assistant = js.create_pyrogram(
-    name=":memory",
+    name="fastapi-bot",
     api_id=1234,
     api_hash="asdfghkl",
     bot_token="1235:asdfh"
 )
 
 user_client = js.create_pyrogram(
-    name=":memory",
+    name="fastapi-user",
     api_id=1234,
     api_hash="asdfghkl",
     session_string="session"
@@ -124,7 +124,7 @@ user_client = js.create_pyrogram(
 async def startup_event():
     bot = await assistant.start()
     user = await user_client.start()
-    LOGS.info(f"Started UserBot: {user.me.first_name} || {bot.me.first_name}")
+    LOGS.info(f"Started UserBot & Assistant: {user.me.first_name} || {bot.me.first_name}")
 
 @fast_app.get("/api/cohere")
 async def cohere(query: str):
