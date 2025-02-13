@@ -39,7 +39,7 @@ class AkenoXJs:
         self.obj = Box
         self.request_in = aiohttp
 
-    async def fasthttp(self):
+    def fasthttp(self):
         return self.request_in
 
     def get_app(self, docs_url="/docs", redoc_url=None, **args):

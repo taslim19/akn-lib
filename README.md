@@ -21,7 +21,6 @@
 - Create a requirements.txt file in the project root containing the following dependency to ensure you can install the GitHub version:
 - `https://github.com/TeamKillerX/akenoai-lib.git#egg=akenoai[fast]`
 
-
 ### FastAPI Demo
 - Use `main.py`
 - Try running `python3 main.py`
@@ -58,6 +57,40 @@ response = await AkenoXToJs.randydev(
 
 print(response)
 ```
+### Super-Fast Performance
+Use AkenoX-API + FastAPI
+> [!WARNING]
+> AkenoX API <b>may block access if there are too many spam requests!</b> 🚨
+>
+> Always use <b>rate limiting</b>
+>
+```py
+from akenoai import AkenoXToJs as js
+from akenoai.runner import run_fast
+
+app = js.get_app()
+
+@app.get("/api/cohere")
+async def cohere(query: str):
+    return await js.randydev(
+    "ai/cohere/command-plus",
+        api_key="<your_api_key>",
+        custom_dev_fast=True,
+        query=query,
+        chatHistory=[],
+        system_prompt="You are a helpful AI assistant designed to provide clear and concise responses."
+    )
+
+@app.get("/test")
+async def example_json():
+    async with js.fasthttp().ClientSession() as session:
+        async with session.get("https://jsonplaceholder.typicode.com/todos/1") as response:
+            title = js.dict_to_obj(await response.json()).title
+    return {"message": title}
+
+run_fast(build=app)
+```
+
 - Use API Key V1 Free
 ```py
 from akenoai import AkenoXToJs
