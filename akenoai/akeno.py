@@ -41,8 +41,8 @@ class AkenoXJs:
         self.request_in = aiohttp
         self.client_pyrogram = Client
 
-    def create_pyrogram(self, **args):
-        return self.client_pyrogram(**args)
+    def create_pyrogram(self, name: str, **args):
+        return self.client_pyrogram(name, **args)
 
     def fasthttp(self):
         return self.request_in
