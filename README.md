@@ -57,7 +57,7 @@ response = await AkenoXToJs.randydev(
 
 print(response)
 ```
-### Super-Fast Perfomance
+### Super-Fast Performance
 Use AkenoX-API + FastAPI
 > [!WARNING]
 > AkenoX API <b>may block access if there are too many spam requests!</b> 🚨
