@@ -64,7 +64,7 @@ class AkenoXJs:
 
     def add_cors_middleware(self):
         self.fastapi.add_middleware(
-            CORSMiddleware,
+            middleware_class=CORSMiddleware,
             allow_origins=["*"],
             allow_credentials=True,
             allow_methods=["*"],
