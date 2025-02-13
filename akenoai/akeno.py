@@ -140,7 +140,7 @@ class AkenoXJs:
             url = self._get_public_url(is_allow_use=True)
             return f"{url}/api/v1/{method}"
         else:
-            return ""
+            raise ValueError("Non-public requests are not supported. Please specify is_public=True or handle non-public cases explicitly.")
 
     def _get_public_url(self, is_allow_use=False):
         if is_allow_use:
