@@ -41,8 +41,8 @@ class AkenoXJs:
         self.request_in = aiohttp
         self.client_pyrogram = Client
 
-    def create_pyrogram(self, **args):
-        return self.client_pyrogram(**args)
+    def create_pyrogram(self, name: str, **args):
+        return self.client_pyrogram(name, **args)
 
     def fasthttp(self):
         return self.request_in
@@ -64,7 +64,7 @@ class AkenoXJs:
 
     def add_cors_middleware(self):
         self.fastapi.add_middleware(
-            CORSMiddleware,
+            middleware_class=CORSMiddleware,
             allow_origins=["*"],
             allow_credentials=True,
             allow_methods=["*"],
@@ -132,6 +132,18 @@ class AkenoXJs:
             except Exception as e:
                 return str(e)
         return wrapper
+
+    def _request_parameters(self, method=None, is_public=False):
+        if not method:
+            raise ValueError("Required method")
+        if is_public:
+            url = self._get_public_url(is_allow_use=True)
+            return f"{url}/api/v1/{method}"
+        else:
+            raise ValueError("Non-public requests are not supported. Please specify is_public=True or handle non-public cases explicitly.")
+
+    def _get_public_url(self, is_allow_use=False):
+        return self.public_url if is_allow_use else ""
 
     @_handle_request_errors
     @fast.log_performance
