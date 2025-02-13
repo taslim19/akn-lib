@@ -68,9 +68,9 @@ Use AkenoX-API + FastAPI
 from akenoai import AkenoXToJs as js
 from akenoai.runner import run_fast
 
-app = js.get_app()
+fast_app = js.get_app()
 
-@app.get("/api/cohere")
+@fast_app.get("/api/cohere")
 async def cohere(query: str):
     return await js.randydev(
         "ai/cohere/command-plus",
@@ -81,14 +81,14 @@ async def cohere(query: str):
         system_prompt="You are a helpful AI assistant designed to provide clear and concise responses."
     )
 
-@app.get("/test")
+@fast_app.get("/test")
 async def example_json():
     async with js.fasthttp().ClientSession() as session:
         async with session.get("https://jsonplaceholder.typicode.com/todos/1") as response:
             title = js.dict_to_obj(await response.json()).title
     return {"message": title}
 
-run_fast(build=app)
+run_fast(build=fast_app)
 ```
 ### 🥷 Full-Stack Examples
 - [X] Powerful & Super Fast Performance
@@ -104,22 +104,29 @@ logger = logging.getLogger(__name__)
 LOGS = logging.getLogger("[akenox]")
 logger.setLevel(logging.DEBUG)
 
-app = js.get_app()
-js.add_cors_middleware()
+fast_app = js.get_app()
 
-client = js.create_pyrogram(
-    ":memory",
+assistant = js.create_pyrogram(
+    name=":memory",
+    api_id=1234,
+    api_hash="asdfghkl",
+    bot_token="1235:asdfh"
+)
+
+user_client = js.create_pyrogram(
+    name=":memory",
     api_id=1234,
     api_hash="asdfghkl",
     session_string="session"
 )
 
-@app.on_event("startup")
+@fast_app.on_event("startup")
 async def startup_event():
-    user = await client.start()
-    LOGS.info(f"Started UserBot: {user.me.first_name}")
+    bot = await assistant.start()
+    user = await user_client.start()
+    LOGS.info(f"Started UserBot: {user.me.first_name} || {bot.me.first_name}")
 
-@app.get("/api/cohere")
+@fast_app.get("/api/cohere")
 async def cohere(query: str):
     return await js.randydev(
         "ai/cohere/command-plus",
@@ -130,19 +137,19 @@ async def cohere(query: str):
         system_prompt="You are a helpful AI assistant designed to provide clear and concise responses."
     )
 
-@app.get("/test")
+@fast_app.get("/test")
 async def example_json():
     async with js.fasthttp().ClientSession() as session:
         async with session.get("https://jsonplaceholder.typicode.com/todos/1") as response:
             title = js.dict_to_obj(await response.json()).title
     return {"message": title}
 
-@app.get("/api/send_message")
+@fast_app.get("/api/tg/send_message")
 async def send_message(text: str, chat_id: str):
     response_json = await client.send_message(chat_id, text)
-    return {"success": response_json}
+    return {"message_id": response_json.id}
 
-run_fast(build=app)
+run_fast(build=fast_app)
 ```
 
 - Use API Key V1 Free
