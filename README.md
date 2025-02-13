@@ -19,7 +19,7 @@
 
 ✅ Install via github
 - Create a requirements.txt file in the project root containing the following dependency to ensure you can install the GitHub version:
-- `https://github.com/TeamKillerX/akenoai-lib.git#egg=akenoai[fast]`
+- `git+https://github.com/TeamKillerX/akenoai-lib.git#egg=akenoai[fast]`
 
 ### FastAPI Demo
 - Use `main.py`
