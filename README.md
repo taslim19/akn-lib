@@ -61,9 +61,9 @@ print(response)
 Use AkenoX-API + FastAPI
 > [!WARNING]
 > AkenoX API <b>may block access if there are too many spam requests!</b> 🚨
-> 
+>
 > Always use <b>rate limiting</b>
-> 
+>
 ```py
 from akenoai import AkenoXToJs as js
 from akenoai.runner import run_fast
