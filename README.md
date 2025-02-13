@@ -57,7 +57,7 @@ response = await AkenoXToJs.randydev(
 
 print(response)
 ```
-### Super-Fast Performance
+### 🚀 Super-Fast Performance
 Use AkenoX-API + FastAPI
 > [!WARNING]
 > AkenoX API <b>may block access if there are too many spam requests!</b> 🚨
@@ -87,6 +87,60 @@ async def example_json():
         async with session.get("https://jsonplaceholder.typicode.com/todos/1") as response:
             title = js.dict_to_obj(await response.json()).title
     return {"message": title}
+
+run_fast(build=app)
+```
+### 🥷 Full-Stack Examples
+- [X] Powerful & Super Fast Performance
+- [X] Recommended RAM: 8GB / 16GB
+- [X] Supports `bot_token` & `session_string`
+- [X] Custom Web Frontend with HTML & CSS
+```py
+import logging
+from akenoai import AkenoXToJs as js
+from akenoai.runner import run_fast
+
+logger = logging.getLogger(__name__)
+LOGS = logging.getLogger("[akenox]")
+logger.setLevel(logging.DEBUG)
+
+app = js.get_app()
+js.add_cors_middleware()
+
+client = js.create_pyrogram(
+    ":memory",
+    api_id=1234,
+    api_hash="asdfghkl",
+    session_string="session"
+)
+
+@app.on_event("startup")
+async def startup_event():
+    user = await client.start()
+    LOGS.info(f"Started UserBot: {user.me.first_name}")
+
+@app.get("/api/cohere")
+async def cohere(query: str):
+    return await js.randydev(
+        "ai/cohere/command-plus",
+        api_key="<your_api_key>",
+        custom_dev_fast=True,
+        query=query,
+        chatHistory=[],
+        system_prompt="You are a helpful AI assistant designed to provide clear and concise responses."
+    )
+
+@app.get("/test")
+async def example_json():
+    async with js.fasthttp().ClientSession() as session:
+        async with session.get("https://jsonplaceholder.typicode.com/todos/1") as response:
+            title = js.dict_to_obj(await response.json()).title
+    return {"message": title}
+
+@app.get("/api/send_message")
+async def send_message(text: str, chat_id: str):
+    response_json = await client.send_message(chat_id, text)
+    return {"success": response_json}
 
 run_fast(build=app)
 ```
@@ -122,7 +176,7 @@ response = await AkenoXToJs.randydev(
 )
 return response
 ```
-### API Key
+### 🔑 API Key
 > [!NOTE]
 > How to Get an API Key for AkenoX API?
 >
@@ -136,11 +190,15 @@ AKENOX_KEY=akeno_xxxxxx
 
 - 🚀 Thank you to our 2.7 million users per request!
 
-### Problem Double Fix:
+### ⚠️ Problem Double Fix:
 🛠️ **Double Fix for Connection Issues**
 - ❌ **Cannot connect to host**
 - 🚫 **IP address blocked issue**
 - 🌐 **Different DNS settings**
+
+### ❤️ Special Thanks To
+- [`Kurigram`](https://github.com/KurimuzonAkuma/pyrogram)
+- [`FastAPI`](https://github.com/fastapi/fastapi)
 
 # Contributing
 If you find a bug or have a feature request, please open an issue on our GitHub repository.
