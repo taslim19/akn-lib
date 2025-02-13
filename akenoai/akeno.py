@@ -143,10 +143,7 @@ class AkenoXJs:
             raise ValueError("Non-public requests are not supported. Please specify is_public=True or handle non-public cases explicitly.")
 
     def _get_public_url(self, is_allow_use=False):
-        if is_allow_use:
-            return self.public_url
-        else:
-            return ""
+        return self.public_url if is_allow_use else ""
 
     @_handle_request_errors
     @fast.log_performance
