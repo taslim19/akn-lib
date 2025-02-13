@@ -10,10 +10,10 @@ import httpx
 import requests
 import wget
 from box import Box
-from pyrogram import Client
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
+from pyrogram import Client
 from starlette.middleware.sessions import SessionMiddleware
 
 import akenoai.logger as fast
@@ -43,7 +43,7 @@ class AkenoXJs:
 
     def create_pyrogram(self, **args):
         return self.client_pyrogram(**args)
-        
+
     def fasthttp(self):
         return self.request_in
 
