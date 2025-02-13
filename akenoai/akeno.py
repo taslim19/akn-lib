@@ -133,6 +133,21 @@ class AkenoXJs:
                 return str(e)
         return wrapper
 
+    def _request_parameters(self, method=None, is_public=False):
+        if not method:
+            raise ValueError("Required method")
+        if is_public:
+            url = self._get_public_url(is_allow_use=True)
+            return f"{url}/api/v1/{method}"
+        else:
+            return ""
+
+    def _get_public_url(self, is_allow_use=False):
+        if is_allow_use:
+            return self.public_url
+        else:
+            return ""
+
     @_handle_request_errors
     @fast.log_performance
     async def randydev(
