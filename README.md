@@ -73,7 +73,7 @@ app = js.get_app()
 @app.get("/api/cohere")
 async def cohere(query: str):
     return await js.randydev(
-    "ai/cohere/command-plus",
+        "ai/cohere/command-plus",
         api_key="<your_api_key>",
         custom_dev_fast=True,
         query=query,
