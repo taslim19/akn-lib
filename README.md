@@ -61,7 +61,8 @@ print(response)
 - installation: `pip3 install akenoai[streamlit]`
 - You can use `streamlit run app.py`
 - `akenoai[fast]` → <b>Pyrogram error:</b> *There is no current event loop* (<b>Stuck in Streamlit</b>)
-- Example usage
+
+- Example usage:
 ```py
 from akenoai import AkenoXToJs as js
 
