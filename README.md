@@ -231,7 +231,7 @@ print(response)
 - `api_key:` (Optional) API key for authentication.
 - `post:` Boolean flag to indicate POST requests.
 - `is_obj:` Boolean flag indicating whether the response should be returned as a Python object (True) or in the default format (False).
-- `custom_dev_fast:` Boolean flag default return None
+- `custom_dev_fast:` Boolean flag defaults to None
 - `**kwargs:` to object pass like JSON
 
 ```py
