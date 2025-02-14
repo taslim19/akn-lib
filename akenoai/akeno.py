@@ -181,8 +181,8 @@ class AkenoXJs:
         self,
         endpoint,
         api_key=None,
-        is_obj=False,
         post=False,
+        is_obj=False,
         verify=True,
         **params
     ):
