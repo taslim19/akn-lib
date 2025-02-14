@@ -232,7 +232,7 @@ print(response)
 - `post:` Boolean flag to indicate POST requests.
 - `is_obj:` Boolean flag indicating whether the response should be returned as a Python object (True) or in the default format (False).
 - `custom_dev_fast:` Boolean flag defaults to None
-- `**kwargs:` to object pass like JSON
+- `**kwargs:` Allows passing additional parameters as a dictionary, which will be sent as JSON.
 
 ```py
 randydev(endpoint, api_key=None, post=False, is_obj=False, custom_dev_fast=False, **params)
