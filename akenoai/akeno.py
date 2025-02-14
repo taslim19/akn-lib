@@ -131,7 +131,7 @@ class AkenoXJs:
             except Exception as e:
                 return str(e)
 
-    async def _make_request_in(self, endpoint, api_key=None, post=False, verify=False, **params):
+    def _make_request_in(self, endpoint, api_key=None, post=False, verify=False, **params):
         url, headers = self._prepare_request(endpoint, api_key)
         try:
             if post:
@@ -177,6 +177,18 @@ class AkenoXJs:
 
     @_handle_request_errors
     @fast.log_performance
+    def no_async_randydev(
+        self,
+        endpoint,
+        api_key=None,
+        post=False,
+        verify=True,
+        **params
+    ):
+        return Box(self._make_request_in(endpoint, api_key, post=post, verify=verify, **params) or {})
+
+    @_handle_request_errors
+    @fast.log_performance
     async def randydev(
         self,
         endpoint,
@@ -189,7 +201,7 @@ class AkenoXJs:
         if custom_dev_fast:
             return Box(await self._make_request_in_aiohttp(endpoint, api_key, post=post, verify=verify, **params) or {})
         else:
-            return Box(await self._make_request_in(endpoint, api_key, post=post, verify=verify, **params) or {})
+            return Box(self._make_request_in(endpoint, api_key, post=post, verify=verify, **params) or {})
 
     def handle_dns_errors(func):
         async def wrapper(*args, **kwargs):
