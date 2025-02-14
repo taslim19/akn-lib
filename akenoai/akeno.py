@@ -40,7 +40,6 @@ class AkenoXJs:
         self.custom_openai = get_openapi
         self.obj = Box
         self.request_in = aiohttp
-        self.client_pyrogram = Client
         self.st = streamlit
 
     def stl(self):
