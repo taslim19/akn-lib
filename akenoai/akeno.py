@@ -57,14 +57,14 @@ class AkenoXJs:
         return self.custom_openai(**args)
 
     def add_session_middleware(self, secret_key=None):
-        self.fastapi.add_middleware(
+        self.get_app().add_middleware(
             SessionMiddleware,
             secret_key=secret_key
         )
 
     def add_cors_middleware(self):
-        self.fastapi.add_middleware(
-            middleware_class=CORSMiddleware,
+        self.get_app().add_middleware(
+            CORSMiddleware,
             allow_origins=["*"],
             allow_credentials=True,
             allow_methods=["*"],
