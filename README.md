@@ -101,7 +101,7 @@ js.custom_openapi(
     app=fast_app,
     title="AkenoX Beta AI API",
     version="1.0.0",
-    summary="Use It Only For Personal Project",
+    summary="Use It Only For Personal Projects",
     description="Free API By akenoai-lib",
     routes=fast_app.routes,
 )
