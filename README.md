@@ -90,6 +90,21 @@ async def example_json():
 
 run_fast(build=fast_app)
 ```
+### 🛠️ Custom Openai
+```py
+from akenoai import AkenoXToJs as js
+
+fast_app = js.get_app()
+
+js.custom_openapi(
+    app=fast_app,
+    title="AkenoX Beta AI API",
+    version="1.0.0",
+    summary="Use It Only For Personal Project",
+    description="Free API By akenoai-lib",
+    routes=fast_app.routes,
+)
+```
 ### 🥷 Full-Stack Examples
 - [X] Powerful & Super Fast Performance
 - [X] Recommended RAM: 8GB / 16GB
@@ -148,6 +163,15 @@ async def example_json():
 async def send_message(text: str, chat_id: str):
     response_json = await client.send_message(chat_id, text)
     return {"message_id": response_json.id}
+
+js.custom_openapi(
+    app=fast_app,
+    title="AkenoX Beta AI API",
+    version="1.0.0",
+    summary="Use It Only For Personal Project",
+    description="Free API By akenoai-lib",
+    routes=fast_app.routes,
+)
 
 run_fast(build=fast_app)
 ```
