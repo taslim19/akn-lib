@@ -99,6 +99,7 @@ fast_app = js.get_app()
 
 js.custom_openapi(
     app=fast_app,
+    logo_url="https://github-production-user-asset-6210df.s3.amazonaws.com/90479255/289277800-f26513f7-cdf4-44ee-9a08-f6b27e6b99f7.jpg",
     title="AkenoX Beta AI API",
     version="1.0.0",
     summary="Use It Only For Personal Projects",
@@ -168,6 +169,7 @@ async def send_message(text: str, chat_id: str):
 
 js.custom_openapi(
     app=fast_app,
+    logo_url="https://github-production-user-asset-6210df.s3.amazonaws.com/90479255/289277800-f26513f7-cdf4-44ee-9a08-f6b27e6b99f7.jpg",
     title="AkenoX Beta AI API",
     version="1.0.0",
     summary="Use It Only For Personal Project",
