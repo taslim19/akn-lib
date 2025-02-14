@@ -57,6 +57,28 @@ response = await AkenoXToJs.randydev(
 
 print(response)
 ```
+### 🌐 Streamlit
+- installation: `pip3 install akenoai[streamlit]`
+- You can use `streamlit run app.py`
+- Example usage
+```py
+from akenoai import AkenoXToJs as js
+
+js_st = js.stl()
+js_st.title("Welcome to akenoai-lib APP")
+js_st.write("Developed by RandyDev")
+js_st.write("Examples Json")
+
+with js_st.form("json"):
+    submitted = js_st.form_submit_button("Submit")
+    if submitted:
+        js_st.spinner("Fetching GitHub data...")
+        js_st.json(
+            js.no_async_randydev("json/all", post=False)
+        )
+
+js.hide_streamlit_watermark(unsafe_allow_html=True)
+```
 ### 🚀 Super-Fast Performance
 Use AkenoX-API + FastAPI
 > [!WARNING]
