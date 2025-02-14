@@ -181,11 +181,15 @@ class AkenoXJs:
         self,
         endpoint,
         api_key=None,
+        is_obj=False,
         post=False,
         verify=True,
         **params
     ):
-        return Box(self._make_request_in(endpoint, api_key, post=post, verify=verify, **params) or {})
+        if is_obj:
+            return Box(self._make_request_in(endpoint, api_key, post=post, verify=verify, **params) or {})
+        else:
+            return self._make_request_in(endpoint, api_key, post=post, verify=verify, **params)
 
     @_handle_request_errors
     @fast.log_performance
@@ -194,14 +198,17 @@ class AkenoXJs:
         endpoint,
         api_key=None,
         post=False,
-        custom_dev_fast=False,
+        is_obj=True,
+        custom_dev_fast=True,
         verify=True,
         **params
     ):
         if custom_dev_fast:
-            return Box(await self._make_request_in_aiohttp(endpoint, api_key, post=post, verify=verify, **params) or {})
-        else:
-            return Box(self._make_request_in(endpoint, api_key, post=post, verify=verify, **params) or {})
+            if is_obj:
+                return Box(await self._make_request_in_aiohttp(endpoint, api_key, post=post, verify=verify, **params) or {})
+            else:
+                return await self._make_request_in_aiohttp(endpoint, api_key, post=post, verify=verify, **params)
+        return None
 
     def handle_dns_errors(func):
         async def wrapper(*args, **kwargs):
