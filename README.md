@@ -116,6 +116,7 @@ js.custom_openapi(
 import logging
 from akenoai import AkenoXToJs as js
 from akenoai.runner import run_fast
+from akenoai.clients import create_pyrogram
 
 logger = logging.getLogger(__name__)
 LOGS = logging.getLogger("[akenox]")
@@ -124,14 +125,14 @@ logger.setLevel(logging.DEBUG)
 fast_app = js.get_app()
 js.add_cors_middleware()
 
-assistant = js.create_pyrogram(
+assistant = create_pyrogram(
     name="fastapi-bot",
     api_id=1234,
     api_hash="asdfghkl",
     bot_token="1235:asdfh"
 )
 
-user_client = js.create_pyrogram(
+user_client = create_pyrogram(
     name="fastapi-user",
     api_id=1234,
     api_hash="asdfghkl",
