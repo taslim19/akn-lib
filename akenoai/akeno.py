@@ -14,7 +14,6 @@ from box import Box
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
-from pyrogram import Client
 from starlette.middleware.sessions import SessionMiddleware
 from streamlit_option_menu import option_menu
 
@@ -65,9 +64,6 @@ class AkenoXJs:
         """
         self.st.markdown(hide_streamlit_style, unsafe_allow_html=unsafe_allow_html)
         self.st.header("")
-
-    def create_pyrogram(self, name: str, **args):
-        return self.client_pyrogram(name, **args)
 
     def fasthttp(self):
         return self.request_in
