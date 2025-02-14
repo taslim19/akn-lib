@@ -198,8 +198,8 @@ class AkenoXJs:
         endpoint,
         api_key=None,
         post=False,
-        is_obj=True,
-        custom_dev_fast=True,
+        is_obj=False,
+        custom_dev_fast=False,
         verify=True,
         **params
     ):
