@@ -1,4 +1,4 @@
 from pyrogram import Client
 
-def create_pyrogram(self, name: str, **args):
+def create_pyrogram(name: str, **args):
     return Client(name, **args)
