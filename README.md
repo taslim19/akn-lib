@@ -91,7 +91,7 @@ async def example_json():
 
 run_fast(build=fast_app)
 ```
-### 🛠️ Custom Openai
+### 🛠️ Custom OpenAI
 ```py
 from akenoai import AkenoXToJs as js
 
