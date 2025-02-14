@@ -225,6 +225,13 @@ print(response)
 {'results': 'Deepseek is a Chinese company that specializes in underwater robotics and autonomous underwater vehicles. They provide solutions for underwater exploration and research, as well as services for inspecting and maintaining underwater infrastructure. Their technology is used in various industries including marine science, aquaculture, and offshore energy.\n\nPowered By xtdevs'}
 ```
 🔹 <b>Method Definition:</b>
+
+- [X] Parameters:
+- `endpoint:` The API endpoint to call.
+- `api_key:` (Optional) API key for authentication.
+- `post:` Boolean flag to indicate POST requests.
+- `is_obj:` Boolean flag indicating whether the response should be returned as a Python object (True) or in the default format (False).
+
 ```py
 randydev(endpoint, api_key=None, post=False, is_obj=False, custom_dev_fast=False, **params)
 ```
