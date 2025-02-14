@@ -32,6 +32,18 @@ setuptools.setup(
         "requests",
     ],
     extras_require={
+        "streamlit": [
+            "aiohttp",
+            "wget",
+            "requests",
+            "httpx[http2]",
+            "python-box",
+            "starlette",
+            "uvicorn[standard]",
+            "fastapi[all]",
+            "streamlit-option-menu",
+            "streamlit-nightly",
+        ],
         "fast": [
             "aiohttp",
             "wget",
