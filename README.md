@@ -57,8 +57,35 @@ response = await AkenoXToJs.randydev(
 
 print(response)
 ```
+### 🌐 Streamlit + AkenoX API
+- installation: `pip3 install akenoai[streamlit]`
+- You can use `streamlit run app.py`
+- `akenoai[fast]` → <b>Pyrogram error:</b> *There is no current event loop* (<b>Stuck in Streamlit</b>)
+- Example usage
+```py
+from akenoai import AkenoXToJs as js
+
+js_st = js.stl()
+js_st.title("Welcome to akenoai-lib APP")
+js_st.write("Developed by RandyDev")
+js_st.write("Example JSON")
+
+with js_st.form("json"):
+    submitted = js_st.form_submit_button("Submit")
+    if submitted:
+        js_st.spinner("Fetching GitHub data...")
+        js_st.json(
+            js.no_async_randydev("json/all", post=False)
+        )
+
+js.hide_streamlit_watermark(unsafe_allow_html=True)
+```
+- [X] If using API `[fast]` for <b>full-stack</b>, move to `akenoai.clients`:
+```py
+from akenoai.clients import create_pyrogram # Use [fast]
+```
 ### 🚀 Super-Fast Performance
-Use AkenoX-API + FastAPI
+Use AkenoX API + FastAPI
 > [!WARNING]
 > AkenoX API <b>may block access if there are too many spam requests!</b> 🚨
 >
