@@ -1,1 +1,4 @@
-from pyrogram import Client as js
+from pyrogram import Client
+
+def create_pyrogram(self, name: str, **args):
+    return Client(name, **args)
