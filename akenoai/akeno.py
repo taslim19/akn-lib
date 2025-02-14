@@ -175,7 +175,6 @@ class AkenoXJs:
     def _get_public_url(self, is_allow_use=False):
         return self.public_url if is_allow_use else ""
 
-    @_handle_request_errors
     @fast.log_performance
     def no_async_randydev(
         self,
