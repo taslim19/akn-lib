@@ -5,6 +5,7 @@ from .__version__ import __version__
 from .akeno import *
 from .api_random import *
 from .inline import *
+from .pyro_decorator import *
 from .logger import *
 from .openai import *
 from .reqs import *
