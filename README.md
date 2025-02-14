@@ -76,7 +76,7 @@ with js_st.form("json"):
     if submitted:
         js_st.spinner("Fetching data...")
         js_st.json(
-            js.no_async_randydev("json/all", is_obj=False, post=False)
+            js.no_async_randydev("json/all", post=False, is_obj=False)
         )
 
 js.hide_streamlit_watermark(unsafe_allow_html=True)
@@ -224,7 +224,7 @@ print(response)
 ```py
 {'results': 'Deepseek is a Chinese company that specializes in underwater robotics and autonomous underwater vehicles. They provide solutions for underwater exploration and research, as well as services for inspecting and maintaining underwater infrastructure. Their technology is used in various industries including marine science, aquaculture, and offshore energy.\n\nPowered By xtdevs'}
 ```
-🔹 <b>Method Definition:</b>
+### 🔹 <b>Method Definition:</b>
 
 - [X] Parameters:
 - `endpoint:` The API endpoint to call.
@@ -232,12 +232,12 @@ print(response)
 - `post:` Boolean flag to indicate POST requests.
 - `is_obj:` Boolean flag indicating whether the response should be returned as a Python object (True) or in the default format (False).
 - `custom_dev_fast:` Boolean flag defaults to None
-- `**kwargs:` Allows passing additional parameters as a dictionary, which will be sent as JSON.
+- `**params:` Allows passing additional parameters as a dictionary, which will be sent as JSON.
 
 ```py
 randydev(endpoint, api_key=None, post=False, is_obj=False, custom_dev_fast=False, **params)
 ```
-🔹 <b>User Creation Date:</b>
+### 🔹 <b>User Creation Date:</b>
 ```py
 import os
 from akenoai import AkenoXToJs
