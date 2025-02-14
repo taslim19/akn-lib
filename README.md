@@ -68,7 +68,7 @@ from akenoai import AkenoXToJs as js
 js_st = js.stl()
 js_st.title("Welcome to akenoai-lib APP")
 js_st.write("Developed by RandyDev")
-js_st.write("Examples Json")
+js_st.write("Example JSON")
 
 with js_st.form("json"):
     submitted = js_st.form_submit_button("Submit")
