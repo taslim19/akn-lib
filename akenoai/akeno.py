@@ -62,7 +62,7 @@ class AkenoXJs:
         if app.openapi_schema:
             return app.openapi_schema
         openapi_schema = self.get_custom_openai(**args)
-        openapi_schema["info"]["x-logo"] = {"url": url}
+        openapi_schema["info"]["x-logo"] = {"url": logo_url}
         app.openapi_schema = openapi_schema
         return app.openapi_schema
 
