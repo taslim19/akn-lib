@@ -85,7 +85,7 @@ js.hide_streamlit_watermark(unsafe_allow_html=True)
 from akenoai.clients import create_pyrogram # Use [fast]
 ```
 ### 🚀 Super-Fast Performance
-Use AkenoX-API + FastAPI
+Use AkenoX API + FastAPI
 > [!WARNING]
 > AkenoX API <b>may block access if there are too many spam requests!</b> 🚨
 >
