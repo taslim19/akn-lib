@@ -16,6 +16,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
 from pyrogram import Client
 from starlette.middleware.sessions import SessionMiddleware
+from streamlit_option_menu import option_menu
 
 import akenoai.logger as fast
 
@@ -43,7 +44,16 @@ class AkenoXJs:
         self.client_pyrogram = Client
         self.st = streamlit
 
-    def hide_streamlit_down(self, unsafe_allow_html=True):
+    def stl(self):
+        self.st
+
+    def page_config(self, **args):
+        self.st.set_page_config(**args)
+
+    def app_option_menu(self, **args):
+        return option_menu(**args)
+
+    def hide_streamlit_watermark(self, unsafe_allow_html=True):
         hide_streamlit_style = """
         <style>
         #MainMenu {visibility: hidden;}
