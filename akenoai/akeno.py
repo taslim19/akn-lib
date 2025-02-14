@@ -45,7 +45,7 @@ class AkenoXJs:
         self.st = streamlit
 
     def stl(self):
-        self.st
+        return self.st
 
     def page_config(self, **args):
         self.st.set_page_config(**args)
