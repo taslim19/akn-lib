@@ -69,6 +69,7 @@ from akenoai import AkenoXToJs as js
 from akenoai.runner import run_fast
 
 fast_app = js.get_app()
+js.add_cors_middleware()
 
 @fast_app.get("/api/cohere")
 async def cohere(query: str):
@@ -120,6 +121,7 @@ LOGS = logging.getLogger("[akenox]")
 logger.setLevel(logging.DEBUG)
 
 fast_app = js.get_app()
+js.add_cors_middleware()
 
 assistant = js.create_pyrogram(
     name="fastapi-bot",
