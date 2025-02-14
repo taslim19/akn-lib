@@ -56,13 +56,13 @@ class AkenoXJs:
     def get_custom_openai(self, **args):
         return self.custom_openai(**args)
 
-    def custom_openapi(self, app, **args):
+    def custom_openapi(self, app=None, logo_url: str = "https://github-production-user-asset-6210df.s3.amazonaws.com/90479255/289277800-f26513f7-cdf4-44ee-9a08-f6b27e6b99f7.jpg", **args):
+        if not app:
+            raise ValueError("Required app")
         if app.openapi_schema:
             return app.openapi_schema
         openapi_schema = self.get_custom_openai(**args)
-        openapi_schema["info"]["x-logo"] = {
-            "url": "https://github-production-user-asset-6210df.s3.amazonaws.com/90479255/289277800-f26513f7-cdf4-44ee-9a08-f6b27e6b99f7.jpg"
-        }
+        openapi_schema["info"]["x-logo"] = {"url": logo_url}
         app.openapi_schema = openapi_schema
         return app.openapi_schema
 
