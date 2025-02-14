@@ -74,9 +74,9 @@ js_st.write("Example JSON")
 with js_st.form("json"):
     submitted = js_st.form_submit_button("Submit")
     if submitted:
-        js_st.spinner("Fetching GitHub data...")
+        js_st.spinner("Fetching data...")
         js_st.json(
-            js.no_async_randydev("json/all", post=False)
+            js.no_async_randydev("json/all", is_obj=False, post=False)
         )
 
 js.hide_streamlit_watermark(unsafe_allow_html=True)
@@ -226,7 +226,7 @@ print(response)
 ```
 🔹 <b>Method Definition:</b>
 ```py
-randydev(endpoint, api_key=None, post=False, custom_dev_fast=False, **params)
+randydev(endpoint, api_key=None, post=False, is_obj=False, custom_dev_fast=False, **params)
 ```
 🔹 <b>User Creation Date:</b>
 ```py
