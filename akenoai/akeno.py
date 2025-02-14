@@ -2,6 +2,7 @@ import asyncio
 import json
 import os
 import subprocess
+import streamlit
 from base64 import b64decode as m
 from datetime import datetime
 
@@ -40,6 +41,20 @@ class AkenoXJs:
         self.obj = Box
         self.request_in = aiohttp
         self.client_pyrogram = Client
+        self.st = streamlit
+
+    def hide_streamlit_down(self, unsafe_allow_html=True):
+        hide_streamlit_style = """
+        <style>
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+        header {visibility: hidden;}
+        .css-1rs6os {visibility: hidden;}
+        .css-17ziqus {visibility: hidden;}
+        </style>
+        """
+        self.st.markdown(hide_streamlit_style, unsafe_allow_html=unsafe_allow_html)
+        self.st.header("")
 
     def create_pyrogram(self, name: str, **args):
         return self.client_pyrogram(name, **args)
