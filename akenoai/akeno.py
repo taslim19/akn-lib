@@ -47,7 +47,7 @@ class AkenoXJs:
     def stl(self):
         return self.st
 
-    def page_config(self, **args):
+    def set_page_config(self, **args):
         self.st.set_page_config(**args)
 
     def app_option_menu(self, **args):
