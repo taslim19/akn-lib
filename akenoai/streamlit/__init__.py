@@ -12,6 +12,7 @@ from streamlit_option_menu import option_menu
 
 import akenoai.logger as fast
 
+
 class StreamlitJs:
     def __init__(self):
         self.public_url = "https://randydev-ryu-js.hf.space"
