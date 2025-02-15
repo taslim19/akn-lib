@@ -12,6 +12,21 @@
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/akenoai?label=DOWNLOADS&style=round)](https://pypi.org/project/akenoai)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/TeamKillerX/akenoai-lib/main.svg)](https://results.pre-commit.ci/latest/github/TeamKillerX/akenoai-lib/main)
 
+### 👑 Coding The End
+```
+@xpushz on (telegram) I Already Master King Python 👑
+
+- Open source full soon! 🚀
+
+• Note:
+💡 Why Open Source Full?
+I’m a developer who patiently and sincerely shares code, even for beginners.
+
+💰 No Donations Needed!
+If you’re a beginner and want to learn, just take the code.
+
+~ Me Dead: thank you :) 🥀
+```
 ### installation
 🔹 <b>Recommended Installation:</b>
 
