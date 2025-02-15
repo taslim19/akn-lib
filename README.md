@@ -105,7 +105,7 @@ js_st.write("GitHub User Information")
 
 with js_st.form("github"):
     username = js_st.text_input("Enter GitHub username:")
-    submit_checkbox = js_st.checkbox("allow users", value=False)
+    submit_checkbox = js_st.checkbox("Allow users", value=False)
     submitted = js_st.form_submit_button("Submit")
     if submitted and submit_checkbox:
         js_st.spinner("Fetching GitHub data...")
