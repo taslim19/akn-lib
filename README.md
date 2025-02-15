@@ -63,6 +63,8 @@ print(response)
 - `akenoai[fast]` → <b> no import Pyrogram error:</b> *There is no current event loop* (<b>Stuck in Streamlit</b>)
 
 - Example usage:
+
+  Note: The import path changed from `akenoai import AkenoXToJs` to `akenoai.streamlit import StreamlitToJs` to clearly separate the streamlit integration functionality from the core API. The previous import path is now deprecated.
 ```py
 from akenoai.streamlit import StreamlitToJs as js
 
