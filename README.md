@@ -14,15 +14,15 @@
 
 ### 👑 Coding The End
 ```
-@xpushz on (telegram) I Already Master King Python 👑  
+@xpushz on (telegram) I Already Master King Python 👑
 
-- Open source full soon! 🚀  
+- Open source full soon! 🚀
 
-• Note:  
-💡 Why Open Source Full?  
-I’m a developer who patiently and sincerely shares code, even for beginners.  
+• Note:
+💡 Why Open Source Full?
+I’m a developer who patiently and sincerely shares code, even for beginners.
 
-💰 No Donations Needed!  
+💰 No Donations Needed!
 If you’re a beginner and want to learn, just take the code.
 
 ~ Me Dead: thank you :) 🥀
