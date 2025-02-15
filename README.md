@@ -134,7 +134,7 @@ with js_st.form("openai"):
     text = js_st.text_area('Enter text:', 'How to JavaScript code?')
     submitted = js_st.form_submit_button('Submit')
     placeholder = js_st.empty()
-    free_api_key_on = js_st.toggle("Free Api Key")
+    free_api_key_on = js_st.toggle("Free API Key")
     if submitted:
         try:
             if free_api_key_on:
