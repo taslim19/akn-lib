@@ -32,6 +32,7 @@ from streamlit_option_menu import option_menu
 
 import akenoai.logger as fast
 
+
 class SendWaifuRandom:
     def send_waifu_pics(self, waifu_category):
         url = f"https://api.waifu.pics/sfw/{waifu_category}"
