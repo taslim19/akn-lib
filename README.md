@@ -143,7 +143,7 @@ with js_st.form("openai"):
                 js_st.write(
                     js.no_async_randydev("ai/openai/gpt-old", is_obj=True, query=text).results
                 )
-                js_st.success("Join Channel telegram : @RendyProjects")
+                js_st.success("Join Channel Telegram : @RendyProjects")
             else:
                 js_st.warning('Use button Free API Key', icon="⚠️")
         except Exception as e:
