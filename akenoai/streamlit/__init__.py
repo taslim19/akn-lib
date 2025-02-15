@@ -4,7 +4,6 @@ import os
 import subprocess
 from datetime import datetime
 
-import aiohttp
 import requests
 import streamlit
 from box import Box
@@ -17,7 +16,6 @@ class StreamlitJs:
     def __init__(self):
         self.public_url = "https://randydev-ryu-js.hf.space"
         self.obj = Box
-        self.request_in = aiohttp
         self.st = streamlit
 
     def stl(self):
@@ -29,7 +27,10 @@ class StreamlitJs:
     def app_option_menu(self, **args):
         return option_menu(**args)
 
-    def hide_streamlit_watermark(self, unsafe_allow_html=True):
+    def javascript_code(self, streamlit_style, unsafe_allow_html=False):
+        self.st.markdown(streamlit_style, unsafe_allow_html=unsafe_allow_html)
+
+    def hide_streamlit_watermark(self, unsafe_allow_html=False):
         hide_streamlit_style = """
         <style>
         #MainMenu {visibility: hidden;}
