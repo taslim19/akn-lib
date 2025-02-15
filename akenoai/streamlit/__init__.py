@@ -34,27 +34,15 @@ import akenoai.logger as fast
 
 
 class SendWaifuRandom:
-    def __init__(self):
-        pass
-
     def send_waifu_pics(self, waifu_category):
-        waifu_api = "https://api.waifu.pics/sfw"
-        waifu_param = f"{waifu_api}/{waifu_category}"
-        response = requests.get(waifu_param)
+        url = f"https://api.waifu.pics/sfw/{waifu_category}"
+        response = requests.get(url)
         if response.status_code != 200:
-            return "Sorry, there was an error processing your request. Please try again later"
-        data_waifu = response.json()
+            return None
         try:
-            waifu_image_url = data_waifu["url"]
+            return response.json().get("url")
         except Exception as e:
-            return f"Error request {e}"
-        if waifu_image_url:
-            try:
-                return waifu_image_url
-            except Exception:
-                return f"**Info Error:**"
-        else:
-            return "Not found waifu"
+            return None
 
 class StreamlitJs:
     def __init__(self):
@@ -69,24 +57,26 @@ class StreamlitJs:
         js_st = self.stl()
         js_st.title("Waifu Random")
         js_st.write("Developer by RandyDev")
-        with js_st.form('waifu-random'):
+        with js_st.form('waifu-random') as form:
             text = js_st.text_area('Enter text:', 'neko')
             submitted = js_st.form_submit_button('Submit')
             placeholder = js_st.empty()
-            if submitted and not (text.startswith(("neko", "waifu", "megumin"))):
-                js_st.warning("Unsupported waifu format. Please enter a valid waifu text", icon="⚠")
-            elif submitted and text.startswith(("neko", "waifu", "megumin")):
-                send_image = SendWaifuRandom().send_waifu_pics(text)
-                try:
-                    if send_image:
-                        with placeholder, js_st.spinner("Processing......"):
-                            time.sleep(5)
-                        js_st.image(send_image, caption="Powered by akenoai-lib")
-                        js_st.success("Join Channel telegram : @RendyProjects")
-                    else:
-                        js_st.error("Error: Unable to waifu random for the given text.")
-                except Exception as e:
-                    js_st.error(f"Error: {e}")
+        if not submitted:
+            return
+        if not text.startswith(("neko", "waifu", "megumin")):
+            js_st.warning("Unsupported waifu format. Please enter a valid waifu text", icon="⚠")
+            return
+        try:
+            send_image = SendWaifuRandom().send_waifu_pics(text)
+            if not send_image:
+                js_st.error("Error: Unable to fetch waifu image for the given text.")
+                return
+            with placeholder, js_st.spinner("Processing......"):
+                time.sleep(5)
+            js_st.image(send_image, caption="Powered by akenoai-lib")
+            js_st.success("Join Channel telegram : @RendyProjects")
+        except Exception as e:
+            js_st.error(f"Error: {e}")
 
     def set_page_config(self, **args):
         self.st.set_page_config(**args)
