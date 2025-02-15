@@ -153,19 +153,19 @@ js.waifu_random()
 js.hide_streamlit_watermark(unsafe_allow_html=True)
 ```
 > [!WARNING]
-> 
->⚠️ Breaking Change ⚠️  
-
-> Note: The import path has changed!  
 >
-> To better separate Streamlit integration from the core API, the import path has been updated:  
+>⚠️ Breaking Change ⚠️
+
+> Note: The import path has changed!
+>
+> To better separate Streamlit integration from the core API, the import path has been updated:
 
 > ❌ <b>Deprecated:</b>
 > `from akenoai import AkenoXToJs`
-> 
+>
 > ✅ Use this <b>instead:</b>
 > `from akenoai.streamlit import StreamlitToJs`
-> 
+>
 > Make sure to update your imports to avoid issues. 🚀
 
 - [X] If using API `[fast]` for <b>full-stack</b>, move to `akenoai.clients`:
