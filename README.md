@@ -60,11 +60,13 @@ print(response)
 ### 🌐 Streamlit + AkenoX API
 - installation: `pip3 install akenoai[streamlit]`
 - You can use `streamlit run app.py`
-- `akenoai[fast]` → <b>Pyrogram error:</b> *There is no current event loop* (<b>Stuck in Streamlit</b>)
+- `akenoai[fast]` → <b> no import Pyrogram error:</b> *There is no current event loop* (<b>Stuck in Streamlit</b>)
 
 - Example usage:
+
+  Note: The import path changed from `akenoai import AkenoXToJs` to `akenoai.streamlit import StreamlitToJs` to clearly separate the streamlit integration functionality from the core API. The previous import path is now deprecated.
 ```py
-from akenoai import AkenoXToJs as js
+from akenoai.streamlit import StreamlitToJs as js
 
 js_st = js.stl()
 js_st.title("Welcome to akenoai-lib APP")

@@ -8,14 +8,12 @@ from datetime import datetime
 import aiohttp
 import httpx
 import requests
-import streamlit
 import wget
 from box import Box
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
 from starlette.middleware.sessions import SessionMiddleware
-from streamlit_option_menu import option_menu
 
 import akenoai.logger as fast
 
@@ -40,29 +38,6 @@ class AkenoXJs:
         self.custom_openai = get_openapi
         self.obj = Box
         self.request_in = aiohttp
-        self.st = streamlit
-
-    def stl(self):
-        return self.st
-
-    def set_page_config(self, **args):
-        self.st.set_page_config(**args)
-
-    def app_option_menu(self, **args):
-        return option_menu(**args)
-
-    def hide_streamlit_watermark(self, unsafe_allow_html=True):
-        hide_streamlit_style = """
-        <style>
-        #MainMenu {visibility: hidden;}
-        footer {visibility: hidden;}
-        header {visibility: hidden;}
-        .css-1rs6os {visibility: hidden;}
-        .css-17ziqus {visibility: hidden;}
-        </style>
-        """
-        self.st.markdown(hide_streamlit_style, unsafe_allow_html=unsafe_allow_html)
-        self.st.header("")
 
     def fasthttp(self):
         return self.request_in

@@ -55,8 +55,6 @@ setuptools.setup(
             "fastapi[all]",
             "kurigram",
             "TgCrypto",
-            "streamlit-option-menu",
-            "streamlit-nightly",
         ],
         "standard": [
             "g4f",
