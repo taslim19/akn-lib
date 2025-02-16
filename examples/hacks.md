@@ -29,8 +29,8 @@ return await js.randydev(
 | **Speed**     | ⚠️ Slower (Proxy used)        | 🚀 Fast (Direct request) |
 | **Stability** | ✅ Works even if blocked      | ✅ Stable & optimized |
 | **Use Case**  | 🔄 Bypassing restrictions    | ⚡ Direct & fast access |
-| **Banned**.   | 🚷 ip address has been banned. | ✅ IP address not banned
-| **Max requests** | ✅ Unlimited | ⏳ 100 requests per 1 minutes
+| **IP Ban Status**   | 🚷 IP address has been banned. | ✅ IP address not banned
+| **Rate Limit** | ✅ Unlimited | ⏳ 100 requests per minute
 ---
 
 ### **📌 Example Usage: AkenoX API (Original, No Proxy)**
