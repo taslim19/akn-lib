@@ -237,6 +237,11 @@ logger = logging.getLogger(__name__)
 LOGS = logging.getLogger("[akenox]")
 logger.setLevel(logging.DEBUG)
 
+from akenoai.models import BaseModel
+
+class Items(BaseModel):
+    message: str
+
 fast_app = js.get_app()
 js.add_cors_middleware()
 
@@ -270,6 +275,10 @@ async def cohere(query: str):
         chatHistory=[],
         system_prompt="You are a helpful AI assistant designed to provide clear and concise responses."
     )
+
+@fast_app.get("/item")
+async def example_test(item: Items):
+    return {"message": item.message}
 
 @fast_app.get("/test")
 async def example_json():
