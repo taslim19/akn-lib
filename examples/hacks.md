@@ -1,9 +1,9 @@
 ### **Why Choose Itzpire API?** 🚀
 
-✅ **Use Itzpire API – Free & Unlimited**
-🔹 **No API key needed**
-🔹 **Unlimited requests**
-🔹 **Requires proxy to bypass restrictions**
+- ✅ **Use Itzpire API – Free & Unlimited**
+- 🔹 **No API key needed**
+- 🔹 **Unlimited requests**
+- 🔹 **Requires proxy to bypass restrictions**
 
 ### **📌 Example Usage: Itzpire API (Requires Proxy)**
 ```python
@@ -29,7 +29,8 @@ return await js.randydev(
 | **Speed**     | ⚠️ Slower (Proxy used)        | 🚀 Fast (Direct request) |
 | **Stability** | ✅ Works even if blocked      | ✅ Stable & optimized |
 | **Use Case**  | 🔄 Bypassing restrictions    | ⚡ Direct & fast access |
-
+| **IP Ban Status**   | 🚷 IP address has been banned. | ✅ IP address not banned
+| **Rate Limit** | ✅ Unlimited | ⏳ 100 requests per minute
 ---
 
 ### **📌 Example Usage: AkenoX API (Original, No Proxy)**
@@ -42,5 +43,5 @@ return await js.randydev(
 )
 ```
 
-🔹 **Itzpire API** is best for **bypassing site restrictions**.
-🔹 **AkenoX API** is **faster** and **more stable**, but requires an API key.
+- 🔹 **Itzpire API** is best for **bypassing site restrictions**.
+- 🔹 **AkenoX API** is **faster** and **more stable**, but requires an API key.
