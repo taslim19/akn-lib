@@ -16,7 +16,7 @@ return await js.randydev(
     api_key="None",
     UseEnd="search/tiktok",
     params="query",
-    q="pocong"
+    q="pocong",  # 'q' parameter specifies the search query
 )
 ```
 
