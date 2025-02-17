@@ -23,6 +23,16 @@ If you’re a beginner and want to learn, just take the code.
 
 ~ Me Dead: thank you :) 🥀
 ```
+
+### 🧠 Collaboration
+- Can you collab? 🤝
+- ✅ Yes, you can! Contact [`@xpushz`](https://t.me/xpushz) for collaboration.
+- 📌 How to Collab with <b>AkenoX API</b>:
+- 1️⃣ Retrieve the API endpoint you want to use.
+- 2️⃣ Send to [`@xpushz`](https://t.me/xpushz) to request to create a custom API.
+- 3️⃣ Get an endpoint like `"custom/your-name-api"`.
+- 4️⃣ Safe & reliable → Other people can use it without worrying about the API being lost!
+- 🚀 Use <b>AkenoX API</b> for a more stable & searchable API solution!
 ### installation
 🔹 <b>Recommended Installation:</b>
 
