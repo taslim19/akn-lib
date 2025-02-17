@@ -15,7 +15,7 @@ ITZDEV = [
     "random/mystery-house", # None
     "random/quotes", # None
     "random/quotes-anime", # None
-    "random/sound-effct", # None
+    "random/sound-effect", # None
     "search/tiktok", # query
     "search/wikipedia", # query
     "search/pinterest", # query
