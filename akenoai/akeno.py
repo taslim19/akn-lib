@@ -110,7 +110,7 @@ class AkenoXJs:
         self,
         endpoint,
         api_key=None,
-        proxy_url=None,
+        proxy_url: str = None,
         post=False,
         verify=False,
         **params
