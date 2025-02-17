@@ -106,15 +106,23 @@ class AkenoXJs:
         headers = {"x-api-key": api_key}
         return url, headers
 
-    async def _make_request_in_aiohttp(self, endpoint, api_key=None, post=False, verify=False, **params):
+    async def _make_request_in_aiohttp(
+        self,
+        endpoint,
+        api_key=None,
+        proxy_url: str = None,
+        post=False,
+        verify=False,
+        **params
+    ):
         url, headers = self._prepare_request(endpoint, api_key)
         async with aiohttp.ClientSession() as session:
             try:
                 if post:
-                    async with session.post(url, headers=headers, params=params, ssl=verify) as response:
+                    async with session.post(url, headers=headers, params=params, proxy=proxy_url, ssl=verify) as response:
                         return await response.json() if endpoint != "maker/carbon" else await response.read()
                 else:
-                    async with session.get(url, headers=headers, params=params, ssl=verify) as response:
+                    async with session.get(url, headers=headers, params=params, proxy=proxy_url, ssl=verify) as response:
                         return await response.json() if endpoint != "maker/carbon" else await response.read()
             except (aiohttp.client_exceptions.ContentTypeError, json.decoder.JSONDecodeError):
                 raise Exception("GET OR POST INVALID: check problem, invalid json")
@@ -191,6 +199,7 @@ class AkenoXJs:
         self,
         endpoint,
         api_key=None,
+        proxy_url=None,
         post=False,
         is_obj=False,
         custom_dev_fast=False,
@@ -199,9 +208,24 @@ class AkenoXJs:
     ):
         if custom_dev_fast:
             if is_obj:
-                return Box(await self._make_request_in_aiohttp(endpoint, api_key, post=post, verify=verify, **params) or {})
+                return Box(
+                    await self._make_request_in_aiohttp(
+                        endpoint,
+                        api_key,
+                        proxy_url=proxy_url,
+                        post=post,
+                        verify=verify,
+                        **params
+                    ) or {})
             else:
-                return await self._make_request_in_aiohttp(endpoint, api_key, post=post, verify=verify, **params)
+                return await self._make_request_in_aiohttp(
+                    endpoint,
+                    api_key,
+                    post=post,
+                    proxy_url=proxy_url,
+                    verify=verify,
+                    **params
+                )
         return None
 
     def handle_dns_errors(func):
