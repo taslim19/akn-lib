@@ -140,7 +140,7 @@ class AkenoXJs:
                     headers=headers,
                     params=params if not post else None,
                     json=params if post else None,
-                    proxy=proxy_url if proxy_url else None,
+                    proxy=proxy_url or None,
                     ssl=verify
                 ) as response:
                     return await response.json() if endpoint != "maker/carbon" else await response.read()
