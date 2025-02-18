@@ -117,19 +117,17 @@ class AkenoXJs:
                 translation = await response.json()
                 return "".join([item[0] for item in translation[0]])
 
-    def replace_url(self, url=None):
-        return url or f"{self.public_url}/api/v1"
-
     async def _make_request_in_aiohttp(
         self,
         endpoint,
+        custom_headers_key="x-api-key",
         api_key=None,
         proxy_url: str = None,
         post=False,
         verify=False,
         **params
     ):
-        url, headers = self._prepare_request(endpoint, api_key)
+        url, headers = self._prepare_request(endpoint, custom_headers_key=custom_headers_key, api_key)
         async with aiohttp.ClientSession() as session:
             try:
                 async with session.request(
@@ -152,18 +150,21 @@ class AkenoXJs:
             except Exception as e:
                 return str(e)
 
-    def _prepare_request(self, endpoint, api_key=None):
+    def _prepare_request(self, endpoint, custom_headers_key="x-api-key", api_key=None):
         """Prepare common request parameters and validate API key."""
         if not api_key:
             api_key = os.environ.get("AKENOX_KEY")
         if not api_key:
             raise ValueError("Required variables AKENOX_KEY or api_key")
         url = f"{self.public_url}/{endpoint}"
-        headers = {"x-api-key": api_key}
+        headers = {
+            custom_headers_key: api_key,
+            "Authorization": f"Bearer {api_key}"
+        }
         return url, headers
 
-    def _make_request_in(self, endpoint, api_key=None, post=False, verify=False, **params):
-        url, headers = self._prepare_request(endpoint, api_key)
+    def _make_request_in(self, endpoint, custom_headers_key="x-api-key", api_key=None, post=False, verify=False, **params):
+        url, headers = self._prepare_request(endpoint, custom_headers_key=custom_headers_key, api_key)
         try:
             if post:
                 response = requests.post(url, headers=headers, params=params, verify=verify)
@@ -210,6 +211,7 @@ class AkenoXJs:
     def no_async_randydev(
         self,
         endpoint,
+        custom_headers_key="x-api-key",
         api_key=None,
         post=False,
         is_obj=False,
@@ -220,6 +222,7 @@ class AkenoXJs:
             return Box(
                 self._make_request_in(
                     endpoint,
+                    custom_headers_key=custom_headers_key,
                     api_key,
                     post=post,
                     verify=verify,
@@ -228,6 +231,7 @@ class AkenoXJs:
         else:
             return self._make_request_in(
                 endpoint,
+                custom_headers_key=custom_headers_key,
                 api_key,
                 post=post,
                 verify=verify,
@@ -239,6 +243,7 @@ class AkenoXJs:
     async def randydev(
         self,
         endpoint,
+        custom_headers_key=custom_headers_key,
         api_key=None,
         proxy_url=None,
         post=False,
@@ -252,6 +257,7 @@ class AkenoXJs:
                 return Box(
                     await self._make_request_in_aiohttp(
                         endpoint,
+                        custom_headers_key=custom_headers_key,
                         api_key,
                         proxy_url=proxy_url,
                         post=post,
@@ -261,6 +267,7 @@ class AkenoXJs:
             else:
                 return await self._make_request_in_aiohttp(
                     endpoint,
+                    custom_headers_key=custom_headers_key,
                     api_key,
                     proxy_url=proxy_url,
                     post=post,
@@ -281,7 +288,7 @@ class AkenoXJs:
     @fast.log_performance
     async def chatgpt_last(self, api_key, **params):
         """params query=query"""
-        return Box(await self._make_request_in_aiohttp("ai/gpt-old", api_key, dev_mode=True, **params) or {})
+        return Box(await self._make_request_in_aiohttp("ai/gpt-old", api_key, **params) or {})
 
     @handle_dns_errors
     @fast.log_performance
