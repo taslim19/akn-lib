@@ -110,6 +110,23 @@ class AkenoXJs:
         headers = {"x-api-key": api_key}
         return url, headers
 
+    async def translate(text, target_lang):
+        API_URL = "https://translate.googleapis.com/translate_a/single"
+        HEADERS = {"User-Agent": "Mozilla/5.0"}
+        params = {
+            "client": "gtx",
+            "sl": "auto",
+            "tl": target_lang,
+            "dt": "t",
+            "q": text,
+        }
+        async with aiohttp.ClientSession() as session:
+            async with session.post(API_URL, headers=HEADERS, params=params) as response:
+                if response.status != 200:
+                    return None
+                translation = await response.json()
+                return "".join([item[0] for item in translation[0]])
+
     async def _make_request_in_aiohttp(
         self,
         endpoint,
