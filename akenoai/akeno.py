@@ -66,9 +66,6 @@ class AkenoXJs:
     def get_app(self, docs_url="/docs", redoc_url=None, **args):
         return self.fastapi(docs_url=docs_url, redoc_url=redoc_url, **args)
 
-    def replace_url(self, url=None):
-        return url or f"{self.public_url}/api/v1"
-
     def dict_to_obj(self, func):
         return self.obj(func or {})
 
@@ -119,6 +116,9 @@ class AkenoXJs:
                     return None
                 translation = await response.json()
                 return "".join([item[0] for item in translation[0]])
+
+    def replace_url(self, url=None):
+        return url or f"{self.public_url}/api/v1"
 
     async def _make_request_in_aiohttp(
         self,
@@ -231,8 +231,8 @@ class AkenoXJs:
                     dev_mode=dev_mode,
                     post=post,
                     verify=verify,
-                    **params) or {}
-            )
+                    **params
+                ) or {})
         else:
             return self._make_request_in(
                 endpoint,
