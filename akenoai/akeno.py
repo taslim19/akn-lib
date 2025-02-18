@@ -66,6 +66,10 @@ class AkenoXJs:
     def get_app(self, docs_url="/docs", redoc_url=None, **args):
         return self.fastapi(docs_url=docs_url, redoc_url=redoc_url, **args)
 
+    def replace_url(self, url=None):
+        custom_url = url or f"{self.public_url}/api/v1"
+        return custom_url
+
     def dict_to_obj(self, func):
         return self.obj(func or {})
 
@@ -100,15 +104,20 @@ class AkenoXJs:
             allow_headers=["*"],
         )
 
-    def _prepare_request(self, endpoint, api_key=None):
+    def _prepare_request(self, endpoint, api_key=None, is_headers_dev=False):
         """Prepare common request parameters and validate API key."""
         if not api_key:
             api_key = os.environ.get("AKENOX_KEY")
         if not api_key:
-            raise ValueError("Required variables AKENOX_KEY or api_key")
-        url = f"{self.public_url}/api/v1/{endpoint}"
-        headers = {"x-api-key": api_key}
-        return url, headers
+            api_key = "demo"
+        e = self.replace_url()
+        if is_headers_dev:
+            url = f"{e}/{endpoint}"
+            headers = {"x-api-key": api_key}
+            return url, headers
+        else:
+            headers = {}
+            return e, headers
 
 
     async def translate(self, text, target_lang):
@@ -133,11 +142,12 @@ class AkenoXJs:
         endpoint,
         api_key=None,
         proxy_url: str = None,
+        is_headers_dev=False,
         post=False,
         verify=False,
         **params
     ):
-        url, headers = self._prepare_request(endpoint, api_key)
+        url, headers = self._prepare_request(endpoint, api_key, is_headers_dev)
         async with aiohttp.ClientSession() as session:
             try:
                 if post:
@@ -156,8 +166,16 @@ class AkenoXJs:
             except Exception as e:
                 return str(e)
 
-    def _make_request_in(self, endpoint, api_key=None, post=False, verify=False, **params):
-        url, headers = self._prepare_request(endpoint, api_key)
+    def _make_request_in(
+        self,
+        endpoint,
+        api_key=None,
+        is_headers_dev=False,
+        post=False,
+        verify=False,
+        **params
+    ):
+        url, headers = self._prepare_request(endpoint, api_key, is_headers_dev)
         try:
             if post:
                 response = requests.post(url, headers=headers, params=params, verify=verify)
@@ -211,7 +229,15 @@ class AkenoXJs:
         **params
     ):
         if is_obj:
-            return Box(self._make_request_in(endpoint, api_key, post=post, verify=verify, **params) or {})
+            return Box(
+                self._make_request_in(
+                    endpoint,
+                    api_key,
+                    is_headers_dev=is_headers_dev,
+                    post=post,
+                    verify=verify,
+                    **params) or {}
+            )
         else:
             return self._make_request_in(endpoint, api_key, post=post, verify=verify, **params)
 
@@ -222,6 +248,7 @@ class AkenoXJs:
         endpoint,
         api_key=None,
         proxy_url=None,
+        is_headers_dev=True,
         post=False,
         is_obj=False,
         custom_dev_fast=False,
@@ -235,6 +262,7 @@ class AkenoXJs:
                         endpoint,
                         api_key,
                         proxy_url=proxy_url,
+                        is_headers_dev=is_headers_dev,
                         post=post,
                         verify=verify,
                         **params
@@ -245,6 +273,7 @@ class AkenoXJs:
                     api_key,
                     post=post,
                     proxy_url=proxy_url,
+                    is_headers_dev=is_headers_dev
                     verify=verify,
                     **params
                 )
