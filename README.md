@@ -59,20 +59,21 @@ run_fast()
 
 - Use Access API key V2 Premium
 ```py
-import json
 from akenoai import AkenoXToJs
+
+js = AkenoXToJs()
 
 chat_history = [
     {"role": "User", "message": "hello world"},
     {"role": "Chatbot", "message": "Hello! How can I assist you today?"}
 ]
 
-response = await AkenoXToJs.randydev(
+response = await js.randydev(
     "ai/cohere/command-plus",
     api_key="<your_api_key>",
     custom_dev_fast=True,
     query="what is AkenoX AI?",
-    chatHistory=json.dumps(chat_history),
+    chatHistory=js.rjson_dumps(chat_history),
     system_prompt="You are a helpful AI assistant designed to provide clear and concise responses."
 )
 
@@ -186,9 +187,10 @@ Use AkenoX API + FastAPI
 > Always use <b>rate limiting</b>
 >
 ```py
-from akenoai import AkenoXToJs as js
+from akenoai import AkenoXToJs
 from akenoai.runner import run_fast
 
+js = AkenoXToJs()
 fast_app = js.get_app()
 js.add_cors_middleware()
 
@@ -214,7 +216,9 @@ run_fast(build=fast_app)
 ```
 ### 🛠️ Custom OpenAI
 ```py
-from akenoai import AkenoXToJs as js
+from akenoai import AkenoXToJs
+
+js = AkenoXToJs()
 
 fast_app = js.get_app()
 
@@ -235,9 +239,11 @@ js.custom_openapi(
 - [X] Custom Web Frontend with HTML & CSS
 ```py
 import logging
-from akenoai import AkenoXToJs as js
+from akenoai import AkenoXToJs
 from akenoai.runner import run_fast
 from akenoai.clients import create_pyrogram
+
+js = AkenoXToJs()
 
 logger = logging.getLogger(__name__)
 LOGS = logging.getLogger("[akenox]")
@@ -315,7 +321,9 @@ run_fast(build=fast_app)
 ```py
 from akenoai import AkenoXToJs
 
-response = await AkenoXToJs.randydev(
+js = AkenoXToJs()
+
+response = await js.randydev(
     "ai/openai/gpt-old",
      custom_dev_fast=True,
      query="hello world"
@@ -344,7 +352,9 @@ randydev(endpoint, api_key=None, post=False, is_obj=False, custom_dev_fast=False
 import os
 from akenoai import AkenoXToJs
 
-response = await AkenoXToJs.randydev(
+js = AkenoXToJs()
+
+response = await js.randydev(
     "user/creation-date",
     custom_dev_fast=True,
     user_id=client.me.id
