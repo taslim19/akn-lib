@@ -157,7 +157,7 @@ class AkenoXJs:
             api_key = "demo"
         url = f"{self.replace_url()}/{endpoint}"
         return url, {}
-    
+
     def _prepare_request_dev(self, endpoint, api_key=None):
         if not api_key:
             api_key = os.environ.get("AKENOX_KEY")
@@ -166,7 +166,7 @@ class AkenoXJs:
         url = f"{self.replace_url()}/{endpoint}"
         headers = {"x-api-key": api_key}
         return url, headers
-    
+
     def _make_request_in(self, endpoint, api_key=None, dev_mode=False, post=False, verify=False, **params):
         prep = self._prepare_request_dev if dev_mode else self._prepare_request_prod
         url, headers = prep(endpoint, api_key)
