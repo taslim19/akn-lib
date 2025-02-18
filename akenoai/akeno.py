@@ -66,6 +66,9 @@ class AkenoXJs:
     def get_app(self, docs_url="/docs", redoc_url=None, **args):
         return self.fastapi(docs_url=docs_url, redoc_url=redoc_url, **args)
 
+    def replace_url(self, url=None):
+        return url or f"{self.public_url}/api/v1"
+
     def dict_to_obj(self, func):
         return self.obj(func or {})
 
@@ -100,17 +103,6 @@ class AkenoXJs:
             allow_headers=["*"],
         )
 
-    def _prepare_request(self, endpoint, api_key=None):
-        """Prepare common request parameters and validate API key."""
-        if not api_key:
-            api_key = os.environ.get("AKENOX_KEY")
-        if not api_key:
-            raise ValueError("Required variables AKENOX_KEY or api_key")
-        url = f"{self.public_url}/api/v1/{endpoint}"
-        headers = {"x-api-key": api_key}
-        return url, headers
-
-
     async def translate(self, text, target_lang):
         API_URL = "https://translate.googleapis.com/translate_a/single"
         HEADERS = {"User-Agent": "Mozilla/5.0"}
@@ -133,11 +125,13 @@ class AkenoXJs:
         endpoint,
         api_key=None,
         proxy_url: str = None,
+        dev_mode=True,
         post=False,
         verify=False,
         **params
     ):
-        url, headers = self._prepare_request(endpoint, api_key)
+        prep = self._prepare_request_dev if dev_mode else self._prepare_request_prod
+        url, headers = prep(endpoint, api_key)
         async with aiohttp.ClientSession() as session:
             try:
                 if post:
@@ -156,8 +150,26 @@ class AkenoXJs:
             except Exception as e:
                 return str(e)
 
-    def _make_request_in(self, endpoint, api_key=None, post=False, verify=False, **params):
-        url, headers = self._prepare_request(endpoint, api_key)
+    def _prepare_request_prod(self, endpoint, api_key=None):
+        if not api_key:
+            api_key = os.environ.get("AKENOX_KEY")
+        if not api_key:
+            api_key = "demo"
+        url = f"{self.replace_url()}/{endpoint}"
+        return url, {}
+
+    def _prepare_request_dev(self, endpoint, api_key=None):
+        if not api_key:
+            api_key = os.environ.get("AKENOX_KEY")
+        if not api_key:
+            raise ValueError("Required variables AKENOX_KEY or api_key")
+        url = f"{self.replace_url()}/{endpoint}"
+        headers = {"x-api-key": api_key}
+        return url, headers
+
+    def _make_request_in(self, endpoint, api_key=None, dev_mode=False, post=False, verify=False, **params):
+        prep = self._prepare_request_dev if dev_mode else self._prepare_request_prod
+        url, headers = prep(endpoint, api_key)
         try:
             if post:
                 response = requests.post(url, headers=headers, params=params, verify=verify)
@@ -205,15 +217,31 @@ class AkenoXJs:
         self,
         endpoint,
         api_key=None,
+        dev_mode=True,
         post=False,
         is_obj=False,
         verify=True,
         **params
     ):
         if is_obj:
-            return Box(self._make_request_in(endpoint, api_key, post=post, verify=verify, **params) or {})
+            return Box(
+                self._make_request_in(
+                    endpoint,
+                    api_key,
+                    dev_mode=dev_mode,
+                    post=post,
+                    verify=verify,
+                    **params) or {}
+            )
         else:
-            return self._make_request_in(endpoint, api_key, post=post, verify=verify, **params)
+            return self._make_request_in(
+                endpoint,
+                api_key,
+                dev_mode=dev_mode,
+                post=post,
+                verify=verify,
+                **params
+            )
 
     @_handle_request_errors
     @fast.log_performance
@@ -222,6 +250,7 @@ class AkenoXJs:
         endpoint,
         api_key=None,
         proxy_url=None,
+        dev_mode=True,
         post=False,
         is_obj=False,
         custom_dev_fast=False,
@@ -235,6 +264,7 @@ class AkenoXJs:
                         endpoint,
                         api_key,
                         proxy_url=proxy_url,
+                        dev_mode=dev_mode,
                         post=post,
                         verify=verify,
                         **params
@@ -245,6 +275,7 @@ class AkenoXJs:
                     api_key,
                     post=post,
                     proxy_url=proxy_url,
+                    dev_mode=dev_mode,
                     verify=verify,
                     **params
                 )
@@ -262,92 +293,92 @@ class AkenoXJs:
     @fast.log_performance
     async def chatgpt_last(self, api_key, **params):
         """params query=query"""
-        return Box(await self._make_request_in_aiohttp("ai/gpt-old", api_key, **params) or {})
+        return Box(await self._make_request_in_aiohttp("ai/gpt-old", api_key, dev_mode=True, **params) or {})
 
     @handle_dns_errors
     @fast.log_performance
     async def copilot_trip(self, api_key, **params):
         """params q=query or query=query"""
-        return Box(await self._make_request_in_aiohttp("ai/copilot2-trip", api_key, **params) or {})
+        return Box(await self._make_request_in_aiohttp("ai/copilot2-trip", api_key, dev_mode=True, **params) or {})
 
     @handle_dns_errors
     @fast.log_performance
     async def anime_hentai(self, api_key, **params):
         """params None"""
-        return Box(await self._make_request_in_aiohttp("anime/hentai", api_key, **params) or {})
+        return Box(await self._make_request_in_aiohttp("anime/hentai", api_key, dev_mode=True, **params) or {})
 
     @handle_dns_errors
     @fast.log_performance
     async def maker_carbon(self, api_key, **params):
         """params code=code"""
-        return await self._make_request_in_aiohttp("maker/carbon", api_key, **params)
+        return await self._make_request_in_aiohttp("maker/carbon", api_key, dev_mode=True, **params)
 
     @handle_dns_errors
     @fast.log_performance
     async def add_ban(self, api_key, **params):
         """params user_id=user_id"""
-        return Box(await self._make_request_in_aiohttp("user/ban-user", api_key, post=True, **params) or {})
+        return Box(await self._make_request_in_aiohttp("user/ban-user", api_key, dev_mode=True, post=True, **params) or {})
 
     @handle_dns_errors
     @fast.log_performance
     async def check_ban(self, api_key, **params):
         """params user_id=user_id"""
-        return Box(await self._make_request_in_aiohttp("user/check-ban", api_key, **params) or {})
+        return Box(await self._make_request_in_aiohttp("user/check-ban", api_key, dev_mode=True, **params) or {})
 
     @handle_dns_errors
     @fast.log_performance
     async def tiktok_dl(self, api_key, v2=False, **params):
         """params url=url"""
         if v2:
-            return Box(await self._make_request_in_aiohttp("dl/tiktok-v2", api_key, **params) or {})
+            return Box(await self._make_request_in_aiohttp("dl/tiktok-v2", api_key, dev_mode=True, **params) or {})
         else:
-            return Box(await self._make_request_in_aiohttp("dl/tiktok", api_key, **params) or {})
+            return Box(await self._make_request_in_aiohttp("dl/tiktok", api_key, dev_mode=True, **params) or {})
 
     @handle_dns_errors
     @fast.log_performance
     async def fb_dl(self, api_key, **params):
         """params url=url"""
-        return Box(await self._make_request_in_aiohttp("dl/fb", api_key, **params) or {})
+        return Box(await self._make_request_in_aiohttp("dl/fb", api_key, dev_mode=True, **params) or {})
 
     @handle_dns_errors
     @fast.log_performance
     async def xnxx_dl(self, api_key, **params):
         """params q=q"""
-        return Box(await self._make_request_in_aiohttp("dl/xnxx", api_key, **params) or {})
+        return Box(await self._make_request_in_aiohttp("dl/xnxx", api_key, dev_mode=True, **params) or {})
 
     @handle_dns_errors
     @fast.log_performance
     async def snapsave_dl(self, api_key, **params):
         """params url=url"""
-        return Box(await self._make_request_in_aiohttp("dl/snapsave", api_key, **params) or {})
+        return Box(await self._make_request_in_aiohttp("dl/snapsave", api_key, dev_mode=True, **params) or {})
 
     @handle_dns_errors
     @fast.log_performance
     async def ig_dl(self, api_key, **params):
         """params url=url"""
-        return Box(await self._make_request_in_aiohttp("dl/instagram", api_key, **params) or {})
+        return Box(await self._make_request_in_aiohttp("dl/instagram", api_key, dev_mode=True, **params) or {})
 
     @handle_dns_errors
     @fast.log_performance
     async def twitter_dl(self, api_key, **params):
         """params url=url"""
-        return Box(await self._make_request_in_aiohttp("dl/twitter", api_key, **params) or {})
+        return Box(await self._make_request_in_aiohttp("dl/twitter", api_key, dev_mode=True, **params) or {})
 
     @handle_dns_errors
     @fast.log_performance
     async def sfilemobi(self, api_key, is_search=False, **params):
         """params url=url or (is_search=True, q=q)"""
         if is_search:
-            return Box(await self._make_request_in_aiohttp("dl/sfilemobi-search", api_key, **params) or {})
+            return Box(await self._make_request_in_aiohttp("dl/sfilemobi-search", api_key, dev_mode=True, **params) or {})
         else:
-            return Box(await self._make_request_in_aiohttp("dl/sfilemobi", api_key, **params) or {})
+            return Box(await self._make_request_in_aiohttp("dl/sfilemobi", api_key, dev_mode=True, **params) or {})
 
     @handle_dns_errors
     @fast.log_performance
     async def get_creation_date(self, api_key=None, **params):
         """Get raw creation date data
         params user_id=user_id"""
-        return Box(await self._make_request_in_aiohttp("user/creation-date", api_key, **params) or {})
+        return Box(await self._make_request_in_aiohttp("user/creation-date", api_key, dev_mode=True, **params) or {})
 
     def format_creation_date(self, creation_date_response):
         """Format creation date from response
