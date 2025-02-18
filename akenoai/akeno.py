@@ -52,8 +52,8 @@ class DictToObj:
         return f"{self.__dict__}"
 
 class AkenoXJs:
-    def __init__(self):
-        self.public_url = "https://randydev-ryu-js.hf.space"
+    def __init__(self, public_url: str = "https://randydev-ryu-js.hf.space/api/v1"):
+        self.public_url = public_url
         self.fastapi = FastAPI
         self.custom_openai = get_openapi
         self.obj = Box
@@ -134,14 +134,18 @@ class AkenoXJs:
         url, headers = prep(endpoint, api_key)
         async with aiohttp.ClientSession() as session:
             try:
-                if post:
-                    async with session.post(url, headers=headers, params=params, proxy=proxy_url, ssl=verify) as response:
-                        return await response.json() if endpoint != "maker/carbon" else await response.read()
-                else:
-                    async with session.get(url, headers=headers, params=params, proxy=proxy_url, ssl=verify) as response:
-                        return await response.json() if endpoint != "maker/carbon" else await response.read()
+                async with session.request(
+                    method="POST" if post else "GET",
+                    url=url,
+                    headers=headers,
+                    params=params if not post else None,
+                    json=params if post else None,
+                    proxy=proxy_url or None,
+                    ssl=verify
+                ) as response:
+                    return await response.json() if endpoint != "maker/carbon" else await response.read()
             except (aiohttp.client_exceptions.ContentTypeError, json.decoder.JSONDecodeError):
-                raise Exception("GET OR POST INVALID: check problem, invalid json")
+                raise Exception("GET OR POST INVALID: check problem, invalid JSON")
             except (
                 aiohttp.ClientConnectorError,
                 aiohttp.client_exceptions.ClientConnectorSSLError
@@ -154,8 +158,8 @@ class AkenoXJs:
         if not api_key:
             api_key = os.environ.get("AKENOX_KEY")
         if not api_key:
-            api_key = "demo"
-        url = f"{self.replace_url()}/{endpoint}"
+            raise ValueError("Required variables AKENOX_KEY or api_key")
+        url = f"{self.public_url}/{endpoint}"
         return url, {}
 
     def _prepare_request_dev(self, endpoint, api_key=None):
@@ -163,7 +167,7 @@ class AkenoXJs:
             api_key = os.environ.get("AKENOX_KEY")
         if not api_key:
             raise ValueError("Required variables AKENOX_KEY or api_key")
-        url = f"{self.replace_url()}/{endpoint}"
+        url = f"{self.public_url}/{endpoint}"
         headers = {"x-api-key": api_key}
         return url, headers
 
@@ -389,7 +393,7 @@ class AkenoXJs:
         date_obj = datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%S.%fZ")
         return date_obj.strftime("%Y-%m-%d %H:%M:%S")
 
-AkenoXToJs = AkenoXJs()
+AkenoXToJs = AkenoXJs
 
 class AkenoPlus:
     """
