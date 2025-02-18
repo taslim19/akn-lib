@@ -69,8 +69,8 @@ class AkenoXJs:
     def dict_to_obj(self, func):
         return self.obj(func or {})
 
-    def rjson_dumps(self, **args):
-        return self._json.dumps(**args)
+    def rjson_dumps(self, obj, indent=4, **args):
+        return self._json.dumps(obj, indent=indent, **args)
 
     def get_custom_openai(self, **args):
         return self.custom_openai(**args)
@@ -109,6 +109,24 @@ class AkenoXJs:
         url = f"{self.public_url}/api/v1/{endpoint}"
         headers = {"x-api-key": api_key}
         return url, headers
+
+    @staticmethod
+    async def translate(text, target_lang):
+        API_URL = "https://translate.googleapis.com/translate_a/single"
+        HEADERS = {"User-Agent": "Mozilla/5.0"}
+        params = {
+            "client": "gtx",
+            "sl": "auto",
+            "tl": target_lang,
+            "dt": "t",
+            "q": text,
+        }
+        async with aiohttp.ClientSession() as session:
+            async with session.post(API_URL, headers=HEADERS, params=params) as response:
+                if response.status != 200:
+                    return None
+                translation = await response.json()
+                return "".join([item[0] for item in translation[0]])
 
     async def _make_request_in_aiohttp(
         self,
