@@ -21,6 +21,7 @@
 import asyncio
 import json
 import os
+import json
 import subprocess
 from base64 import b64decode as m
 from datetime import datetime
@@ -58,6 +59,7 @@ class AkenoXJs:
         self.custom_openai = get_openapi
         self.obj = Box
         self.request_in = aiohttp
+        self._json = json
 
     def fasthttp(self):
         return self.request_in
@@ -67,6 +69,9 @@ class AkenoXJs:
 
     def dict_to_obj(self, func):
         return self.obj(func or {})
+
+    def rjson_dumps(self, **args):
+        return self._json.dumps(**args)
 
     def get_custom_openai(self, **args):
         return self.custom_openai(**args)
