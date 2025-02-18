@@ -69,8 +69,8 @@ class AkenoXJs:
     def dict_to_obj(self, func):
         return self.obj(func or {})
 
-    def rjson_dumps(self, **args):
-        return self._json.dumps(**args)
+    def rjson_dumps(self, obj, indent=4, **args):
+        return self._json.dumps(obj, indent=indent, **args)
 
     def get_custom_openai(self, **args):
         return self.custom_openai(**args)
