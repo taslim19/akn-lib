@@ -67,8 +67,7 @@ class AkenoXJs:
         return self.fastapi(docs_url=docs_url, redoc_url=redoc_url, **args)
 
     def replace_url(self, url=None):
-        custom_url = url or f"{self.public_url}/api/v1"
-        return custom_url
+        return url or f"{self.public_url}/api/v1"
 
     def dict_to_obj(self, func):
         return self.obj(func or {})
@@ -104,22 +103,6 @@ class AkenoXJs:
             allow_headers=["*"],
         )
 
-    def _prepare_request(self, endpoint, api_key=None, is_headers_dev=False):
-        """Prepare common request parameters and validate API key."""
-        if not api_key:
-            api_key = os.environ.get("AKENOX_KEY")
-        if not api_key:
-            api_key = "demo"
-        e = self.replace_url()
-        if is_headers_dev:
-            url = f"{e}/{endpoint}"
-            headers = {"x-api-key": api_key}
-            return url, headers
-        else:
-            headers = {}
-            return e, headers
-
-
     async def translate(self, text, target_lang):
         API_URL = "https://translate.googleapis.com/translate_a/single"
         HEADERS = {"User-Agent": "Mozilla/5.0"}
@@ -142,12 +125,13 @@ class AkenoXJs:
         endpoint,
         api_key=None,
         proxy_url: str = None,
-        is_headers_dev=False,
+        dev_mode=True,
         post=False,
         verify=False,
         **params
     ):
-        url, headers = self._prepare_request(endpoint, api_key, is_headers_dev)
+        prep = self._prepare_request_dev if dev_mode else self._prepare_request_prod
+        url, headers = prep(endpoint, api_key)
         async with aiohttp.ClientSession() as session:
             try:
                 if post:
@@ -166,16 +150,26 @@ class AkenoXJs:
             except Exception as e:
                 return str(e)
 
-    def _make_request_in(
-        self,
-        endpoint,
-        api_key=None,
-        is_headers_dev=False,
-        post=False,
-        verify=False,
-        **params
-    ):
-        url, headers = self._prepare_request(endpoint, api_key, is_headers_dev)
+    def _prepare_request_prod(self, endpoint, api_key=None):
+        if not api_key:
+            api_key = os.environ.get("AKENOX_KEY")
+        if not api_key:
+            api_key = "demo"
+        url = f"{self.replace_url()}/{endpoint}"
+        return url, {}
+    
+    def _prepare_request_dev(self, endpoint, api_key=None):
+        if not api_key:
+            api_key = os.environ.get("AKENOX_KEY")
+        if not api_key:
+            raise ValueError("Required variables AKENOX_KEY or api_key")
+        url = f"{self.replace_url()}/{endpoint}"
+        headers = {"x-api-key": api_key}
+        return url, headers
+    
+    def _make_request_in(self, endpoint, api_key=None, dev_mode=False, post=False, verify=False, **params):
+        prep = self._prepare_request_dev if dev_mode else self._prepare_request_prod
+        url, headers = prep(endpoint, api_key)
         try:
             if post:
                 response = requests.post(url, headers=headers, params=params, verify=verify)
@@ -223,6 +217,7 @@ class AkenoXJs:
         self,
         endpoint,
         api_key=None,
+        dev_mode=True,
         post=False,
         is_obj=False,
         verify=True,
@@ -233,13 +228,20 @@ class AkenoXJs:
                 self._make_request_in(
                     endpoint,
                     api_key,
-                    is_headers_dev=is_headers_dev,
+                    dev_mode=dev_mode,
                     post=post,
                     verify=verify,
                     **params) or {}
             )
         else:
-            return self._make_request_in(endpoint, api_key, post=post, verify=verify, **params)
+            return self._make_request_in(
+                endpoint,
+                api_key,
+                dev_mode=dev_mode,
+                post=post,
+                verify=verify,
+                **params
+            )
 
     @_handle_request_errors
     @fast.log_performance
@@ -248,7 +250,7 @@ class AkenoXJs:
         endpoint,
         api_key=None,
         proxy_url=None,
-        is_headers_dev=True,
+        dev_mode=True,
         post=False,
         is_obj=False,
         custom_dev_fast=False,
@@ -262,7 +264,7 @@ class AkenoXJs:
                         endpoint,
                         api_key,
                         proxy_url=proxy_url,
-                        is_headers_dev=is_headers_dev,
+                        dev_mode=dev_mode,
                         post=post,
                         verify=verify,
                         **params
@@ -273,7 +275,7 @@ class AkenoXJs:
                     api_key,
                     post=post,
                     proxy_url=proxy_url,
-                    is_headers_dev=is_headers_dev
+                    dev_mode=dev_mode,
                     verify=verify,
                     **params
                 )
