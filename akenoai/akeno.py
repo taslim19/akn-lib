@@ -110,8 +110,8 @@ class AkenoXJs:
         headers = {"x-api-key": api_key}
         return url, headers
 
-    @staticmethod
-    async def translate(text, target_lang):
+
+    async def translate(self, text, target_lang):
         API_URL = "https://translate.googleapis.com/translate_a/single"
         HEADERS = {"User-Agent": "Mozilla/5.0"}
         params = {
