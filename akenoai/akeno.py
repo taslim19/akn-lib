@@ -243,7 +243,7 @@ class AkenoXJs:
     async def randydev(
         self,
         endpoint,
-        custom_headers_key=custom_headers_key,
+        custom_headers_key="x-api-key",
         api_key=None,
         proxy_url=None,
         post=False,
