@@ -411,6 +411,20 @@ return await js.randydev(
 | **Custom Public Url** | `https://itzpire.com` | ✅ Default |
 ---
 
+---
+
+| Feature        | **OpenAI** |  **Deepseek** 
+|---------------|--------------------------------|--------------------------|
+| **API Key**   |  ✅ Required               | ✅ Required |
+| **Speed**     | ?     | ? |
+| **Stability** | ✅ Stable & optimized      | ✅ Stable & optimized |
+| **Use Case**  | ? | ? |
+| **IP Ban Status**   | ? | ? |
+| **Rate Limit** | 20 requests * | ? |
+| **Network** | ? | ? |
+| **Custom Public Url** | `https://api.openai.com/v1` | `https://api.deepseek.com/v1` |
+---
+
 ### ❤️ Special Thanks To
 - [`Kurigram`](https://github.com/KurimuzonAkuma/pyrogram)
 - [`FastAPI`](https://github.com/fastapi/fastapi)
