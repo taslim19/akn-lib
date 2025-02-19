@@ -399,14 +399,16 @@ return await js.randydev(
 ---
 
 ### **📌 Custom API endpoints**
-| Feature        | **Itzpire API** (Proxy Required) | **AkenoX API** (No Proxy) |
+| Feature        | **Itzpire API** (Proxy Required) | **AkenoX API** (No Proxy)
 |---------------|--------------------------------|--------------------------|
 | **API Key**   | ❌ Not required               | ✅ Required |
 | **Speed**     | ⚠️ Slower (Proxy used)        | 🚀 Fast (Direct request) |
 | **Stability** | ✅ Works even if blocked      | ✅ Stable & optimized |
 | **Use Case**  | 🔄 Bypassing restrictions    | ⚡ Direct & fast access |
-| **IP Ban Status**   | 🚷 IP address has been banned. | ✅ IP address not banned
-| **Rate Limit** | ✅ Unlimited | ⏳ 100 requests per minute
+| **IP Ban Status**   | 🚷 IP address has been banned. | ✅ IP address not banned |
+| **Rate Limit** | ✅ Unlimited | ⏳ 100 requests per minute |
+| **Network** | ❌ No Limits | ✅ Limited Network access |
+| **Custom Public Url** | `https://itzpire.com` | ✅ Default |
 ---
 
 ### ❤️ Special Thanks To
