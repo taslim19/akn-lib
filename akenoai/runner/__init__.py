@@ -4,9 +4,11 @@ import os
 import uvicorn
 from fastapi import Depends, HTTPException
 
-from akenoai import AkenoXToJs as _ran_dev
+from akenoai import AkenoXToJs
 
-app = _ran_dev.get_app()
+js = AkenoXToJs()
+
+app = js.get_app()
 
 logger = logging.getLogger(__name__)
 LOGS = logging.getLogger("[akenox]")
@@ -18,7 +20,7 @@ async def read_root():
 
 @app.get("/test")
 async def example_json():
-    async with _ran_dev.fasthttp().ClientSession() as session:
+    async with js.fasthttp().ClientSession() as session:
         async with session.get("https://jsonplaceholder.typicode.com/todos/1") as response:
             title = _ran_dev.dict_to_obj(await response.json()).title
     return {"message": title}
@@ -38,7 +40,7 @@ async def add_item(add: str, number: int):
 def custom_openapi():
     if app.openapi_schema:
         return app.openapi_schema
-    openapi_schema = _ran_dev.get_custom_openai(
+    openapi_schema = js.get_custom_openai(
         title="AkenoX AI API",
         version="1.0.0",
         summary="Use It Only For Personal Project",
