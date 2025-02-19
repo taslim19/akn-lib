@@ -420,7 +420,7 @@ return await js.randydev(
 | **Stability** | ✅ Stable & optimized      | ✅ Stable & optimized |
 | **Use Case**  | ? | ? |
 | **IP Ban Status**   | ? | ? |
-| **Rate Limit** | 20 requests * | ? |
+| **Rate Limit** | ? | ? |
 | **Network** | ? | ? |
 | **Custom Public Url** | `https://api.openai.com/v1` | `https://api.deepseek.com/v1` |
 ---
