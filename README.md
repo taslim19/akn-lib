@@ -381,6 +381,34 @@ AKENOX_KEY=akeno_xxxxxx
 - 🚫 **IP address blocked issue**
 - 🌐 **Different DNS settings**
 
+```py
+from akenoai import AkenoXToJs
+
+js = AkenoXToJs()
+
+proxy_url = "http://PROXY.YOUR-SERVER.COM:8080"
+
+return await js.randydev(
+    "ai/openai/gpt-old",
+    api_key="akeno_xxxxxxx",
+    proxy_url=proxy_url,  # Use proxy if needed
+    post=False,
+    custom_dev_fast=True
+)
+```
+---
+
+### **📌 Custom API endpoints**
+| Feature        | **Itzpire API** (Proxy Required) | **AkenoX API** (No Proxy) |
+|---------------|--------------------------------|--------------------------|
+| **API Key**   | ❌ Not required               | ✅ Required |
+| **Speed**     | ⚠️ Slower (Proxy used)        | 🚀 Fast (Direct request) |
+| **Stability** | ✅ Works even if blocked      | ✅ Stable & optimized |
+| **Use Case**  | 🔄 Bypassing restrictions    | ⚡ Direct & fast access |
+| **IP Ban Status**   | 🚷 IP address has been banned. | ✅ IP address not banned
+| **Rate Limit** | ✅ Unlimited | ⏳ 100 requests per minute
+---
+
 ### ❤️ Special Thanks To
 - [`Kurigram`](https://github.com/KurimuzonAkuma/pyrogram)
 - [`FastAPI`](https://github.com/fastapi/fastapi)
