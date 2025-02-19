@@ -58,6 +58,7 @@ setuptools.setup(
             "pydantic",
             "bs4",
             "typing",
+            "uvloop",
         ],
         "standard": [
             "g4f",

@@ -28,6 +28,7 @@ from datetime import datetime
 import aiohttp
 import httpx
 import requests
+import uvloop
 import wget
 from box import Box
 from fastapi import FastAPI, HTTPException, Request
@@ -59,6 +60,7 @@ class AkenoXJs:
         self.obj = Box
         self.request_in = aiohttp
         self._json = json
+        self._uvloop = uvloop
 
     def fasthttp(self):
         return self.request_in
@@ -71,6 +73,9 @@ class AkenoXJs:
 
     def rjson_dumps(self, obj, indent=4, **args):
         return self._json.dumps(obj, indent=indent, **args)
+
+    def ultra_fast_uvloop_install(self):
+        self._uvloop.install()
 
     def get_custom_openai(self, **args):
         return self.custom_openai(**args)
