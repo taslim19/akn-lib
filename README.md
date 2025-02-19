@@ -413,7 +413,7 @@ return await js.randydev(
 
 ---
 
-| Feature        | **OpenAI** |  **Deepseek** 
+| Feature        | **OpenAI** |  **Deepseek**
 |---------------|--------------------------------|--------------------------|
 | **API Key**   |  ✅ Required               | ✅ Required |
 | **Speed**     | ?     | ? |
