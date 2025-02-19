@@ -1,5 +1,5 @@
-from pyrogram import Client
+from pyrogram import Client as Clients
 
 
 def create_pyrogram(name: str, **args):
-    return Client(name, **args)
+    return Clients(name, **args)
