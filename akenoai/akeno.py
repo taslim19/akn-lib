@@ -131,7 +131,7 @@ class AkenoXJs:
         verify=False,
         **params
     ):
-        url, headers = self._prepare_request(endpoint, custom_headers_key=custom_headers_key, api_key)
+        url, headers = self._prepare_request(endpoint, api_key, custom_headers_key=custom_headers_key)
         async with aiohttp.ClientSession() as session:
             try:
                 async with session.request(
@@ -168,7 +168,7 @@ class AkenoXJs:
         return url, headers
 
     def _make_request_in(self, endpoint, custom_headers_key="x-api-key", api_key=None, post=False, verify=False, **params):
-        url, headers = self._prepare_request(endpoint, custom_headers_key=custom_headers_key, api_key)
+        url, headers = self._prepare_request(endpoint, api_key, custom_headers_key=custom_headers_key)
         try:
             if post:
                 response = requests.post(url, headers=headers, params=params, verify=verify)
