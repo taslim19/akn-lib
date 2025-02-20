@@ -34,6 +34,7 @@ from box import Box
 
 import akenoai.logger as fast
 
+
 class BaseDev:
     def __init__(self, public_url: str):
         self.public_url = public_url
@@ -78,7 +79,7 @@ class RandyDev(BaseDev):
     class Chat:
         def __init__(self, parent: BaseDev):
             self.parent = parent
-    
+
         async def create(self, model: str = None, is_obj=False, **kwargs):
             """Handle AI Chat API requests."""
             if not model:
