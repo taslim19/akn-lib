@@ -40,6 +40,34 @@ class BaseDev:
         self.public_url = public_url
         self.obj = Box
 
+    def _get_random_from_channel(link):
+        clean_link = link.split("?")[0]
+        target_link = clean_link.split("/c/") if "/c/" in clean_link else clean_link.split("/")
+        random_id = int(target_link[-1].split("/")[-1]) if len(target_link) > 1 else None
+        desired_username = target_link[3] if len(target_link) > 3 else None
+        username = (
+            "@" + desired_username if desired_username else "-100" + target_link[1].split("/")[0]
+            if len(target_link) > 1 else None
+        )
+        return username, random_id
+    
+    async def _translate(self, text: str = None, target_lang: str = None):
+        API_URL = "https://translate.googleapis.com/translate_a/single"
+        HEADERS = {"User-Agent": "Mozilla/5.0"}
+        params = {
+            "client": "gtx",
+            "sl": "auto",
+            "tl": target_lang,
+            "dt": "t",
+            "q": text,
+        }
+        async with aiohttp.ClientSession() as session:
+            async with session.post(API_URL, headers=HEADERS, params=params) as response:
+                if response.status != 200:
+                    return None
+                translation = await response.json()
+                return "".join([item[0] for item in translation[0]])
+
     def _prepare_request(self, endpoint: str, api_key: str = None, headers_extra: dict = None):
         """Prepare request URL and headers."""
         if not api_key:
@@ -88,6 +116,8 @@ class RandyDev(BaseDev):
         self.downloader = self.Downloader(self)
         self.image = self.Image(self)
         self.user = self.User(self)
+        self.translate = self.Translate(self)
+        self.story = self.LinkExtraWithStory(self)
 
     class Chat:
         def __init__(self, parent: BaseDev):
@@ -118,7 +148,7 @@ class RandyDev(BaseDev):
             self.parent = parent
 
         @fast.log_performance
-        async def create(self, model: str = None, is_obj=False, **kwargs):
+        async def create(self, model: str = None, **kwargs):
             """Handle Image API requests."""
             if not model:
                 raise ValueError("Image model is required for generating image AI")
@@ -135,6 +165,27 @@ class RandyDev(BaseDev):
                 raise ValueError("Model name is required for downloader requests.")
             response = await self.parent._make_request("get", f"dl/{model}", **kwargs) or {}
             return self.parent.obj(response) if is_obj else response
+
+    class Translate:
+        def __init__(self, parent: BaseDev):
+            self.parent = parent
+
+        async def translate(self, text: str = None, is_obj=False, **kwargs):
+            """Handle Translate Google API requests."""
+            if not text:
+                raise ValueError("text name is required for Google Translate.")
+            response = await self.parent._translate(text, **kwargs) or {}
+            return self.parent.obj(response) if is_obj else response
+
+    class LinkExtraWithStory:
+        def __init__(self, parent: BaseDev):
+            self.parent = parent
+
+        async def links_extra_with(self, link: str = None):
+            """Handle Link Story Random in Telegram."""
+            if not link:
+                raise ValueError("link name is required for Link Story Random.")
+            return self.parent._get_random_from_channel(link)
 
 class AkenoXJs:
     def __init__(self, public_url: str = "https://randydev-ryu-js.hf.space/api/v1"):
