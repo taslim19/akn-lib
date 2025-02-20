@@ -6,3 +6,4 @@ python-box
 uvloop
 fastapi
 itsdangerous
+uvicorn
