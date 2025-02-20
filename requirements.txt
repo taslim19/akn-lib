@@ -3,3 +3,4 @@ wget
 requests
 httpx[http2]
 python-box
+uvloop
