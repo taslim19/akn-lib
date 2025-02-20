@@ -55,13 +55,15 @@ class BaseDev:
             headers.update(headers_extra)
         return url, headers
 
-    async def _make_request(self, method: str, endpoint: str, **params):
+    async def _make_request(self, method: str, endpoint: str, image_read=False, **params):
         """Handles async API requests."""
         url, headers = self._prepare_request(endpoint, params.pop("api_key", None))
         try:
             async with aiohttp.ClientSession() as session:
                 request = getattr(session, method)
                 async with request(url, headers=headers, params=params) as response:
+                    if image_read:
+                        return await response.read()
                     return await response.json()
         except (aiohttp.client_exceptions.ContentTypeError, json.decoder.JSONDecodeError):
             raise Exception("GET OR POST INVALID: check problem, invalid JSON")
@@ -75,17 +77,43 @@ class RandyDev(BaseDev):
         super().__init__(public_url)
         self.chat = self.Chat(self)
         self.downloader = self.Downloader(self)
+        self.image = self.Image(self)
+        self.user = self.User(self)
 
     class Chat:
         def __init__(self, parent: BaseDev):
             self.parent = parent
 
+        @fast.log_performance
         async def create(self, model: str = None, is_obj=False, **kwargs):
             """Handle AI Chat API requests."""
             if not model:
                 raise ValueError("Model name is required for AI requests.")
             response = await self.parent._make_request("get", f"ai/{model}", **kwargs) or {}
             return self.parent.obj(response) if is_obj else response
+
+    class User:
+        def __init__(self, parent: BaseDev):
+            self.parent = parent
+
+        @fast.log_performance
+        async def create(self, model: str = None, is_obj=False, **kwargs):
+            """Handle AI Chat API requests."""
+            if not model:
+                raise ValueError("User name is required for Telegram")
+            response = await self.parent._make_request("get", f"user/{model}", **kwargs) or {}
+            return self.parent.obj(response) if is_obj else response
+
+    class Image:
+        def __init__(self, parent: BaseDev):
+            self.parent = parent
+
+        @fast.log_performance
+        async def create(self, model: str = None, is_obj=False, **kwargs):
+            """Handle AI Chat API requests."""
+            if not model:
+                raise ValueError("Image model is required for generating image AI")
+            return await self.parent._make_request("get", f"flux/{model}", **kwargs)
 
     class Downloader:
         def __init__(self, parent: BaseDev):
