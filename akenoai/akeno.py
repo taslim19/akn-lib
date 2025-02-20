@@ -61,8 +61,8 @@ class BaseDev:
         Parameters:
             method (str): HTTP method to use.
             endpoint (str): API endpoint.
-            image_read (bool): If True, expects the response to be an image. 
-                The method will verify that the response's Content-Type begins with 'image/' 
+            image_read (bool): If True, expects the response to be an image.
+                The method will verify that the response's Content-Type begins with 'image/'
                 and then return the raw bytes from the response.
             **params: Additional parameters to be sent with the request.
         """
