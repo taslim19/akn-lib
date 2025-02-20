@@ -40,7 +40,7 @@ class BaseDev:
         self.public_url = public_url
         self.obj = Box
 
-    def _get_random_from_channel(link):
+    def _get_random_from_channel(self, link: str = None):
         clean_link = link.split("?")[0]
         target_link = clean_link.split("/c/") if "/c/" in clean_link else clean_link.split("/")
         random_id = int(target_link[-1].split("/")[-1]) if len(target_link) > 1 else None
