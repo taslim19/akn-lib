@@ -118,7 +118,7 @@ class RandyDev(BaseDev):
         self.image = self.Image(self)
         self.user = self.User(self)
         self.translate = self.Translate(self)
-        self.story = self.LinkExtraWithStory(self)
+        self.story_in_tg = self.LinkExtraWithStory(self)
 
     class Chat:
         def __init__(self, parent: BaseDev):
@@ -188,7 +188,7 @@ class RandyDev(BaseDev):
                 raise ValueError("link name is required for Link Story Random.")
             return self.parent._get_random_from_channel(link)
 
-        async def download_with_link(self, filename: str = "downloaded_story.mp4", **kwargs):
+        async def download_story(self, filename: str = "downloaded_story.mp4", **kwargs):
             """Handle Story Downloader in Telegram."""
             if not filename:
                 raise ValueError("filename name is required for Story Downloader.")
