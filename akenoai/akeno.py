@@ -67,8 +67,8 @@ class BaseDev:
             raise Exception("GET OR POST INVALID: check problem, invalid JSON")
         except (aiohttp.ClientConnectorError, aiohttp.client_exceptions.ClientConnectorSSLError):
             raise Exception("Cannot connect to host")
-        except Exception as e:
-            return str(e)
+        except Exception:
+            return None
 
 class RandyDev(BaseDev):
     def __init__(self, public_url: str = "https://randydev-ryu-js.hf.space/api/v1"):
