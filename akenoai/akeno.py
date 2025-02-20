@@ -118,7 +118,7 @@ class RandyDev(BaseDev):
         self.image = self.Image(self)
         self.user = self.User(self)
         self.translate = self.Translate(self)
-        self.story = self.LinkExtraWithStory(self)
+        self.story_in_tg = self.LinkExtraWithStory(self)
 
     class Chat:
         def __init__(self, parent: BaseDev):
@@ -188,11 +188,11 @@ class RandyDev(BaseDev):
                 raise ValueError("link name is required for Link Story Random.")
             return self.parent._get_random_from_channel(link)
 
-        async def download_with_link(self, link: str = None, filename: str = "downloaded_story.mp4"):
+        async def download_story(self, filename: str = "downloaded_story.mp4", **kwargs):
             """Handle Story Downloader in Telegram."""
-            if not link:
-                raise ValueError("link name is required for Story Downloader.")
-            response = await self.parent.user.create("story-dl", is_obj=True, link=link)
+            if not filename:
+                raise ValueError("filename name is required for Story Downloader.")
+            response = await self.parent.user.create("story-dl", is_obj=True, **kwargs)
             if not hasattr(response, "download") or not response.download:
                 raise ValueError("Invalid response: No downloadable content found.")
             with open(filename, "wb") as f:
