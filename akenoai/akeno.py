@@ -75,16 +75,43 @@ class RandyDev(BaseDev):
         super().__init__(public_url)
         self.chat = self.Chat(self)
         self.downloader = self.Downloader(self)
+        self.image = self.Image(self)
+        self.user = self.User(self)
 
     class Chat:
         def __init__(self, parent: BaseDev):
             self.parent = parent
 
+        @fast.log_performance
         async def create(self, model: str = None, is_obj=False, **kwargs):
             """Handle AI Chat API requests."""
             if not model:
                 raise ValueError("Model name is required for AI requests.")
             response = await self.parent._make_request("get", f"ai/{model}", **kwargs) or {}
+            return self.parent.obj(response) if is_obj else response
+
+    class User:
+        def __init__(self, parent: BaseDev):
+            self.parent = parent
+
+        @fast.log_performance
+        async def create(self, model: str = None, is_obj=False, **kwargs):
+            """Handle AI Chat API requests."""
+            if not model:
+                raise ValueError("User name is required for Telegram")
+            response = await self.parent._make_request("get", f"user/{model}", **kwargs) or {}
+            return self.parent.obj(response) if is_obj else response
+
+    class Image:
+        def __init__(self, parent: BaseDev):
+            self.parent = parent
+
+        @fast.log_performance
+        async def create(self, model: str = None, is_obj=False, **kwargs):
+            """Handle AI Chat API requests."""
+            if not model:
+                raise ValueError("User name is required for Flux generate image AI")
+            response = await self.parent._make_request("get", f"flux/{model}", **kwargs) or {}
             return self.parent.obj(response) if is_obj else response
 
     class Downloader:
