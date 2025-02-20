@@ -38,6 +38,7 @@ from starlette.middleware.sessions import SessionMiddleware
 
 import akenoai.logger as fast
 
+
 class DictToObj:
     def __init__(self, dictionary):
         for key, value in dictionary.items():
@@ -86,7 +87,7 @@ class FastDev:
             allow_methods=["*"],
             allow_headers=["*"],
         )
-        
+
 class RandyDev:
     def __init__(self, public_url: str = "https://randydev-ryu-js.hf.space/api/v1"):
         self.public_url = public_url
@@ -202,7 +203,7 @@ class RandyDev:
     @_handle_request_errors
     @fast.log_performance
     async def create(self, *args, is_obj=False, **kwargs):
-        response = await self._make_request_in_aiohttp(*args, **kwargs) or {} 
+        response = await self._make_request_in_aiohttp(*args, **kwargs) or {}
         return self.obj(response) if is_obj else response
 
     class Chat:
@@ -210,7 +211,7 @@ class RandyDev:
             self.parent = parent
 
         async def create(self, model: str = None, is_obj=False, **kwargs):
-            response = await self.parent._make_request_in_aiohttp(f"ai/{model}", **kwargs) or {} 
+            response = await self.parent._make_request_in_aiohttp(f"ai/{model}", **kwargs) or {}
             return self.parent.obj(response) if is_obj else response
 
     class Downloader:
@@ -218,7 +219,7 @@ class RandyDev:
             self.parent = parent
 
         async def create(self, model: str = None, is_obj=False, **kwargs):
-            response = await self.parent._make_request_in_aiohttp(f"dl/{model}", **kwargs) or {} 
+            response = await self.parent._make_request_in_aiohttp(f"dl/{model}", **kwargs) or {}
             return self.parent.obj(response) if is_obj else response
 
 class AkenoXJs:
