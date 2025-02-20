@@ -289,6 +289,9 @@ run_fast(build=fast_app)
 - `**params:` Allows passing additional parameters as a dictionary, which will be sent as JSON.
 
 ### 🔹 <b>User Creation Date:</b>
+
+This feature retrieves the date when the user's account was initially created. It provides a reliable audit trail and allows users or administrators to verify the account's age, which can be important for purposes such as eligibility verification, security audits, or account management.
+
 ```py
 import os
 from akenoai import OldAkenoXToJs
