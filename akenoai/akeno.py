@@ -52,91 +52,50 @@ class DictToObj:
     def __repr__(self):
         return f"{self.__dict__}"
 
-class FastDev:
-    def __init__(self):
-        self.fastapi = FastAPI
-        self.custom_openai = get_openapi
-
-    def get_app(self, docs_url="/docs", redoc_url=None, **args):
-        return self.fastapi(docs_url=docs_url, redoc_url=redoc_url, **args)
-
-    def get_custom_openai(self, **args):
-        return self.custom_openai(**args)
-
-    def custom_openapi(self, app=None, logo_url: str = "https://github-production-user-asset-6210df.s3.amazonaws.com/90479255/289277800-f26513f7-cdf4-44ee-9a08-f6b27e6b99f7.jpg", **args):
-        if not app:
-            raise ValueError("Required app")
-        if app.openapi_schema:
-            return app.openapi_schema
-        openapi_schema = self.get_custom_openai(**args)
-        openapi_schema["info"]["x-logo"] = {"url": logo_url}
-        app.openapi_schema = openapi_schema
-        return app.openapi_schema
-
-    def add_session_middleware(self, secret_key=None):
-        self.get_app().add_middleware(
-            SessionMiddleware,
-            secret_key=secret_key
-        )
-
-    def add_cors_middleware(self):
-        self.get_app().add_middleware(
-            CORSMiddleware,
-            allow_origins=["*"],
-            allow_credentials=True,
-            allow_methods=["*"],
-            allow_headers=["*"],
-        )
-
-class RandyDev:
-    def __init__(self, public_url: str = "https://randydev-ryu-js.hf.space/api/v1"):
+class BaseDev:
+    def __init__(self, public_url: str):
         self.public_url = public_url
         self.obj = Box
-        self.request_in = aiohttp
-        self._json = json
-        self.chat = self.Chat(self)
-        self.downloader self.Downloader(self)
 
-    def fasthttp(self):
-        return self.request_in
-
-    def dict_to_obj(self, func):
-        return self.obj(func or {})
-
-    def rjson_dumps(self, obj, indent=4, **args):
-        return self._json.dumps(obj, indent=indent, **args)
-
-    def install_ultra_fast_asyncio(self):
-        uvloop.install()
-
-    def _prepare_request(self, endpoint, api_key=None, custom_headers_key="x-api-key"):
-        """Prepare common request parameters and validate API key."""
+    def _prepare_request(self, endpoint: str, api_key: str = None, headers_extra: dict = None):
+        """Prepare request URL and headers."""
         if not api_key:
             api_key = os.environ.get("AKENOX_KEY")
         if not api_key:
             raise ValueError("Required variables AKENOX_KEY or api_key")
         url = f"{self.public_url}/{endpoint}"
         headers = {
-            custom_headers_key: api_key,
+            "x-api-key": api_key,
             "Authorization": f"Bearer {api_key}"
         }
+        if headers_extra:
+            headers.update(headers_extra)
         return url, headers
 
-    def _handle_request_errors(func):
-        async def wrapper(*args, **kwargs):
-            try:
-                return await func(*args, **kwargs)
-            except (aiohttp.client_exceptions.ContentTypeError, json.decoder.JSONDecodeError):
-                raise Exception("GET OR POST INVALID: check problem, invalid json")
-            except (
-                aiohttp.ClientConnectorError,
-                aiohttp.client_exceptions.ClientConnectorSSLError,
-                requests.exceptions.ConnectionError
-            ):
-                raise Exception("Cannot connect to host")
-            except Exception as e:
-                return str(e)
-        return wrapper
+    async def _make_request(self, method: str, endpoint: str, **params):
+        """Handles async API requests."""
+        url, headers = self._prepare_request(endpoint, params.pop("api_key", None))
+        try:
+            async with aiohttp.ClientSession() as session:
+                request = getattr(session, method)
+                async with request(url, headers=headers, params=params) as response:
+                    return await response.json()
+        except (aiohttp.client_exceptions.ContentTypeError, json.decoder.JSONDecodeError):
+            raise Exception("GET OR POST INVALID: check problem, invalid JSON")
+        except (aiohttp.ClientConnectorError, aiohttp.client_exceptions.ClientConnectorSSLError):
+            raise Exception("Cannot connect to host")
+        except Exception as e:
+            return str(e)
+
+class RandyDev(BaseDev):
+    def __init__(self, public_url: str = "https://randydev-ryu-js.hf.space/api/v1"):
+        super().__init__(public_url)
+        self.chat = self.Chat(self)
+        self._json = json
+        self.downloader = self.Downloader(self)
+
+    def rjson_dumps(self, obj, indent=4, **args):
+        return self._json.dumps(obj, indent=indent, **args)
 
     async def translate(self, text, target_lang):
         API_URL = "https://translate.googleapis.com/translate_a/single"
@@ -155,77 +114,32 @@ class RandyDev:
                 translation = await response.json()
                 return "".join([item[0] for item in translation[0]])
 
-    def _request_parameters(self, method=None, is_public=False):
-        if not method:
-            raise ValueError("Required method")
-        if is_public:
-            url = self._get_public_url(is_allow_use=True)
-            return f"{url}/api/v1/{method}"
-        else:
-            raise ValueError("Non-public requests are not supported. Please specify is_public=True or handle non-public cases explicitly.")
-
-    def _get_public_url(self, is_allow_use=False):
-        return self.public_url if is_allow_use else ""
-
-    async def _make_request_in_aiohttp(
-        self,
-        endpoint,
-        api_key=None,
-        custom_headers_key="x-api-key",
-        proxy_url: str = None,
-        post=False,
-        verify=False,
-        **params
-    ):
-        url, headers = self._prepare_request(endpoint, api_key, custom_headers_key=custom_headers_key)
-        async with aiohttp.ClientSession() as session:
-            try:
-                async with session.request(
-                    method="POST" if post else "GET",
-                    url=url,
-                    headers=headers,
-                    params=params if not post else None,
-                    json=params if post else None,
-                    proxy=proxy_url or None,
-                    ssl=verify
-                ) as response:
-                    return await response.json() if endpoint != "maker/carbon" else await response.read()
-            except (aiohttp.client_exceptions.ContentTypeError, json.decoder.JSONDecodeError):
-                raise Exception("GET OR POST INVALID: check problem, invalid JSON")
-            except (
-                aiohttp.ClientConnectorError,
-                aiohttp.client_exceptions.ClientConnectorSSLError
-            ):
-                raise Exception("Cannot connect to host")
-            except Exception as e:
-                return str(e)
-
-    @_handle_request_errors
-    @fast.log_performance
-    async def create(self, *args, is_obj=False, **kwargs):
-        response = await self._make_request_in_aiohttp(*args, **kwargs) or {}
-        return self.obj(response) if is_obj else response
-
     class Chat:
-        def __init__(self, parent):
+        def __init__(self, parent: BaseDev):
             self.parent = parent
-
+    
         async def create(self, model: str = None, is_obj=False, **kwargs):
-            response = await self.parent._make_request_in_aiohttp(f"ai/{model}", **kwargs) or {}
+            """Handle AI Chat API requests."""
+            if not model:
+                raise ValueError("Model name is required for AI requests.")
+            response = await self.parent._make_request("get", f"ai/{model}", **kwargs) or {}
             return self.parent.obj(response) if is_obj else response
 
     class Downloader:
-        def __init__(self, parent):
+        def __init__(self, parent: BaseDev):
             self.parent = parent
 
+        @fast.log_performance
         async def create(self, model: str = None, is_obj=False, **kwargs):
-            response = await self.parent._make_request_in_aiohttp(f"dl/{model}", **kwargs) or {}
+            """Handle downloader API requests."""
+            if not model:
+                raise ValueError("Model name is required for downloader requests.")
+            response = await self.parent._make_request("get", f"dl/{model}", **kwargs) or {}
             return self.parent.obj(response) if is_obj else response
 
 class AkenoXJs:
     def __init__(self, public_url: str = "https://randydev-ryu-js.hf.space/api/v1"):
         self.randydev = RandyDev(public_url)
-        self.create_fast = FastDev()
 
 AkenoXToJs = AkenoXJs
 
