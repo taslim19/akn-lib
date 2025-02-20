@@ -31,26 +31,8 @@ import requests
 import uvloop
 import wget
 from box import Box
-from fastapi import FastAPI, HTTPException, Request
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.openapi.utils import get_openapi
-from starlette.middleware.sessions import SessionMiddleware
 
 import akenoai.logger as fast
-
-
-class DictToObj:
-    def __init__(self, dictionary):
-        for key, value in dictionary.items():
-            if isinstance(value, dict):
-                setattr(self, key, DictToObj(value))
-            elif isinstance(value, list):
-                setattr(self, key, [DictToObj(item) if isinstance(item, dict) else item for item in value])
-            else:
-                setattr(self, key, value)
-
-    def __repr__(self):
-        return f"{self.__dict__}"
 
 class BaseDev:
     def __init__(self, public_url: str):
@@ -91,7 +73,6 @@ class RandyDev(BaseDev):
     def __init__(self, public_url: str = "https://randydev-ryu-js.hf.space/api/v1"):
         super().__init__(public_url)
         self.chat = self.Chat(self)
-        self._json = json
         self.downloader = self.Downloader(self)
 
     class Chat:
