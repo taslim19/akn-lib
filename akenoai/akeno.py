@@ -50,7 +50,7 @@ class BaseDev:
             if len(target_link) > 1 else None
         )
         return username, random_id
-    
+
     async def _translate(self, text: str = None, target_lang: str = None):
         API_URL = "https://translate.googleapis.com/translate_a/single"
         HEADERS = {"User-Agent": "Mozilla/5.0"}
