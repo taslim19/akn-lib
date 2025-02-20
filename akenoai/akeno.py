@@ -112,7 +112,7 @@ class RandyDev(BaseDev):
         async def create(self, model: str = None, is_obj=False, **kwargs):
             """Handle AI Chat API requests."""
             if not model:
-                raise ValueError("User name is required for Flux generate image AI")
+                raise ValueError("Image model is required for generating image AI")
             return await self.parent._make_request("get", f"flux/{model}", **kwargs)
 
     class Downloader:
