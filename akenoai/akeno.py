@@ -56,7 +56,16 @@ class BaseDev:
         return url, headers
 
     async def _make_request(self, method: str, endpoint: str, image_read=False, **params):
-        """Handles async API requests."""
+        """Handles async API requests.
+
+        Parameters:
+            method (str): HTTP method to use.
+            endpoint (str): API endpoint.
+            image_read (bool): If True, expects the response to be an image. 
+                The method will verify that the response's Content-Type begins with 'image/' 
+                and then return the raw bytes from the response.
+            **params: Additional parameters to be sent with the request.
+        """
         url, headers = self._prepare_request(endpoint, params.pop("api_key", None))
         try:
             async with aiohttp.ClientSession() as session:
@@ -98,7 +107,7 @@ class RandyDev(BaseDev):
 
         @fast.log_performance
         async def create(self, model: str = None, is_obj=False, **kwargs):
-            """Handle AI Chat API requests."""
+            """Handle User API requests."""
             if not model:
                 raise ValueError("User name is required for Telegram")
             response = await self.parent._make_request("get", f"user/{model}", **kwargs) or {}
@@ -110,7 +119,7 @@ class RandyDev(BaseDev):
 
         @fast.log_performance
         async def create(self, model: str = None, is_obj=False, **kwargs):
-            """Handle AI Chat API requests."""
+            """Handle Image API requests."""
             if not model:
                 raise ValueError("Image model is required for generating image AI")
             return await self.parent._make_request("get", f"flux/{model}", **kwargs)
