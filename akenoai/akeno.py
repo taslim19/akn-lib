@@ -34,6 +34,7 @@ from box import Box
 
 import akenoai.logger as fast
 
+
 class BaseDev:
     def __init__(self, public_url: str):
         self.public_url = public_url
@@ -61,7 +62,7 @@ class BaseDev:
             async with aiohttp.ClientSession() as session:
                 request = getattr(session, method)
                 async with request(url, headers=headers, params=params) as response:
-                    if image_read:  
+                    if image_read:
                         return await response.read()
                     return await response.json()
         except (aiohttp.client_exceptions.ContentTypeError, json.decoder.JSONDecodeError):
