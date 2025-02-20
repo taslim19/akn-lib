@@ -8,31 +8,21 @@
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/akenoai?label=DOWNLOADS&style=round)](https://pypi.org/project/akenoai)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/TeamKillerX/akenoai-lib/main.svg)](https://results.pre-commit.ci/latest/github/TeamKillerX/akenoai-lib/main)
 
-### 👑 Coding The End
+### 🚨 Important Notice:
+> [!IMPORTANT]
+> Read Before Using!
+>
+> 📜 Read the Code of Conduct:
+> 🔗 [`CODE_OF_CONDUCT`](https://github.com/TeamKillerX/akenoai-lib/blob/main/CODE_OF_CONDUCT.md)
 ```
-@xpushz on (telegram) I Already Master King Python 👑
+- ⚠️ Public copy-pasting without permission violates the rules!
+- 🚨 This may result in a GitHub copyright report.
+- ⚠️ Your developer account could be blacklisted.
+- ❌ You may lose access to your GitHub username permanently.
 
-- Open source full soon! 🚀
-
-• Note:
-💡 Why Open Source Full?
-I’m a developer who patiently and sincerely shares code, even for beginners.
-
-💰 No Donations Needed!
-If you’re a beginner and want to learn, just take the code.
-
-~ Me Dead: thank you :) 🥀
+- 📢 Respect open-source rules & contribute responsibly! 🚀
 ```
 
-### 🧠 Collaboration
-- Can you collab? 🤝
-- ✅ Yes, you can! Contact [`@xpushz`](https://t.me/xpushz) for collaboration.
-- 📌 How to Collab with <b>AkenoX API</b>:
-- 1️⃣ Retrieve the API endpoint you want to use.
-- 2️⃣ Send to [`@xpushz`](https://t.me/xpushz) to request to create a custom API.
-- 3️⃣ Get an endpoint like `"custom/your-name-api"`.
-- 4️⃣ Safe & reliable → Other people can use it without worrying about the API being lost!
-- 🚀 Use <b>AkenoX API</b> for a more stable & searchable API solution!
 ### installation
 🔹 <b>Recommended Installation:</b>
 
@@ -52,7 +42,6 @@ from akenoai.runner import run_fast
 
 run_fast()
 ```
-
 ### Code examples
 > [!TIP]
 > Trip PRO Usage Example:
@@ -63,21 +52,29 @@ from akenoai import AkenoXToJs
 
 js = AkenoXToJs()
 
-chat_history = [
-    {"role": "User", "message": "hello world"},
-    {"role": "Chatbot", "message": "Hello! How can I assist you today?"}
-]
-
-response = await js.randydev(
-    "ai/cohere/command-plus",
-    api_key="<your_api_key>",
-    custom_dev_fast=True,
-    query="what is AkenoX AI?",
-    chatHistory=js.rjson_dumps(chat_history),
-    system_prompt="You are a helpful AI assistant designed to provide clear and concise responses."
+response = await js.randydev.chat.create(
+    model="qwen/qwen1.5-1.8b-chat",
+    api_key="<your-api-key-premium>",
+    is_obj=True,
+    query="Hello, how are you?"
 )
 
 print(response)
+```
+- 📥 Example Downloader:
+```py
+from akenoai import AkenoXToJs
+
+js = AkenoXToJs()
+
+download_response = await js.randydev.downloader.create(
+    model="instagram-v4",
+    api_key="<your-api-key-free>",
+    is_obj=False,
+    url="https://www.instagram.com/reel/DA0p2NoyN_O/?igsh=MWJvejMxZmZ5ZHd3YQ=="
+)
+
+print(download_response)
 ```
 ### 🌐 Streamlit + AkenoX API
 - installation: `pip3 install akenoai[streamlit]`
@@ -179,46 +176,12 @@ js.hide_streamlit_watermark(unsafe_allow_html=True)
 ```py
 from akenoai.clients import create_pyrogram # Use [fast]
 ```
-### 🚀 Super-Fast Performance
-Use AkenoX API + FastAPI
-> [!WARNING]
-> AkenoX API <b>may block access if there are too many spam requests!</b> 🚨
->
-> Always use <b>rate limiting</b>
->
-```py
-from akenoai import AkenoXToJs
-from akenoai.runner import run_fast
 
-js = AkenoXToJs()
-fast_app = js.get_app()
-js.add_cors_middleware()
-
-@fast_app.get("/api/cohere")
-async def cohere(query: str):
-    return await js.randydev(
-        "ai/cohere/command-plus",
-        api_key="<your_api_key>",
-        custom_dev_fast=True,
-        query=query,
-        chatHistory=[],
-        system_prompt="You are a helpful AI assistant designed to provide clear and concise responses."
-    )
-
-@fast_app.get("/test")
-async def example_json():
-    async with js.fasthttp().ClientSession() as session:
-        async with session.get("https://jsonplaceholder.typicode.com/todos/1") as response:
-            title = js.dict_to_obj(await response.json()).title
-    return {"message": title}
-
-run_fast(build=fast_app)
-```
 ### 🛠️ Custom OpenAI
 ```py
-from akenoai import AkenoXToJs
+from akenoai import OldAkenoXToJs
 
-js = AkenoXToJs()
+js = OldAkenoXToJs()
 
 fast_app = js.get_app()
 
@@ -239,11 +202,11 @@ js.custom_openapi(
 - [X] Custom Web Frontend with HTML & CSS
 ```py
 import logging
-from akenoai import AkenoXToJs
+from akenoai import OldAkenoXToJs
 from akenoai.runner import run_fast
 from akenoai.clients import create_pyrogram
 
-js = AkenoXToJs()
+js = OldAkenoXToJs()
 
 logger = logging.getLogger(__name__)
 LOGS = logging.getLogger("[akenox]")
@@ -317,42 +280,23 @@ js.custom_openapi(
 run_fast(build=fast_app)
 ```
 
-- Use API Key V1 Free
-```py
-from akenoai import AkenoXToJs
-
-js = AkenoXToJs()
-
-response = await js.randydev(
-    "ai/openai/gpt-old",
-     custom_dev_fast=True,
-     query="hello world"
-)
-print(response)
-```
-<b>Output:</b>
-```py
-{'results': 'Deepseek is a Chinese company that specializes in underwater robotics and autonomous underwater vehicles. They provide solutions for underwater exploration and research, as well as services for inspecting and maintaining underwater infrastructure. Their technology is used in various industries including marine science, aquaculture, and offshore energy.\n\nPowered By xtdevs'}
-```
 ### 🔹 <b>Method Definition:</b>
 
 - [X] Parameters:
 - `endpoint:` The API endpoint to call.
 - `api_key:` (Optional) API key for authentication.
-- `post:` Boolean flag to indicate POST requests.
 - `is_obj:` Boolean flag indicating whether the response should be returned as a Python object (True) or in the default format (False).
-- `custom_dev_fast:` Boolean flag defaults to None
 - `**params:` Allows passing additional parameters as a dictionary, which will be sent as JSON.
 
-```py
-randydev(endpoint, api_key=None, post=False, is_obj=False, custom_dev_fast=False, **params)
-```
 ### 🔹 <b>User Creation Date:</b>
+
+This feature retrieves the date when the user's account was initially created. It provides a reliable audit trail and allows users or administrators to verify the account's age, which can be important for purposes such as eligibility verification, security audits, or account management.
+
 ```py
 import os
-from akenoai import AkenoXToJs
+from akenoai import OldAkenoXToJs
 
-js = AkenoXToJs()
+js = OldAkenoXToJs()
 
 response = await js.randydev(
     "user/creation-date",
@@ -382,9 +326,9 @@ AKENOX_KEY=akeno_xxxxxx
 - 🌐 **Different DNS settings**
 
 ```py
-from akenoai import AkenoXToJs
+from akenoai import OldAkenoXToJs
 
-js = AkenoXToJs()
+js = OldAkenoXToJs()
 
 proxy_url = "http://PROXY.YOUR-SERVER.COM:8080"
 
@@ -428,6 +372,7 @@ return await js.randydev(
 ### ❤️ Special Thanks To
 - [`Kurigram`](https://github.com/KurimuzonAkuma/pyrogram)
 - [`FastAPI`](https://github.com/fastapi/fastapi)
+- Thank you all developers 😊
 
 # Contributing
 If you find a bug or have a feature request, please open an issue on our GitHub repository.
