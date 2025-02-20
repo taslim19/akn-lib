@@ -55,8 +55,6 @@ class RandyDev:
     def __init__(self, public_url: str = "https://randydev-ryu-js.hf.space/api/v1"):
         self.chat = self.Chat()
         self.public_url = public_url
-        self.fastapi = FastAPI
-        self.custom_openai = get_openapi
         self.obj = Box
         self.request_in = aiohttp
         self._json = json
@@ -108,11 +106,13 @@ class RandyDev:
                 return str(e)
 
     async def create(self, *args, is_obj=False, **kwargs):
-        return self.obj(await self._make_request_in_aiohttp(*args, **kwargs) or {}) if is_obj else await self._make_request_in_aiohttp(*args, **kwargs)
+        response = await self._make_request_in_aiohttp(*args, **kwargs) or {} 
+        return self.obj(response) if is_obj else response
 
     class Chat:
-        async def create(self, *args, **kwargs):
-            print(f"Creating chat with args: {args}, kwargs: {kwargs}")
+        async def create(self, model: str = None, **kwargs):
+            response = await self._make_request_in_aiohttp(f"ai/{model}", **kwargs) or {} 
+        return self.obj(response) if is_obj else response
 
 
 class AkenoXJs:
