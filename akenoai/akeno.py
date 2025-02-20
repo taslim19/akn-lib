@@ -38,7 +38,6 @@ from starlette.middleware.sessions import SessionMiddleware
 
 import akenoai.logger as fast
 
-
 class DictToObj:
     def __init__(self, dictionary):
         for key, value in dictionary.items():
@@ -51,6 +50,74 @@ class DictToObj:
 
     def __repr__(self):
         return f"{self.__dict__}"
+
+class RandyDev:
+    def __init__(self, public_url: str = "https://randydev-ryu-js.hf.space/api/v1"):
+        self.chat = self.Chat()
+        self.public_url = public_url
+        self.fastapi = FastAPI
+        self.custom_openai = get_openapi
+        self.obj = Box
+        self.request_in = aiohttp
+        self._json = json
+
+    def _prepare_request(self, endpoint, api_key=None, custom_headers_key="x-api-key"):
+        """Prepare common request parameters and validate API key."""
+        if not api_key:
+            api_key = os.environ.get("AKENOX_KEY")
+        if not api_key:
+            raise ValueError("Required variables AKENOX_KEY or api_key")
+        url = f"{self.public_url}/{endpoint}"
+        headers = {
+            custom_headers_key: api_key,
+            "Authorization": f"Bearer {api_key}"
+        }
+        return url, headers
+
+    async def _make_request_in_aiohttp(
+        self,
+        endpoint,
+        api_key=None,
+        custom_headers_key="x-api-key",
+        proxy_url: str = None,
+        post=False,
+        verify=False,
+        **params
+    ):
+        url, headers = self._prepare_request(endpoint, api_key, custom_headers_key=custom_headers_key)
+        async with aiohttp.ClientSession() as session:
+            try:
+                async with session.request(
+                    method="POST" if post else "GET",
+                    url=url,
+                    headers=headers,
+                    params=params if not post else None,
+                    json=params if post else None,
+                    proxy=proxy_url or None,
+                    ssl=verify
+                ) as response:
+                    return await response.json() if endpoint != "maker/carbon" else await response.read()
+            except (aiohttp.client_exceptions.ContentTypeError, json.decoder.JSONDecodeError):
+                raise Exception("GET OR POST INVALID: check problem, invalid JSON")
+            except (
+                aiohttp.ClientConnectorError,
+                aiohttp.client_exceptions.ClientConnectorSSLError
+            ):
+                raise Exception("Cannot connect to host")
+            except Exception as e:
+                return str(e)
+
+    async def create(self, *args, is_obj=False, **kwargs):
+        return self.obj(await self._make_request_in_aiohttp(*args, **kwargs) or {}) if is_obj else await self._make_request_in_aiohttp(*args, **kwargs)
+
+    class Chat:
+        async def create(self, *args, **kwargs):
+            print(f"Creating chat with args: {args}, kwargs: {kwargs}")
+
+
+class AkenoXJs:
+    def __init__(self, public_url: str = "https://randydev-ryu-js.hf.space/api/v1"):
+        self.randydev = RandyDev(public_url)
 
 class AkenoXJs:
     def __init__(self, public_url: str = "https://randydev-ryu-js.hf.space/api/v1"):
