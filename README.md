@@ -11,14 +11,14 @@
 ### 🚨 Important Notice:
 > [!IMPORTANT]
 > Read Before Using!
-> 
+>
 > 📜 Read the Code of Conduct:
-> 🔗 [`CODE_OF_CONDUCT`](https://github.com/TeamKillerX/akenoai-lib/blob/main/CODE_OF_CONDUCT.md)  
+> 🔗 [`CODE_OF_CONDUCT`](https://github.com/TeamKillerX/akenoai-lib/blob/main/CODE_OF_CONDUCT.md)
 ```
-- ⚠️ Public copy-pasting without permission violates the rules!  
-- 🚨 This may result in a GitHub copyright report.  
-- ⚠️ Your developer account could be blacklisted.  
-- ❌ You may lose access to your GitHub username permanently.  
+- ⚠️ Public copy-pasting without permission violates the rules!
+- 🚨 This may result in a GitHub copyright report.
+- ⚠️ Your developer account could be blacklisted.
+- ❌ You may lose access to your GitHub username permanently.
 
 - 📢 Respect open-source rules & contribute responsibly! 🚀
 ```
