@@ -19,6 +19,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import asyncio
+import base64
 import json
 import os
 import subprocess
@@ -186,6 +187,17 @@ class RandyDev(BaseDev):
             if not link:
                 raise ValueError("link name is required for Link Story Random.")
             return self.parent._get_random_from_channel(link)
+
+        async def download_with_link(self, link: str = None, filename: str = "downloaded_story.mp4"):
+            """Handle Story Downloader in Telegram."""
+            if not link:
+                raise ValueError("link name is required for Story Downloader.")
+            response = await self.parent.user.create("story-dl", is_obj=True, link=link)
+            if not hasattr(response, "download") or not response.download:
+                raise ValueError("Invalid response: No downloadable content found.")
+            with open(filename, "wb") as f:
+                f.write(base64.b64decode(response.download))
+            return filename
 
 class AkenoXJs:
     def __init__(self, public_url: str = "https://randydev-ryu-js.hf.space/api/v1"):
