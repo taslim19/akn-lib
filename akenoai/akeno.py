@@ -170,7 +170,7 @@ class RandyDev(BaseDev):
         def __init__(self, parent: BaseDev):
             self.parent = parent
 
-        async def translate(self, text: str = None, is_obj=False, **kwargs):
+        async def lang(self, text: str = None, is_obj=False, **kwargs):
             """Handle Translate Google API requests."""
             if not text:
                 raise ValueError("text name is required for Google Translate.")
