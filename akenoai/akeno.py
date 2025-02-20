@@ -34,7 +34,6 @@ from box import Box
 
 import akenoai.logger as fast
 
-
 class BaseDev:
     def __init__(self, public_url: str):
         self.public_url = public_url
@@ -55,13 +54,15 @@ class BaseDev:
             headers.update(headers_extra)
         return url, headers
 
-    async def _make_request(self, method: str, endpoint: str, **params):
+    async def _make_request(self, method: str, endpoint: str, image_read=False, **params):
         """Handles async API requests."""
         url, headers = self._prepare_request(endpoint, params.pop("api_key", None))
         try:
             async with aiohttp.ClientSession() as session:
                 request = getattr(session, method)
                 async with request(url, headers=headers, params=params) as response:
+                    if image_read:  
+                        return await response.read()
                     return await response.json()
         except (aiohttp.client_exceptions.ContentTypeError, json.decoder.JSONDecodeError):
             raise Exception("GET OR POST INVALID: check problem, invalid JSON")
@@ -111,8 +112,7 @@ class RandyDev(BaseDev):
             """Handle AI Chat API requests."""
             if not model:
                 raise ValueError("User name is required for Flux generate image AI")
-            response = await self.parent._make_request("get", f"flux/{model}", **kwargs) or {}
-            return self.parent.obj(response) if is_obj else response
+            return await self.parent._make_request("get", f"flux/{model}", **kwargs)
 
     class Downloader:
         def __init__(self, parent: BaseDev):
