@@ -74,7 +74,7 @@ class BaseDev:
         if not api_key:
             api_key = os.environ.get("AKENOX_KEY")
         if not api_key:
-            raise ValueError("Required variables AKENOX_KEY or api_key")
+            api_key = api_key
         url = f"{self.public_url}/{endpoint}"
         headers = {
             "x-api-key": api_key,
