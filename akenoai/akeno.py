@@ -111,19 +111,27 @@ class BaseDev:
             return None
 
 class GenericEndpoint:
-    def __init__(self, parent: BaseDev, endpoint: str, add_author: bool = False):
+    def __init__(
+        self,
+        parent: BaseDev,
+        endpoint: str,
+        add_author: bool = False
+        super_fast: False
+    ):
         self.parent = parent
         self.endpoint = endpoint
         self.add_author = add_author
+        self.super_fast = super_fast
 
     @fast.log_performance
-    async def create(self, add_model: str = None, is_obj: bool = False, **kwargs):
-        if not add_model:
-            raise ValueError("Model name is required.")
-        response = await self.parent._make_request("get", f"{self.endpoint}/{add_model}", **kwargs) or {}
+    async def create(self, ctx: str = None, is_obj: bool = False, **kwargs):
+        if not ctx:
+            raise ValueError("ctx name is required.")
+        response = await self.parent._make_request("get", f"{self.endpoint}/{ctx}", **kwargs) or {}
         if self.add_author:
             response["author"] = "anonymous"
-        return self.parent.obj(response) if is_obj else response
+        _response_parent = self.parent.obj(response) if is_obj else response
+        return _response_parent if self.super_fast else None
 
 class ItzPire(BaseDev):
     def __init__(self, public_url: str = "https://itzpire.com"):
@@ -142,24 +150,12 @@ class ItzPire(BaseDev):
 class RandyDev(BaseDev):
     def __init__(self, public_url: str = "https://randydev-ryu-js.hf.space/api/v1"):
         super().__init__(public_url)
-        self.chat = self.Chat(self)
-        self.downloader = self.Downloader(self)
-        self.image = self.Image(self)
+        self.chat = GenericEndpoint(self, "ai", super_fast=True)
+        self.downloader = GenericEndpoint(self, "dl", super_fast=True)
+        self.image = GenericEndpoint(self, "flux", super_fast=True)
         self.user = self.User(self)
         self.translate = self.Translate(self)
         self.story_in_tg = self.LinkExtraWithStory(self)
-
-    class Chat:
-        def __init__(self, parent: BaseDev):
-            self.parent = parent
-
-        @fast.log_performance
-        async def create(self, model: str = None, is_obj=False, **kwargs):
-            """Handle AI Chat API requests."""
-            if not model:
-                raise ValueError("Model name is required for AI requests.")
-            response = await self.parent._make_request("get", f"ai/{model}", **kwargs) or {}
-            return self.parent.obj(response) if is_obj else response
 
     class User:
         def __init__(self, parent: BaseDev):
@@ -176,29 +172,6 @@ class RandyDev(BaseDev):
         async def api_key_info(self, is_obj=False, **kwargs):
             """Handle User info API key requests."""
             return await self.parent.user.create("api-key-info", is_obj=is_obj, **kwargs)
-
-    class Image:
-        def __init__(self, parent: BaseDev):
-            self.parent = parent
-
-        @fast.log_performance
-        async def create(self, model: str = None, **kwargs):
-            """Handle Image API requests."""
-            if not model:
-                raise ValueError("Image model is required for generating image AI")
-            return await self.parent._make_request("get", f"flux/{model}", **kwargs)
-
-    class Downloader:
-        def __init__(self, parent: BaseDev):
-            self.parent = parent
-
-        @fast.log_performance
-        async def create(self, model: str = None, is_obj=False, **kwargs):
-            """Handle downloader API requests."""
-            if not model:
-                raise ValueError("Model name is required for downloader requests.")
-            response = await self.parent._make_request("get", f"dl/{model}", **kwargs) or {}
-            return self.parent.obj(response) if is_obj else response
 
     class Translate:
         def __init__(self, parent: BaseDev):
