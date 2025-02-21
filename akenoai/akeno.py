@@ -73,8 +73,6 @@ class BaseDev:
         """Prepare request URL and headers."""
         if not api_key:
             api_key = os.environ.get("AKENOX_KEY")
-        if not api_key:
-            api_key = api_key
         url = f"{self.public_url}/{endpoint}"
         headers = {
             "x-api-key": api_key,
