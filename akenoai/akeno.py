@@ -144,6 +144,10 @@ class RandyDev(BaseDev):
             response = await self.parent._make_request("get", f"user/{model}", **kwargs) or {}
             return self.parent.obj(response) if is_obj else response
 
+        async def api_key_info(self, is_obj=False, **kwargs):
+            """Handle User info API key requests."""
+            return await self.parent.user.create("api-key-info", is_obj=is_obj, **kwargs)
+
     class Image:
         def __init__(self, parent: BaseDev):
             self.parent = parent

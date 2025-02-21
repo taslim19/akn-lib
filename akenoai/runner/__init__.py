@@ -4,9 +4,9 @@ import os
 import uvicorn
 from fastapi import Depends, HTTPException
 
-from akenoai import AkenoXToJs
+from akenoai import OldAkenoXToJs
 
-js = AkenoXToJs()
+js = OldAkenoXToJs()
 
 app = js.get_app()
 
