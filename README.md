@@ -61,7 +61,7 @@ You can use `AkenoXToJs()` passing
 ```py
 js = AkenoXToJs(public_url="https://your-api-endpoint/api/v1")
 ```
-You don't need to do it manually
+AkenoXToJs automatically configures the connection, so there's no need to manually initialize it using OldAkenoXToJs and its randydev method.
 ```py
 js = OldAkenoXToJs(public_url="https://your-api-endpoint/api/v1")
 js.randydev("api/endpoint", api_key="", custom_dev_fast=True)
