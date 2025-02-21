@@ -206,7 +206,12 @@ class RandyDev(BaseDev):
             return filename
 
 class AkenoXJs:
-    def __init__(self, itzpire_url: str = "https://itzpire.com", is_itzpire: bool = False):
-        self.client = ItzPire(itzpire_url) if is_itzpire else RandyDev(public_url="https://randydev-ryu-js.hf.space/api/v1")
+    def __init__(self, is_itzpire: bool = False):
+        self.is_itzpire = is_itzpire
+        self.randydev = RandyDev()
+        self.itzpire = ItzPire()
+
+    def connect(self):
+        return self.itzpire if self.is_itzpire else self.randydev
 
 AkenoXToJs = AkenoXJs
