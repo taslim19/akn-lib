@@ -110,136 +110,34 @@ class BaseDev:
         except Exception:
             return None
 
+class GenericEndpoint:
+    def __init__(self, parent: BaseDev, endpoint: str, add_author: bool = False):
+        self.parent = parent
+        self.endpoint = endpoint
+        self.add_author = add_author
+
+    @fast.log_performance
+    async def create(self, model: str = None, is_obj: bool = False, **kwargs):
+        if not model:
+            raise ValueError("Model name is required.")
+        response = await self.parent._make_request("get", f"{self.endpoint}/{model}", **kwargs) or {}
+        if self.add_author:
+            response["author"] = "anonymous"
+        return self.parent.obj(response) if is_obj else response
+
 class ItzPire(BaseDev):
     def __init__(self, public_url: str = "https://itzpire.com"):
         super().__init__(public_url)
-        self.chat = self.Chat(self)
-        self.anime = self.Anime(self)
-        self.check = self.Check(self)
-        self.downloader = self.Download(self)
-        self.information = self.Information(self)
-        self.maker = self.Maker(self)
-        self.movie = self.Movie(self)
-        self.random = self.Random(self)
-        self.search = self.Search(self)
-
-    class Chat:
-        def __init__(self, parent: BaseDev):
-            self.parent = parent
-
-        @fast.log_performance
-        async def create(self, model: str = None, is_obj=False, **kwargs):
-            if not model:
-                raise ValueError("Model name is required.")
-            response = await self.parent._make_request("get", f"ai/{model}", **kwargs) or {}
-            return self.parent.obj(response) if is_obj else response
-
-    class Anime:
-        def __init__(self, parent: BaseDev):
-            self.parent = parent
-
-        @fast.log_performance
-        async def create(self, model: str = None, is_obj=False, **kwargs):
-            if not model:
-                raise ValueError("Model name is required.")
-            response = await self.parent._make_request("get", f"anime/{model}", **kwargs) or {}
-            return self.parent.obj(response) if is_obj else response
-
-    class Check:
-        def __init__(self, parent: BaseDev):
-            self.parent = parent
-
-        @fast.log_performance
-        async def create(self, model: str = None, is_obj=False, **kwargs):
-            if not model:
-                raise ValueError("Model name is required.")
-            response = await self.parent._make_request("get", f"check/{model}", **kwargs) or {}
-            response["author"] = "anonymous"
-            return self.parent.obj(response) if is_obj else response
-
-    class Download:
-        def __init__(self, parent: BaseDev):
-            self.parent = parent
-
-        @fast.log_performance
-        async def create(self, model: str = None, is_obj=False, **kwargs):
-            if not model:
-                raise ValueError("Model name is required.")
-            response = await self.parent._make_request("get", f"download/{model}", **kwargs) or {}
-            response["author"] = "anonymous"
-            return self.parent.obj(response) if is_obj else response
-
-    class Games:
-        def __init__(self, parent: BaseDev):
-            self.parent = parent
-
-        @fast.log_performance
-        async def create(self, model: str = None, is_obj=False, **kwargs):
-            if not model:
-                raise ValueError("Model name is required.")
-            response = await self.parent._make_request("get", f"games/{model}", **kwargs) or {}
-            response["author"] = "anonymous"
-            return self.parent.obj(response) if is_obj else response
-
-    class Information:
-        def __init__(self, parent: BaseDev):
-            self.parent = parent
-
-        @fast.log_performance
-        async def create(self, model: str = None, is_obj=False, **kwargs):
-            if not model:
-                raise ValueError("Model name is required.")
-            response = await self.parent._make_request("get", f"information/{model}", **kwargs) or {}
-            response["author"] = "anonymous"
-            return self.parent.obj(response) if is_obj else response
-
-    class Maker:
-        def __init__(self, parent: BaseDev):
-            self.parent = parent
-
-        @fast.log_performance
-        async def create(self, model: str = None, is_obj=False, **kwargs):
-            if not model:
-                raise ValueError("Model name is required.")
-            response = await self.parent._make_request("get", f"maker/{model}", **kwargs) or {}
-            response["author"] = "anonymous"
-            return self.parent.obj(response) if is_obj else response
-
-    class Movie:
-        def __init__(self, parent: BaseDev):
-            self.parent = parent
-
-        @fast.log_performance
-        async def create(self, model: str = None, is_obj=False, **kwargs):
-            if not model:
-                raise ValueError("Model name is required.")
-            response = await self.parent._make_request("get", f"movie/{model}", **kwargs) or {}
-            response["author"] = "anonymous"
-            return self.parent.obj(response) if is_obj else response
-
-    class Random:
-        def __init__(self, parent: BaseDev):
-            self.parent = parent
-
-        @fast.log_performance
-        async def create(self, model: str = None, is_obj=False, **kwargs):
-            if not model:
-                raise ValueError("Model name is required.")
-            response = await self.parent._make_request("get", f"random/{model}", **kwargs) or {}
-            response["author"] = "anonymous"
-            return self.parent.obj(response) if is_obj else response
-
-    class Search:
-        def __init__(self, parent: BaseDev):
-            self.parent = parent
-
-        @fast.log_performance
-        async def create(self, model: str = None, is_obj=False, **kwargs):
-            if not model:
-                raise ValueError("Model name is required.")
-            response = await self.parent._make_request("get", f"search/{model}", **kwargs) or {}
-            response["author"] = "anonymous"
-            return self.parent.obj(response) if is_obj else response
+        self.chat = GenericEndpoint(self, "ai")
+        self.anime = GenericEndpoint(self, "anime")
+        self.check = GenericEndpoint(self, "check", add_author=True)
+        self.downloader = GenericEndpoint(self, "download", add_author=True)
+        self.games = GenericEndpoint(self, "games", add_author=True)
+        self.information = GenericEndpoint(self, "information", add_author=True)
+        self.maker = GenericEndpoint(self, "maker", add_author=True)
+        self.movie = GenericEndpoint(self, "movie", add_author=True)
+        self.random = GenericEndpoint(self, "random", add_author=True)
+        self.search = GenericEndpoint(self, "search", add_author=True)
 
 class RandyDev(BaseDev):
     def __init__(self, public_url: str = "https://randydev-ryu-js.hf.space/api/v1"):
