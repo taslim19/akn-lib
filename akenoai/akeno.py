@@ -102,7 +102,7 @@ class BaseDev:
                         return await response.read()
                     if remove_author:
                         response = await response.json()
-                        response["author"] = ""
+                        del response["author"]
                         return response
                     return await response.json()
         except (aiohttp.client_exceptions.ContentTypeError, json.decoder.JSONDecodeError):
