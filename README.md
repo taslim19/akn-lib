@@ -32,6 +32,40 @@
 - Create a requirements.txt file in the project root containing the following dependency to ensure you can install the GitHub version:
 - `git+https://github.com/TeamKillerX/akenoai-lib.git#egg=akenoai[fast]`
 
+### How to learn python
+- Examples Usage:
+```py
+class RandyDev(BaseDev):
+    def __init__(self, public_url: str = "https://your-api-endpoint/api/v1"):
+        self.chat = self.Examples(self)
+
+    class Examples:
+        def __init__(self, parent: BaseDev):
+            self.parent = parent
+
+        @fast.log_performance
+        async def create(self, model: str = None, is_obj=False, **kwargs):
+            # your code
+            pass
+```
+- Please fork the repository and submit a pull request
+- Your Own API
+- `https://your-api-endpoint/api/v1`
+- API key Required here
+```
+dl/{model}
+user/{model}
+ai/{model}
+```
+You can use `AkenoXToJs()` passing
+```py
+js = AkenoXToJs(public_url="https://your-api-endpoint/api/v1")
+```
+You don't need to do it manually
+```py
+js = OldAkenoXToJs(public_url="https://your-api-endpoint/api/v1")
+js.randydev("api/endpoint", api_key="", custom_dev_fast=True)
+```
 ### FastAPI Demo
 - Use `main.py`
 - Try running `python3 main.py`
