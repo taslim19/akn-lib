@@ -69,7 +69,7 @@ class BaseDev:
                 translation = await response.json()
                 return "".join([item[0] for item in translation[0]])
 
-    def _prepare_request(self, endpoint: str, api_key: str = None, headers_extra: dict = None):
+    def _prepare_request(self, endpoint: str, api_key: str = "Free", headers_extra: dict = None):
         """Prepare request URL and headers."""
         if not api_key:
             api_key = os.environ.get("AKENOX_KEY")
@@ -109,6 +109,35 @@ class BaseDev:
             raise Exception("Cannot connect to host")
         except Exception:
             return None
+
+class GenericEndpoint:
+    def __init__(self, parent: BaseDev, endpoint: str, add_author: bool = False):
+        self.parent = parent
+        self.endpoint = endpoint
+        self.add_author = add_author
+
+    @fast.log_performance
+    async def create(self, model: str = None, is_obj: bool = False, **kwargs):
+        if not model:
+            raise ValueError("Model name is required.")
+        response = await self.parent._make_request("get", f"{self.endpoint}/{model}", **kwargs) or {}
+        if self.add_author:
+            response["author"] = "anonymous"
+        return self.parent.obj(response) if is_obj else response
+
+class ItzPire(BaseDev):
+    def __init__(self, public_url: str = "https://itzpire.com"):
+        super().__init__(public_url)
+        self.chat = GenericEndpoint(self, "ai")
+        self.anime = GenericEndpoint(self, "anime")
+        self.check = GenericEndpoint(self, "check", add_author=True)
+        self.downloader = GenericEndpoint(self, "download", add_author=True)
+        self.games = GenericEndpoint(self, "games", add_author=True)
+        self.information = GenericEndpoint(self, "information", add_author=True)
+        self.maker = GenericEndpoint(self, "maker", add_author=True)
+        self.movie = GenericEndpoint(self, "movie", add_author=True)
+        self.random = GenericEndpoint(self, "random", add_author=True)
+        self.search = GenericEndpoint(self, "search", add_author=True)
 
 class RandyDev(BaseDev):
     def __init__(self, public_url: str = "https://randydev-ryu-js.hf.space/api/v1"):
@@ -206,5 +235,6 @@ class RandyDev(BaseDev):
 class AkenoXJs:
     def __init__(self, public_url: str = "https://randydev-ryu-js.hf.space/api/v1"):
         self.randydev = RandyDev(public_url)
+        self.itzpire = ItzPire(public_url)
 
 AkenoXToJs = AkenoXJs
