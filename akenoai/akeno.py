@@ -134,7 +134,7 @@ class GenericEndpoint:
 
 class ItzPire(BaseDev):
     def __init__(self, change_author: str = "anonymous", public_url: str = "https://itzpire.com"):
-        super().__init__(change_author, public_url)
+        super().__init__(public_url)
         self.chat = GenericEndpoint(self, "ai", change_author=change_author, add_author=True, super_fast=True)
         self.anime = GenericEndpoint(self, "anime", change_author=change_author, add_author=True, super_fast=True)
         self.check = GenericEndpoint(self, "check", change_author=change_author, add_author=True, super_fast=True)
