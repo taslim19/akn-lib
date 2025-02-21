@@ -33,7 +33,7 @@
 - `git+https://github.com/TeamKillerX/akenoai-lib.git#egg=akenoai[fast]`
 
 ### How to learn python
-- Examples Usage:
+- Usage Examples:
 ```py
 class RandyDev(BaseDev):
     def __init__(self, public_url: str = "https://your-api-endpoint/api/v1"):
