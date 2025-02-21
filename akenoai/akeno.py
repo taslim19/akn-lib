@@ -119,6 +119,7 @@ class GenericEndpoint:
     ):
         self.parent = parent
         self.endpoint = endpoint
+        self.change_author = change_author
         self.add_author = add_author
         self.super_fast = super_fast
 
@@ -128,7 +129,7 @@ class GenericEndpoint:
             raise ValueError("ctx name is required.")
         response = await self.parent._make_request("get", f"{self.endpoint}/{ctx}", **kwargs) or {}
         if self.add_author:
-            response["author"] = change_author
+            response["author"] = self.change_author
         _response_parent = self.parent.obj(response) if is_obj else response
         return _response_parent if self.super_fast else None
 
