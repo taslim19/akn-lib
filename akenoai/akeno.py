@@ -211,7 +211,7 @@ class AkenoXJs:
         self.randydev = RandyDev()
         self.itzpire = ItzPire()
 
-    def connect_to(self):
+    def connect(self):
         return self.itzpire if self.is_itzpire else self.randydev
 
 AkenoXToJs = AkenoXJs
