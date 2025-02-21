@@ -82,7 +82,7 @@ class BaseDev:
             headers.update(headers_extra)
         return url, headers
 
-    async def _make_request(self, method: str, endpoint: str, image_read=False, **params):
+    async def _make_request(self, method: str, endpoint: str, image_read=False, remove_author=False, **params):
         """Handles async API requests.
 
         Parameters:
@@ -100,6 +100,10 @@ class BaseDev:
                 async with request(url, headers=headers, params=params) as response:
                     if image_read:
                         return await response.read()
+                    if remove_author:
+                        response = await response.json()
+                        response["author"] = ""
+                        return response
                     return await response.json()
         except (aiohttp.client_exceptions.ContentTypeError, json.decoder.JSONDecodeError):
             raise Exception("GET OR POST INVALID: check problem, invalid JSON")
@@ -113,12 +117,10 @@ class GenericEndpoint:
         self,
         parent: BaseDev,
         endpoint: str,
-        add_author: bool = False,
         super_fast: bool = False
     ):
         self.parent = parent
         self.endpoint = endpoint
-        self.add_author = add_author
         self.super_fast = super_fast
 
     @fast.log_performance
@@ -126,26 +128,24 @@ class GenericEndpoint:
         if not ctx:
             raise ValueError("ctx name is required.")
         response = await self.parent._make_request("get", f"{self.endpoint}/{ctx}", **kwargs) or {}
-        if self.add_author:
-            response["author"] = "anonymous"
         _response_parent = self.parent.obj(response) if is_obj else response
         return _response_parent if self.super_fast else None
 
 class ItzPire(BaseDev):
     def __init__(self, public_url: str = "https://itzpire.com"):
         super().__init__(public_url)
-        self.chat = GenericEndpoint(self, "ai", add_author=True, super_fast=True)
-        self.anime = GenericEndpoint(self, "anime", add_author=True, super_fast=True)
-        self.check = GenericEndpoint(self, "check", add_author=True, super_fast=True)
-        self.downloader = GenericEndpoint(self, "download", add_author=True, super_fast=True)
-        self.games = GenericEndpoint(self, "games", add_author=True, super_fast=True)
-        self.information = GenericEndpoint(self, "information", add_author=True, super_fast=True)
-        self.maker = GenericEndpoint(self, "maker", add_author=True, super_fast=True)
-        self.movie = GenericEndpoint(self, "movie", add_author=True, super_fast=True)
-        self.random = GenericEndpoint(self, "random", add_author=True, super_fast=True)
-        self.search = GenericEndpoint(self, "search", add_author=True, super_fast=True)
-        self.stalk = GenericEndpoint(self, "stalk", add_author=True, super_fast=True)
-        self.tools = GenericEndpoint(self, "tools", add_author=True, super_fast=True)
+        self.chat = GenericEndpoint(self, "ai", super_fast=True)
+        self.anime = GenericEndpoint(self, "anime", super_fast=True)
+        self.check = GenericEndpoint(self, "check", super_fast=True)
+        self.downloader = GenericEndpoint(self, "download", super_fast=True)
+        self.games = GenericEndpoint(self, "games", super_fast=True)
+        self.information = GenericEndpoint(self, "information", super_fast=True)
+        self.maker = GenericEndpoint(self, "maker", super_fast=True)
+        self.movie = GenericEndpoint(self, "movie", super_fast=True)
+        self.random = GenericEndpoint(self, "random", super_fast=True)
+        self.search = GenericEndpoint(self, "search", super_fast=True)
+        self.stalk = GenericEndpoint(self, "stalk", super_fast=True)
+        self.tools = GenericEndpoint(self, "tools", super_fast=True)
 
 class RandyDev(BaseDev):
     def __init__(self, public_url: str = "https://randydev-ryu-js.hf.space/api/v1"):
