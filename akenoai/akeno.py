@@ -146,6 +146,8 @@ class ItzPire(BaseDev):
         self.movie = GenericEndpoint(self, "movie", add_author=True, super_fast=True)
         self.random = GenericEndpoint(self, "random", add_author=True, super_fast=True)
         self.search = GenericEndpoint(self, "search", add_author=True, super_fast=True)
+        self.stalk = GenericEndpoint(self, "stalk", add_author=True, super_fast=True)
+        self.tools = GenericEndpoint(self, "tools", add_author=True, super_fast=True)
 
 class RandyDev(BaseDev):
     def __init__(self, public_url: str = "https://randydev-ryu-js.hf.space/api/v1"):
