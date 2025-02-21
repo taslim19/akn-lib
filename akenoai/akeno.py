@@ -122,7 +122,7 @@ class ItzPire(BaseDev):
         self.movie = self.Movie(self)
         self.random = self.Random(self)
         self.search = self.Search(self)
-        
+
     class Chat:
         def __init__(self, parent: BaseDev):
             self.parent = parent
