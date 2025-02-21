@@ -51,7 +51,7 @@ class RandyDev(BaseDev):
 - Please fork the repository and submit a pull request
 - Your Own API
 - `https://your-api-endpoint/api/v1`
-- API key Required here
+- An API key is required here.
 ```
 dl/{model}
 user/{model}
