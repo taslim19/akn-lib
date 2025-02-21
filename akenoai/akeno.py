@@ -113,13 +113,11 @@ class GenericEndpoint:
         self,
         parent: BaseDev,
         endpoint: str,
-        change_author: str = "anonymous",
         add_author: bool = False,
         super_fast: bool = False
     ):
         self.parent = parent
         self.endpoint = endpoint
-        self.change_author = change_author
         self.add_author = add_author
         self.super_fast = super_fast
 
@@ -129,26 +127,25 @@ class GenericEndpoint:
             raise ValueError("ctx name is required.")
         response = await self.parent._make_request("get", f"{self.endpoint}/{ctx}", **kwargs) or {}
         if self.add_author:
-            response["author"] = self.change_author
+            response["author"] = "anonymous"
         _response_parent = self.parent.obj(response) if is_obj else response
         return _response_parent if self.super_fast else None
 
 class ItzPire(BaseDev):
-    def __init__(self, change_author: str = "anonymous", public_url: str = "https://itzpire.com"):
+    def __init__(self, public_url: str = "https://itzpire.com"):
         super().__init__(public_url)
-        self.change_author = change_author
-        self.chat = GenericEndpoint(self, "ai", change_author=self.change_author, add_author=True, super_fast=True)
-        self.anime = GenericEndpoint(self, "anime", change_author=self.change_author, add_author=True, super_fast=True)
-        self.check = GenericEndpoint(self, "check", change_author=self.change_author, add_author=True, super_fast=True)
-        self.downloader = GenericEndpoint(self, "download", change_author=self.change_author, add_author=True, super_fast=True)
-        self.games = GenericEndpoint(self, "games", change_author=self.change_author, add_author=True, super_fast=True)
-        self.information = GenericEndpoint(self, "information", change_author=self.change_author, add_author=True, super_fast=True)
-        self.maker = GenericEndpoint(self, "maker", change_author=self.change_author, add_author=True, super_fast=True)
-        self.movie = GenericEndpoint(self, "movie", change_author=self.change_author, add_author=True, super_fast=True)
-        self.random = GenericEndpoint(self, "random", change_author=self.change_author, add_author=True, super_fast=True)
-        self.search = GenericEndpoint(self, "search", change_author=self.change_author, add_author=True, super_fast=True)
-        self.stalk = GenericEndpoint(self, "stalk", change_author=self.change_author, add_author=True, super_fast=True)
-        self.tools = GenericEndpoint(self, "tools", change_author=self.change_author, add_author=True, super_fast=True)
+        self.chat = GenericEndpoint(self, "ai", add_author=True, super_fast=True)
+        self.anime = GenericEndpoint(self, "anime", add_author=True, super_fast=True)
+        self.check = GenericEndpoint(self, "check", add_author=True, super_fast=True)
+        self.downloader = GenericEndpoint(self, "download", add_author=True, super_fast=True)
+        self.games = GenericEndpoint(self, "games", add_author=True, super_fast=True)
+        self.information = GenericEndpoint(self, "information", add_author=True, super_fast=True)
+        self.maker = GenericEndpoint(self, "maker", add_author=True, super_fast=True)
+        self.movie = GenericEndpoint(self, "movie", add_author=True, super_fast=True)
+        self.random = GenericEndpoint(self, "random", add_author=True, super_fast=True)
+        self.search = GenericEndpoint(self, "search", add_author=True, super_fast=True)
+        self.stalk = GenericEndpoint(self, "stalk", add_author=True, super_fast=True)
+        self.tools = GenericEndpoint(self, "tools", add_author=True, super_fast=True)
 
 class RandyDev(BaseDev):
     def __init__(self, public_url: str = "https://randydev-ryu-js.hf.space/api/v1"):
@@ -209,7 +206,7 @@ class RandyDev(BaseDev):
             return filename
 
 class AkenoXJs:
-    def __init__(self, change_author: str = "anonymous", itzpire_url: str = "https://itzpire.com", is_itzpire: bool = False):
-        self.client_api = ItzPire(change_author, itzpire_url) if is_itzpire else RandyDev(public_url="https://randydev-ryu-js.hf.space/api/v1")
+    def __init__(self, itzpire_url: str = "https://itzpire.com", is_itzpire: bool = False):
+        self.client = ItzPire(itzpire_url) if is_itzpire else RandyDev(public_url="https://randydev-ryu-js.hf.space/api/v1")
 
 AkenoXToJs = AkenoXJs
