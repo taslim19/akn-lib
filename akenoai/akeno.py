@@ -118,7 +118,7 @@ class GenericEndpoint:
 
     @fast.log_performance
     async def create(self, add_model: str = None, is_obj: bool = False, **kwargs):
-        if not model:
+        if not add_model:
             raise ValueError("Model name is required.")
         response = await self.parent._make_request("get", f"{self.endpoint}/{add_model}", **kwargs) or {}
         if self.add_author:
