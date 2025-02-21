@@ -136,16 +136,16 @@ class GenericEndpoint:
 class ItzPire(BaseDev):
     def __init__(self, public_url: str = "https://itzpire.com"):
         super().__init__(public_url)
-        self.chat = GenericEndpoint(self, "ai")
-        self.anime = GenericEndpoint(self, "anime")
-        self.check = GenericEndpoint(self, "check", add_author=True)
-        self.downloader = GenericEndpoint(self, "download", add_author=True)
-        self.games = GenericEndpoint(self, "games", add_author=True)
-        self.information = GenericEndpoint(self, "information", add_author=True)
-        self.maker = GenericEndpoint(self, "maker", add_author=True)
-        self.movie = GenericEndpoint(self, "movie", add_author=True)
-        self.random = GenericEndpoint(self, "random", add_author=True)
-        self.search = GenericEndpoint(self, "search", add_author=True)
+        self.chat = GenericEndpoint(self, "ai", add_author=True, super_fast=True)
+        self.anime = GenericEndpoint(self, "anime", add_author=True, super_fast=True)
+        self.check = GenericEndpoint(self, "check", add_author=True, super_fast=True)
+        self.downloader = GenericEndpoint(self, "download", add_author=True, super_fast=True)
+        self.games = GenericEndpoint(self, "games", add_author=True, super_fast=True)
+        self.information = GenericEndpoint(self, "information", add_author=True, super_fast=True)
+        self.maker = GenericEndpoint(self, "maker", add_author=True, super_fast=True)
+        self.movie = GenericEndpoint(self, "movie", add_author=True, super_fast=True)
+        self.random = GenericEndpoint(self, "random", add_author=True, super_fast=True)
+        self.search = GenericEndpoint(self, "search", add_author=True, super_fast=True)
 
 class RandyDev(BaseDev):
     def __init__(self, public_url: str = "https://randydev-ryu-js.hf.space/api/v1"):
