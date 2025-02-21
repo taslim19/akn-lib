@@ -120,7 +120,7 @@ class GenericEndpoint:
     async def create(self, add_model: str = None, is_obj: bool = False, **kwargs):
         if not add_model:
             raise ValueError("Model name is required.")
-        response = await self.parent._make_request("get", f"{self.endpoint}/{add_model}", **kwargs) or {}
+        response = await self.parent._make_request("get", f"/{self.endpoint}/{add_model}", **kwargs) or {}
         if self.add_author:
             response["author"] = "anonymous"
         return self.parent.obj(response) if is_obj else response
