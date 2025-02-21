@@ -33,10 +33,11 @@
 - `git+https://github.com/TeamKillerX/akenoai-lib.git#egg=akenoai[fast]`
 
 ### How to learn python
-- Examples Usage:
+- Usage Examples:
 ```py
 class RandyDev(BaseDev):
     def __init__(self, public_url: str = "https://your-api-endpoint/api/v1"):
+        super().__init__(public_url)
         self.chat = self.Examples(self)
 
     class Examples:
@@ -60,6 +61,7 @@ ai/{model}
 You can use `AkenoXToJs()` passing
 ```py
 js = AkenoXToJs(public_url="https://your-api-endpoint/api/v1")
+js.randydev.chat.create(...)
 ```
 AkenoXToJs automatically configures the connection, so there's no need to manually initialize it using OldAkenoXToJs and its randydev method.
 ```py
