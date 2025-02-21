@@ -136,18 +136,19 @@ class GenericEndpoint:
 class ItzPire(BaseDev):
     def __init__(self, change_author: str = "anonymous", public_url: str = "https://itzpire.com"):
         super().__init__(public_url)
-        self.chat = GenericEndpoint(self, "ai", change_author=change_author, add_author=True, super_fast=True)
-        self.anime = GenericEndpoint(self, "anime", change_author=change_author, add_author=True, super_fast=True)
-        self.check = GenericEndpoint(self, "check", change_author=change_author, add_author=True, super_fast=True)
-        self.downloader = GenericEndpoint(self, "download", change_author=change_author, add_author=True, super_fast=True)
-        self.games = GenericEndpoint(self, "games", change_author=change_author, add_author=True, super_fast=True)
-        self.information = GenericEndpoint(self, "information", change_author=change_author, add_author=True, super_fast=True)
-        self.maker = GenericEndpoint(self, "maker", change_author=change_author, add_author=True, super_fast=True)
-        self.movie = GenericEndpoint(self, "movie", change_author=change_author, add_author=True, super_fast=True)
-        self.random = GenericEndpoint(self, "random", change_author=change_author, add_author=True, super_fast=True)
-        self.search = GenericEndpoint(self, "search", change_author=change_author, add_author=True, super_fast=True)
-        self.stalk = GenericEndpoint(self, "stalk", change_author=change_author, add_author=True, super_fast=True)
-        self.tools = GenericEndpoint(self, "tools", change_author=change_author, add_author=True, super_fast=True)
+        self.change_author = change_author
+        self.chat = GenericEndpoint(self, "ai", change_author=self.change_author, add_author=True, super_fast=True)
+        self.anime = GenericEndpoint(self, "anime", change_author=self.change_author, add_author=True, super_fast=True)
+        self.check = GenericEndpoint(self, "check", change_author=self.change_author, add_author=True, super_fast=True)
+        self.downloader = GenericEndpoint(self, "download", change_author=self.change_author, add_author=True, super_fast=True)
+        self.games = GenericEndpoint(self, "games", change_author=self.change_author, add_author=True, super_fast=True)
+        self.information = GenericEndpoint(self, "information", change_author=self.change_author, add_author=True, super_fast=True)
+        self.maker = GenericEndpoint(self, "maker", change_author=self.change_author, add_author=True, super_fast=True)
+        self.movie = GenericEndpoint(self, "movie", change_author=self.change_author, add_author=True, super_fast=True)
+        self.random = GenericEndpoint(self, "random", change_author=self.change_author, add_author=True, super_fast=True)
+        self.search = GenericEndpoint(self, "search", change_author=self.change_author, add_author=True, super_fast=True)
+        self.stalk = GenericEndpoint(self, "stalk", change_author=self.change_author, add_author=True, super_fast=True)
+        self.tools = GenericEndpoint(self, "tools", change_author=self.change_author, add_author=True, super_fast=True)
 
 class RandyDev(BaseDev):
     def __init__(self, public_url: str = "https://randydev-ryu-js.hf.space/api/v1"):
