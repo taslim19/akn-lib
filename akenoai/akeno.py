@@ -208,8 +208,12 @@ class RandyDev(BaseDev):
             return filename
 
 class AkenoXJs:
-    def __init__(self, change_author: str = "anonymous", public_url: str = "https://randydev-ryu-js.hf.space/api/v1"):
-        self.randydev = RandyDev(public_url)
-        self.itzpire = ItzPire(change_author, public_url)
+    def __init__(
+        self,
+        change_author: str = "anonymous",
+        public_url: str = "https://randydev-ryu-js.hf.space/api/v1",
+        is_itzpire: bool = False
+    ):
+        self.randydev = ItzPire(change_author, public_url) if is_itzpire else RandyDev(public_url)
 
 AkenoXToJs = AkenoXJs
