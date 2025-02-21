@@ -115,8 +115,8 @@ class GenericEndpoint:
         self,
         parent: BaseDev,
         endpoint: str,
-        add_author: bool = False
-        super_fast: False
+        add_author: bool = False,
+        super_fast: bool = False
     ):
         self.parent = parent
         self.endpoint = endpoint
