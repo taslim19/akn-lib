@@ -149,21 +149,48 @@ class GenericEndpoint:
         _response_parent = self.parent.obj(response) if is_obj else response
         return _response_parent if self.super_fast else None
 
-class ItzPire(BaseDev):
-    def __init__(self, public_url: str = "https://itzpire.com"):
+class BaseDevWithEndpoints(BaseDev):
+    def __init__(self, public_url: str, endpoints: dict, **kwargs):
         super().__init__(public_url)
-        self.chat = GenericEndpoint(self, "ai", super_fast=True)
-        self.anime = GenericEndpoint(self, "anime", super_fast=True)
-        self.check = GenericEndpoint(self, "check", super_fast=True)
-        self.downloader = GenericEndpoint(self, "download", super_fast=True)
-        self.games = GenericEndpoint(self, "games", super_fast=True)
-        self.information = GenericEndpoint(self, "information", super_fast=True)
-        self.maker = GenericEndpoint(self, "maker", super_fast=True)
-        self.movie = GenericEndpoint(self, "movie", super_fast=True)
-        self.random = GenericEndpoint(self, "random", super_fast=True)
-        self.search = GenericEndpoint(self, "search", super_fast=True)
-        self.stalk = GenericEndpoint(self, "stalk", super_fast=True)
-        self.tools = GenericEndpoint(self, "tools", super_fast=True)
+        for attr, endpoint in endpoints.items():
+            setattr(self, attr, GenericEndpoint(self, endpoint, super_fast=True))
+
+class ItzPire(BaseDevWithEndpoints):
+    def __init__(self, public_url: str = "https://itzpire.com"):
+        endpoints = {
+            "chat": "ai",
+            "anime": "anime",
+            "check": "check",
+            "downloader": "download",
+            "games": "games",
+            "information": "information",
+            "maker": "maker",
+            "movie": "movie",
+            "random": "random",
+            "search": "search",
+            "stalk": "stalk",
+            "tools": "tools",
+        }
+        super().__init__(public_url, endpoints)
+
+class ErAPI(BaseDevWithEndpoints):
+    def __init__(self, public_url: str = "https://er-api.biz.id"):
+        """
+        The ErAPI requires the following parameters:
+
+          • "u=": This parameter is required
+          • "t=": This parameter is required
+          • "c=": This parameter is required
+
+        Example usage:
+          /get/run?c={code}&bhs={languages}
+        """
+        endpoints = {
+            "chat": "luminai",
+            "get": "get",
+            "downloader": "dl",
+        }
+        super().__init__(public_url, endpoints)
 
 class RandyDev(BaseDev):
     def __init__(self, public_url: str = "https://randydev-ryu-js.hf.space/api/v1"):
@@ -224,12 +251,19 @@ class RandyDev(BaseDev):
             return filename
 
 class AkenoXJs:
-    def __init__(self, is_itzpire: bool = False):
-        self.is_itzpire = is_itzpire
-        self.randydev = RandyDev()
-        self.itzpire = ItzPire()
+    def __init__(self, is_err: bool = False, is_itzpire: bool = False):
+        self.endpoints = {
+            "itzpire": ItzPire(),
+            "err": ErAPI(),
+            "default": RandyDev()
+        }
+        self.flags = {"itzpire": is_itzpire, "err": is_err}
 
     def connect(self):
-        return self.itzpire if self.is_itzpire else self.randydev
+        if self.flags["itzpire"]:
+            return self.endpoints["itzpire"]
+        if self.flags["err"]:
+            return self.endpoints["err"]
+        return self.endpoints["default"]
 
 AkenoXToJs = AkenoXJs
