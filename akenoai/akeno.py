@@ -179,8 +179,8 @@ class ErAPI(BaseDevWithEndpoints):
         The ErAPI requires the following parameters:
 
           • "u=": This parameter is required
-          • "t=": This parameter is required 
-          • "c=": This parameter is required 
+          • "t=": This parameter is required
+          • "c=": This parameter is required
 
         Example usage:
           /get/run?c={code}&bhs={languages}
