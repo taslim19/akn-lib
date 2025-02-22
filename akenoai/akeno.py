@@ -93,7 +93,7 @@ class BaseDev:
                 and then return the raw bytes from the response.
             **params: Additional parameters to be sent with the request.
         """
-        url, headers = self._prepare_request(endpoint, params.pop("api_key", None))
+        url, headers = self._prepare_request(endpoint)
         try:
             async with aiohttp.ClientSession() as session:
                 request = getattr(session, method)
@@ -177,7 +177,7 @@ class RandyDev(BaseDev):
         def __init__(self, parent: BaseDev):
             self.parent = parent
 
-        async def lang(self, text: str = None, is_obj=False, **kwargs):
+        async def to(self, text: str = None, is_obj=False, **kwargs):
             """Handle Translate Google API requests."""
             if not text:
                 raise ValueError("text name is required for Google Translate.")
