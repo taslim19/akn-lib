@@ -112,6 +112,24 @@ class BaseDev:
         except Exception:
             return None
 
+class GenImageEndpoint:
+    def __init__(
+        self,
+        parent: BaseDev,
+        endpoint: str,
+        super_fast: bool = False
+    ):
+        self.parent = parent
+        self.endpoint = endpoint
+        self.super_fast = super_fast
+
+    @fast.log_performance
+    async def create(self, ctx: str = None, is_obj: bool = False, **kwargs):
+        if not ctx:
+            raise ValueError("ctx name is required.")
+        _response_image = await self.parent._make_request("get", f"{self.endpoint}/{ctx}", **kwargs)
+        return _response_image if self.super_fast else None
+
 class GenericEndpoint:
     def __init__(
         self,
@@ -152,7 +170,7 @@ class RandyDev(BaseDev):
         super().__init__(public_url)
         self.chat = GenericEndpoint(self, "ai", super_fast=True)
         self.downloader = GenericEndpoint(self, "dl", super_fast=True)
-        self.image = GenericEndpoint(self, "flux", super_fast=True)
+        self.image = GenImageEndpoint(self, "flux", super_fast=True)
         self.user = self.User(self)
         self.translate = self.Translate(self)
         self.story_in_tg = self.LinkExtraWithStory(self)
