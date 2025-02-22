@@ -149,6 +149,7 @@ class GenericEndpoint:
         _response_parent = self.parent.obj(response) if is_obj else response
         return _response_parent if self.super_fast else None
 
+
 class ItzPire(BaseDev):
     def __init__(self, public_url: str = "https://itzpire.com"):
         super().__init__(public_url)
@@ -164,6 +165,19 @@ class ItzPire(BaseDev):
         self.search = GenericEndpoint(self, "search", super_fast=True)
         self.stalk = GenericEndpoint(self, "stalk", super_fast=True)
         self.tools = GenericEndpoint(self, "tools", super_fast=True)
+
+class ErAPI(BaseDev):
+    def __init__(self, public_url: str = "https://er-api.biz.id"):
+        """
+        The "u=" parameter must be included, otherwise it will return a 404 status code.
+        The "t=" parameter must be included, otherwise it will return a 404 status code.
+        The "c=" parameter must be included, otherwise it will return a 404 status code.
+        /get/run?c={code}&bhs={languages}
+        """
+        super().__init__(public_url)
+        self.chat = GenericEndpoint(self, "luminai", super_fast=True)
+        self.get = GenericEndpoint(self, "get", super_fast=True)
+        self.downloader = GenericEndpoint(self, "dl", super_fast=True)
 
 class RandyDev(BaseDev):
     def __init__(self, public_url: str = "https://randydev-ryu-js.hf.space/api/v1"):
@@ -224,12 +238,18 @@ class RandyDev(BaseDev):
             return filename
 
 class AkenoXJs:
-    def __init__(self, is_itzpire: bool = False):
+    def __init__(self, is_err: bool = False, is_itzpire: bool = False):
         self.is_itzpire = is_itzpire
+        self.is_err = is_err
         self.randydev = RandyDev()
         self.itzpire = ItzPire()
+        self.err = ErAPI()
 
     def connect(self):
-        return self.itzpire if self.is_itzpire else self.randydev
+        if self.is_itzpire:
+            return self.itzpire
+        if self.is_err:
+            return self.err
+        return self.randydev
 
 AkenoXToJs = AkenoXJs
