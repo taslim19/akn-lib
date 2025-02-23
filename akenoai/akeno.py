@@ -69,7 +69,7 @@ class BaseDev:
                 translation = await response.json()
                 return "".join([item[0] for item in translation[0]])
 
-    def _prepare_request(self, endpoint: str, api_key: str = "Free", headers_extra: dict = None):
+    def _prepare_request(self, endpoint: str, api_key: str = None, headers_extra: dict = None):
         """Prepare request URL and headers."""
         if not api_key:
             api_key = os.environ.get("AKENOX_KEY")
@@ -93,7 +93,7 @@ class BaseDev:
                 and then return the raw bytes from the response.
             **params: Additional parameters to be sent with the request.
         """
-        url, headers = self._prepare_request(endpoint)
+        url, headers = self._prepare_request(endpoint, params.pop("api_key", None))
         try:
             async with aiohttp.ClientSession() as session:
                 request = getattr(session, method)
