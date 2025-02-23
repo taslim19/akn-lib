@@ -93,7 +93,11 @@ class BaseDev:
                 and then return the raw bytes from the response.
             **params: Additional parameters to be sent with the request.
         """
-        url, headers = self._prepare_request(endpoint, params.pop("api_key", None))
+        url, headers = self._prepare_request(
+            endpoint,
+            params.pop("api_key", None),
+            params.pop("headers_extra", None)
+        )
         try:
             async with aiohttp.ClientSession() as session:
                 request = getattr(session, method)
