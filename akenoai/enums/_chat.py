@@ -7,4 +7,3 @@ class ChatX(AutoName):
     ALIBABA_PLUS = "alibaba/qwen-plus"
     COHERE_PLUS = "cohere/command-plus"
     NVIDIA_LLAMA = "nvidia/llama-31-70b"
-
