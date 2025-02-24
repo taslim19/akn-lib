@@ -33,7 +33,7 @@
 - `git+https://github.com/TeamKillerX/akenoai-lib.git#egg=akenoai[fast]`
 
 ### How to learn python
-- Can collaboration
+- Collaborative learning
 - Usage Examples:
 ```py
 class ExampleYourName(BaseDevWithEndpoints):
