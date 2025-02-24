@@ -33,21 +33,16 @@
 - `git+https://github.com/TeamKillerX/akenoai-lib.git#egg=akenoai[fast]`
 
 ### How to learn python
+- Can collaboration
 - Usage Examples:
 ```py
-class RandyDev(BaseDev):
-    def __init__(self, public_url: str = "https://your-api-endpoint/api/v1"):
-        super().__init__(public_url)
-        self.chat = self.Examples(self)
+class ExampleYourName(BaseDevWithEndpoints):
+    def __init__(self, public_url: str = "https://your-endpoint.com"):
+        endpoints = {
+            "chat": "ai",
+        }
+        super().__init__(public_url, endpoints)
 
-    class Examples:
-        def __init__(self, parent: BaseDev):
-            self.parent = parent
-
-        @fast.log_performance
-        async def create(self, model: str = None, is_obj=False, **kwargs):
-            # your code
-            pass
 ```
 - Please fork the repository and submit a pull request
 - Your Own API
@@ -60,8 +55,8 @@ ai/{model}
 ```
 You can use `AkenoXToJs()` passing
 ```py
-js = AkenoXToJs(public_url="https://your-api-endpoint/api/v1")
-js.randydev.chat.create(...)
+js = AkenoXToJs(is_your_name=True).connect()
+js.chat.create(...)
 ```
 AkenoXToJs automatically configures the connection, so there's no need to manually initialize it using OldAkenoXToJs and its randydev method.
 ```py
@@ -86,9 +81,9 @@ run_fast()
 ```py
 from akenoai import AkenoXToJs
 
-js = AkenoXToJs()
+js = AkenoXToJs().connect()
 
-response = await js.randydev.chat.create(
+response = await js.chat.create(
     model="qwen/qwen1.5-1.8b-chat",
     api_key="<your-api-key-premium>",
     is_obj=True,
@@ -101,9 +96,9 @@ print(response)
 ```py
 from akenoai import AkenoXToJs
 
-js = AkenoXToJs()
+js = AkenoXToJs().connect()
 
-download_response = await js.randydev.downloader.create(
+download_response = await js.downloader.create(
     model="instagram-v4",
     api_key="<your-api-key-free>",
     is_obj=False,
@@ -376,34 +371,10 @@ return await js.randydev(
     custom_dev_fast=True
 )
 ```
----
-
-### **📌 Custom API endpoints**
-| Feature        | **Itzpire API** (Proxy Required) | **AkenoX API** (No Proxy)
-|---------------|--------------------------------|--------------------------|
-| **API Key**   | ❌ Not required               | ✅ Required |
-| **Speed**     | ⚠️ Slower (Proxy used)        | 🚀 Fast (Direct request) |
-| **Stability** | ✅ Works even if blocked      | ✅ Stable & optimized |
-| **Use Case**  | 🔄 Bypassing restrictions    | ⚡ Direct & fast access |
-| **IP Ban Status**   | 🚷 IP address has been banned. | ✅ IP address not banned |
-| **Rate Limit** | ✅ Unlimited | ⏳ 100 requests per minute |
-| **Network** | ❌ No Limits | ✅ Limited Network access |
-| **Custom Public Url** | `https://itzpire.com` | ✅ Default |
----
-
----
-
-| Feature        | **OpenAI** |  **Deepseek**
-|---------------|--------------------------------|--------------------------|
-| **API Key**   |  ✅ Required               | ✅ Required |
-| **Speed**     | ?     | ? |
-| **Stability** | ✅ Stable & optimized      | ✅ Stable & optimized |
-| **Use Case**  | ? | ? |
-| **IP Ban Status**   | ? | ? |
-| **Rate Limit** | ? | ? |
-| **Network** | ? | ? |
-| **Custom Public Url** | `https://api.openai.com/v1` | `https://api.deepseek.com/v1` |
----
+### 📊 Developed by:
+- [`AkenoX API`](https://t.me/xpushz) - Full stack Developer Backend
+- [`ErrAPI`](https://t.me/Chakszzz) - Backend And Frontend Web
+- [`itzpire API`](https://itzpire.com) - Backend And Frontend Web
 
 ### ❤️ Special Thanks To
 - [`Kurigram`](https://github.com/KurimuzonAkuma/pyrogram)
